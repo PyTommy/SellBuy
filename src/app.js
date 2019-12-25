@@ -32,9 +32,9 @@ app.post('/user', (req, res) => {
 
 
 
-const PORT = 3000;
+const port = process.env.PORT;
 
-app.listen(PORT, () => {
-    console.log(`Server is up on port ${PORT}`)
+app.listen(port, () => {
+    console.log(`Server is up on port ${port}`)
 });
 
