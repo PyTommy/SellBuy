@@ -10,6 +10,7 @@ const User = mongoose.model('User', {
     email: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -21,6 +22,14 @@ const User = mongoose.model('User', {
     password: {
         type: String,
         required: true
+    },
+    avatar: {
+        type: String,
+        default: "default"
+    },
+    date: {
+        type: Date,
+        default: Date.now
     }
 });
 
