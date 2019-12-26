@@ -2,10 +2,14 @@ const express = require('express');
 const bcrypt =　require('bcryptjs');
 const { check, validationResult } = require('express-validator'); 
 const jwt = require('jsonwebtoken');
+const sharp = require('sharp');
+
 
 const router = express.Router();
 const User = require('../models/user');
 const auth = require('../middleware/auth');
+const uploadAvatar = require('../middleware/uploadAvatar');
+// const multer = require('multer');
 
 // @route     GET /api/user
 // @desc      get auth user
@@ -114,5 +118,52 @@ router.get('/login', [
         res.status(500).send(err);
     }
 });
+
+
+// @route     PUT /api/user/avatar
+// @desc      Upload a profile pic
+// @access    Private
+// @res       {msg: "..."}
+router.put('/avatar', 
+    [
+        auth,
+        uploadAvatar
+    ],
+    async (req, res) => {
+        try {
+            const user = await User.findById(req.user.id);
+            const buffer = await sharp(req.file.buffer)
+                .resize({width: 250, height: 250})
+                .png()
+                .toBuffer();
+            user.avatar = buffer;
+            await user.save();
+            res.send({msg: "Uploaded the avatar image"});
+        } catch (err) {
+            console.error(err.message);
+            res.status(500).send(err);
+        }
+    }
+);
+
+// @route     GET /api/user/avatar
+// @desc      Get a avatar
+// @access    Public
+// @res       {}
+router.get('/:id/avatar', async(req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user || !user.avatar) {
+            throw new Error("The avatar is not exists.");
+        }
+        res.set('Content-Type', 'image/png');
+        res.send(user.avatar);
+    } catch (err) {
+        res.status(404).send();
+    }
+});
+
+
 
 module.exports = router;

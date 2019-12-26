@@ -24,8 +24,7 @@ const User = mongoose.model('User', {
         required: true
     },
     avatar: {
-        type: String,
-        default: "default"
+        type: Buffer
     },
     date: {
         type: Date,
