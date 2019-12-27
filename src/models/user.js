@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const Schema = mongoose.Schema;
 
-const User = mongoose.model('User', {
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -24,12 +25,39 @@ const User = mongoose.model('User', {
         required: true
     },
     avatar: {
-        type: Buffer
+        type: Buffer,
+        default: null
     },
+    likes: [
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
+            }
+        }
+    ],
+    boughts: [
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
+            }
+        }
+    ],
+    sellings:[
+        {
+            product: {
+                type: Schema.Types.ObjectId,
+                ref: 'products'
+            }
+        }
+    ],
     date: {
         type: Date,
         default: Date.now
     }
-});
+})
+
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

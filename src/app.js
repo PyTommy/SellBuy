@@ -11,7 +11,7 @@ connectDB();
 
 // Routers
 app.use('/api/user', require('./routers/user'));
-app.use('/api/goods', require('./routers/goods'));
+app.use('/api/products', require('./routers/products'));
 
 
 // Listening

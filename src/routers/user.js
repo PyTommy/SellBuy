@@ -149,7 +149,7 @@ router.put('/avatar',
 // @route     GET /api/user/avatar
 // @desc      Get a avatar
 // @access    Public
-// @res       {}
+// @res       {avatar: Buffer}
 router.get('/:id/avatar', async(req, res) => {
     try {
         const user = await User.findById(req.params.id);
