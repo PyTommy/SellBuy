@@ -5,6 +5,10 @@ const uploadAvatar = multer({
             fileSize: 1000000
         },
         fileFilter( req, file, cb) {
+            console.log(file);
+            if (!file) {
+                return cb(new Error('Please upload a PNG, JPEG or jpg file.'));
+            }
             if (!file.originalname.match(/\.(png|PNG|jpeg|JPEG|jpg|JPG)$/)) {
                 return cb(new Error('Please upload a PNG, JPEG or jpg file.'))
             }

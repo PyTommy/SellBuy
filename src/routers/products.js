@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const sharp = require('sharp');
+const {ErrorHandler} = require('../middleware/error');
 
 // Middleware
 const auth = require('../middleware/auth');
@@ -26,22 +27,25 @@ router.post('/',
         check('category', 'Category is required').trim().not().isEmpty(),
         check('meetupAt', 'MeetupAt is required').trim().not().isEmpty(),
     ], 
-    async (req, res) => {
+    async (req, res, next) => {
         try {
             // Checking req.body was valid
             const errors = validationResult(req);
             if ( !errors.isEmpty() ) {
-                return res.status(400).json({ errors: errors.array() });
+                throw new ErrorHandler(400, errors.array());
             }
 
             // Get User info
             const user = await User.findById(req.user.id);
             if (!user) {
-                res.status(400).send({msg: "User not found"})
+                throw new ErrorHandler(400, "User not found");
             }
 
             const { title, description, price, category, meetupAt } = req.body;
-            
+
+            if (!req.file) {
+                throw new ErrorHandler(400, "Please upload a png, jpeg or jpg");
+            }
             const productImage = await sharp(req.file.buffer)
                 // .resize({width: 640, height: 480})
                 .resize({width: 300})
@@ -67,8 +71,7 @@ router.post('/',
 
             res.send(product);
         } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
+            next(err);
         }
     }
 );
@@ -77,17 +80,16 @@ router.post('/',
 // @desc      Get product
 // @access    Public
 // @res       [...products]
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         const products = await Product.find({}, null, {limits: 10, skip: 0}).sort({date: -1});
         if (!products) {
-            return res.status(404).send("Not Found");
+            throw new ErrorHandler(404, "Products Not Found");
         }
 
         res.send(products);
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 });
 
@@ -95,25 +97,22 @@ router.get('/', async (req, res) => {
 // @desc      Get product by Id
 // @access    Public
 // @res
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) {
-            return res.status(404).send("Not Found");
+            throw new ErrorHandler(404, "Product Not Found");
         }
-
         res.send(product);
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 });
 
 // @route     Update /api/products/:id
 // @desc      Update product by Id
 // @access    private
-router.put('/:id', auth, async (req, res) => {
-
+router.put('/:id', auth, async (req, res, next) => {
     try {
         // Validating inputs
         const updates = Object.keys(req.body);
@@ -121,14 +120,14 @@ router.put('/:id', auth, async (req, res) => {
         const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
         if (!isValidOperation) {
-            return res.status(400).send({error: "Invalid updates!"});
+            throw new ErrorHandler(400, "Invalid updates!");
         }
 
         // Update
         const product = await Product.findById(req.params.id);
         
         if (!product) {
-            return res.status(404).send("Not Found");
+            throw new ErrorHandler(404, "Product Not Found");
         }
 
         updates.forEach((update) => product[update] = req.body[update]);
@@ -137,23 +136,22 @@ router.put('/:id', auth, async (req, res) => {
 
         res.send(product);
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 }); //@@@@@@@@@@@@@ No image update-_-
 
 // @route     DELETE /api/products/:id
 // @desc      Delete product by Id
 // @access    Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
         if (!product) {
-            return res.status(404).send("Not Found");
+            throw new ErrorHandler(404, "Product Not found");
         }
         if (product.user.toString() !== req.user.id) {
-            return res.send("This is yours");
+            throw new ErrorHandler(404, "You are not allowed to delete this product because you are not the user");
         }
 
         // Delete product id from user.sellings
@@ -162,7 +160,7 @@ router.delete('/:id', auth, async (req, res) => {
         if ( index > -1){
             user.sellings.splice(index, 1);
         } else {
-            return res.send("Cannot find product in User's selling list.")
+            throw new ErrorHandler(400, "Cannot find product in User's selling list.");
         }
 
         await product.remove();
@@ -170,8 +168,7 @@ router.delete('/:id', auth, async (req, res) => {
 
         res.send({msg: "Deleted!!"});
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 });
 
@@ -179,17 +176,17 @@ router.delete('/:id', auth, async (req, res) => {
 // @description   Like a product
 // @access        Private
 // @res           [{id:..., user: ...}, ...]
-router.put('/like/:id', auth, async (req, res) => {
+router.put('/like/:id', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
 
         if (!product) {
-            return res.status(404).json({msg: 'Product not found'});
+            throw new ErrorHandler(400, "Product not found");
         }
 
         if (product.likes.find( like => like.user.toString() === req.user.id)) {
-            return res.status(400).json({msg: 'Product already liked!'})
+            throw new ErrorHandler(400, "Product already liked!");
         }
 
         product.likes.unshift({user: req.user.id});
@@ -200,8 +197,7 @@ router.put('/like/:id', auth, async (req, res) => {
 
         res.json(product.likes);
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 });
 
@@ -209,7 +205,7 @@ router.put('/like/:id', auth, async (req, res) => {
 // @description   Unlike a product
 // @access        Private
 // @res           [{id:..., user: ...}, ...]
-router.put('/unlike/:id', auth, async (req, res) => {
+router.put('/unlike/:id', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
@@ -217,7 +213,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
         const updatedLikes = product.likes.filter( like => like.user.toString() !== req.user.id);
 
         if(product.likes.length === updatedLikes.length) {
-            return res.status(400).send({msg: 'Product has not yet been liked'});
+            throw new ErrorHandler(400, "Product has not yet been liked");
         }
 
         product.likes = updatedLikes;
@@ -226,7 +222,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
         if (index > -1) {
             user.likes.splice(index, 1);
         } else {
-            return res.status(500).send("Cannot delete like from user's likes list!!");
+            throw new ErrorHandler(500, "Cannot delete like from user's likes list!!");
         }
 
         await product.save();
@@ -234,8 +230,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 
         res.json(product.likes);
     } catch(err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
+        next(err)
     }
 });
 
@@ -246,10 +241,10 @@ router.post('/comment/:id',
     [
         auth,
         check('text', 'Text is required').not().isEmpty()
-    ], async (req, res) => {
+    ], async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            throw new ErrorHandler(400, errors.array());
         }
         try {
             const user = await User.findById(req.user.id).select('-password');
@@ -268,8 +263,7 @@ router.post('/comment/:id',
 
             res.json(product.comments);
         } catch (err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
+            next(err);
         }
     }
 );
@@ -277,7 +271,7 @@ router.post('/comment/:id',
 // @route         DELETE api/posts/comment/:id/:comment_id
 // @description   Delete a comment
 // @access        Private
-router.delete('/comment/:id/:comment_id', auth, async(req, res) => {
+router.delete('/comment/:id/:comment_id', auth, async(req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
 
@@ -286,12 +280,12 @@ router.delete('/comment/:id/:comment_id', auth, async(req, res) => {
 
         // Make sure comment exists
         if(!comment) {
-            return res.status(404).json({msg: "Comment does not exist"});
+            throw new ErrorHandler(404, "Comment does not exist");
         }
 
         // Check user
         if (comment.user.toString() !== req.user.id) {
-            return res.status(401).json({msg: 'User not authorized'});
+            throw new ErrorHandler(401, "User not authorized");
         }
 
         const updatedComments = product.comments.filter( comment => comment.id.toString() !== req.params.comment_id);
@@ -302,27 +296,26 @@ router.delete('/comment/:id/:comment_id', auth, async(req, res) => {
 
         res.json(product.comments);
     } catch(err) {
-        console.error(err.message);
-        res.status(500).send('Server Error');
+        next(err);
     }
 });
 
 // @route         PUT api/products/buy/:id
 // @description   Buy a product
 // @access        Private
-router.put('/buy/:id', auth, async (req, res) => {
+router.put('/buy/:id', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
         
         if (!user) {
-            return res.status(404).send({msg: "User not found"});
+            throw new ErrorHandler(400, "User not found");
         }
         if (!product) {
-            return res.status(404).send({msg: "Product not found"});
+            throw new ErrorHandler(404, "Product not foun");
         }
         if (product.sold !== false) {
-            return res.status(400).send({msg: "This product is already sold-out"})
+            throw new ErrorHandler(400, "This product is already sold-out");
         }
 
         product.sold = true;
@@ -335,8 +328,7 @@ router.put('/buy/:id', auth, async (req, res) => {
 
         res.json({msg: `You bought ${product.title}`});
     } catch(err) {
-            console.error(err.message);
-            res.status(500).send('Server Error');
+        next(err)
     }
 });
 

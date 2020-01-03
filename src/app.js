@@ -1,12 +1,14 @@
 const express = require('express');
 const connectDB = require('./db/mongoose');
 const cors = require('cors');
+const morgan = require('morgan');
 const { handleError } = require('./middleware/error');
 
 // Init app
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'));
 
 // Connect Database
 connectDB();
