@@ -37,6 +37,7 @@ router.post('/signup', [
         // Check if the req are valid
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            console.log("validation errors");
             return res.status(400).json({ errors: errors.array() });
         }
 
@@ -45,6 +46,7 @@ router.post('/signup', [
         // Check if the User already exists
         let user = await User.findOne({ email });
         if (user) {
+            console.log("user exists");
             return res.status(400).send({errors: [{msg: 'User already exists'}]});
         }
         
@@ -72,15 +74,16 @@ router.post('/signup', [
             { expiresIn: '1h' });
         res.status(201).send({token});
     } catch(err) {
+        conso.elog("500 error");
         res.status(500).send(err);
     }
 });
 
-// @route     GET /api/user/login
+// @route     POST /api/user/login
 // @desc      Login user
 // @access    Public
 // @res       { token:... }
-router.get('/login', [
+router.post('/login', [
     check('email', 'Please include a valid email').trim().isEmail(),
     check('password', 'Please enter a password with 6 or more characters').trim().isLength({min: 6})
 ], async (req, res) => {

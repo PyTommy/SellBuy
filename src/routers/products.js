@@ -43,7 +43,8 @@ router.post('/',
             const { title, description, price, category, meetupAt } = req.body;
             
             const productImage = await sharp(req.file.buffer)
-                .resize({width: 1280, height: 720})
+                // .resize({width: 640, height: 480})
+                .resize({width: 300})
                 .png()
                 .toBuffer(); 
 
@@ -78,7 +79,7 @@ router.post('/',
 // @res       [...products]
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find({}, null, {limits: 10, skip: 0});
+        const products = await Product.find({}, null, {limits: 10, skip: 0}).sort({date: -1});
         if (!products) {
             return res.status(404).send("Not Found");
         }
@@ -261,7 +262,7 @@ router.post('/comment/:id',
                 user: req.user.id
             };
 
-            product.comments.unshift(newComment);
+            product.comments.push(newComment);
 
             await product.save();
 

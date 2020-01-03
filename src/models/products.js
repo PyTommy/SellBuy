@@ -39,10 +39,10 @@ const ProductSchema = new Schema({
         trim: true,
         required: true
     },
-    // productImage: {
-    //     type: Buffer,
-    //     required: true
-    // }, @@@ Todo
+    productImage: {
+        type: Buffer,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
