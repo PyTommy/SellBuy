@@ -121,7 +121,7 @@ router.post('/login', [
 });
 
 
-// @route     PUT /api/user/avatar
+// @route     POST /api/user/avatar
 // @desc      Upload a profile pic
 // @access    Private
 // @res       {msg: "..."}
@@ -137,12 +137,12 @@ router.post('/avatar',
                 throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
             }
             const buffer = await sharp(req.file.buffer)
-                .resize({width: 250, height: 250})
+                .resize({width: 100, height: 100})
                 .png()
                 .toBuffer();
             user.avatar = buffer;
             await user.save();
-            res.send({msg: "Uploaded the avatar image"});
+            res.send({message: "Uploaded the avatar image"});
         } catch (err) {
             next(err);
         }

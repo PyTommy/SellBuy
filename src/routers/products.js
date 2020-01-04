@@ -81,11 +81,23 @@ router.post('/',
 // @access    Public
 // @res       [...products]
 router.get('/', async (req, res, next) => {
+    let limit = 1;
+    if (req.query && req.query.limit) {
+        limit = parseInt(req.query.limit, 10);
+    } 
+    let skip = 0;
+    if (req.query && req.query.skip) {
+        skip = parseInt(req.query.skip, 10);
+    } 
+
     try {
-        const products = await Product.find({}, null, {limits: 10, skip: 0}).sort({date: -1});
-        if (!products) {
-            throw new ErrorHandler(404, "Products Not Found");
-        }
+        const products = await Product.find({}, null, {
+            limit: limit, 
+            skip: skip
+        }).sort({date: -1});
+        // if (!products) {
+        //     throw new ErrorHandler(404, "Products Not Found");
+        // }
 
         res.send(products);
     } catch(err) {
