@@ -2,7 +2,7 @@ const multer = require('multer');
 
 const uploadAvatar = multer({
         limits: {
-            fileSize: 1000000
+            fileSize: 3000000
         },
         fileFilter( req, file, cb) {
             console.log(file);
