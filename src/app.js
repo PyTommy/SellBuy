@@ -3,6 +3,7 @@ const connectDB = require('./db/mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
 const { handleError } = require('./middleware/error');
+const path = require('path');
 
 // Init app
 const app = express();
@@ -19,8 +20,17 @@ app.use('/api/user', require('./routers/user'));
 app.use('/api/products', require('./routers/products'));
 
 app.use((err, req, res, next) => {
-    handleError(err, res);
+    if (err) handleError(err, res);
+    next()
 });
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
+}
 
 // Listening
 const port = process.env.PORT;
