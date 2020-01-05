@@ -1,0 +1,9 @@
+@import '../../styles/setting.module.scss';
+
+.main {
+    padding-bottom: $nav-height; 
+    @media (min-width: 600px) {
+        padding-bottom: 0;
+        padding-top: $nav-height; 
+    }
+}

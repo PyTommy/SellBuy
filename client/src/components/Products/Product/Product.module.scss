@@ -1,0 +1,58 @@
+.Product {
+    width: 100%;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+// User Info
+.User {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+.UserPicture {
+
+}
+.UserName{
+    margin-left: 1.5rem;
+}
+.Time {
+    margin-left: auto;
+    font-size: 1.3rem;
+    color: #999;
+}
+
+// Main Image
+.Image {
+    width: 100%;
+}
+
+// Texts
+.TextBox{
+    display: flex;
+    padding: 1rem 1rem .3rem 1rem;
+    justify-content: space-between;
+}
+.Main {
+    font-weight: bold;
+    font-size: 2rem;
+    padding: .5rem
+}
+.Subs {
+    text-align: right;
+    font-size: 1.5rem;
+}
+
+
+// Bottom Bar
+.BottomBar {
+    padding: .5rem 2rem;
+    font-size: 1.3rem;
+    color: #999;
+
+    display: flex;
+    justify-content: space-between;
+}

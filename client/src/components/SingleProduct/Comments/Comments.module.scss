@@ -1,0 +1,21 @@
+@import '../../../styles/setting.module.scss';
+
+.Comments {
+    background-color: #efefef;
+    padding: 1rem;
+    border-radius: 3px;
+    display: grid;
+    grid-gap: 1rem;
+    justify-items: center;
+}
+
+.Textarea {
+    width: 100%;
+    height: 10rem;
+    font-size: 2rem;
+    padding: 1rem !important;
+    padding: .5rem 1rem;
+    border: .5px solid #ccc;
+    border-radius: 3px;
+    color: inherit !important;
+}

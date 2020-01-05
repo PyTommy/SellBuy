@@ -1,0 +1,104 @@
+@import '../../styles/setting.module.scss';
+
+.Product {
+    position:relative;
+    padding-top: 5.5rem;
+    width: 100%;
+    line-height: 1.2;
+
+    display: flex;
+    flex-direction: column;
+
+    h2, h3 {
+        margin: 1rem 0;
+    }
+}
+.Container {
+    padding: 1rem 2rem;
+}
+
+//TopBar
+.TopBar {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    height: 5.5rem;
+    padding: 0 2rem;
+    border-bottom: .5px solid $color-light-gray;
+
+    display: grid;
+    grid-template-columns: 1fr repeat(3, auto);
+    grid-gap: 2rem;
+    justify-content: end;
+    align-items: center;
+}
+
+.GoBack{
+    width: 7rem;
+}
+
+.likeButton {
+    background: none;
+    outline: none;
+    border: none;
+}
+.Like {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: rgb(252, 122, 140);
+}
+.Unlike{
+    width: 3.5rem;
+    height: 3.5rem;
+    color: white;
+    filter: drop-shadow( 0 0 1.5px rgba(black, .6));
+}
+
+
+.ItemList {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+}
+// User Info
+.User {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.UserPicture {
+
+}
+.UserName{
+    margin-right: 1.5rem;
+}
+
+// Main Image
+.Image {
+    width: 100%;
+}
+
+
+// Bottom Bar
+.BottomBar {
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    height: 5.5rem;
+    padding: 0 2rem;
+    border-top: .5px solid $color-light-gray;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.BottomBarText {
+    font-size: 2rem;
+    font-weight: bold;
+}

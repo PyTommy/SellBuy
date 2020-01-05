@@ -1,0 +1,41 @@
+@import '../../../styles/setting.module.scss';
+
+.Button {
+    font-size: inherit;
+    width: 10rem;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+}
+
+.colorPrimary {
+    background: $color-primary;
+    color: white;
+}
+.colorOrange {
+    background: rgb(248, 101, 47);
+    color: white;
+}
+.colorDanger {
+    background: rgb(241, 50, 50);
+    color: white;
+}
+
+.borderGray {
+    background: transparent;
+    border: 1px solid #999;
+    color: #999;
+}
+
+.sizeSmall {
+    width: 5rem;
+    font-size: 1.3rem;
+    padding: .5rem .5rem;
+}
+.sizeLarge {
+    width: 10rem;
+    font-size: 1.6rem;
+    padding: .7rem 1rem;
+    font-weight: bold;
+}

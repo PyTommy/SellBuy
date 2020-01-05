@@ -1,0 +1,19 @@
+.Comment {
+    padding: 1rem;
+    width: 100%;
+    background-color: white;
+    font-size: 1.6rem;
+    border-radius: 3px;
+}
+
+.User {
+    display: flex;
+    align-items: center;
+}
+.UserPicture {
+    margin-right: 1.5rem;
+}
+.Text {
+    margin-top: 1rem;
+    margin-left: 2rem;
+}
