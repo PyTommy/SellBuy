@@ -7,7 +7,7 @@ import styles from './Product.module.scss';
 import PictureRadius from '../../UI/Pictures/PictureRadius/PictureRadius';
 
 const product = ({history, product}) => {
-    const { _id, user, price, name, sold, title, description, category, meetupAt, date, likes, comments } = product;
+    const { _id, price, name, title, meetupAt, date, likes, comments } = product;
 
     const image = imageConverter(product.productImage.data);
     

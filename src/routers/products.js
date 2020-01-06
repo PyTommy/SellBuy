@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const sharp = require('sharp');
+const multer = require('multer');
 const {ErrorHandler} = require('../middleware/error');
 
 // Middleware
@@ -20,15 +21,17 @@ const Product = require('../models/products');
 router.post('/', 
     [
         auth,
-        uploadProductPic,
+        multer().fields([]),
         check('title', 'Title is required').trim().not().isEmpty(), 
         check('description', 'Description is required').not().isEmpty(),
         check('price', 'Price(with Number) is required').isNumeric(),
         check('category', 'Category is required').trim().not().isEmpty(),
-        check('meetupAt', 'MeetupAt is required').trim().not().isEmpty(),
+        check('meetupAt', 'MeetupAt is required').trim().not().isEmpty()
     ], 
     async (req, res, next) => {
+
         try {
+            // @@@  todo = checking req.body.productImage
             // Checking req.body was valid
             const errors = validationResult(req);
             if ( !errors.isEmpty() ) {
@@ -43,11 +46,14 @@ router.post('/',
 
             const { title, description, price, category, meetupAt } = req.body;
 
-            if (!req.file) {
-                throw new ErrorHandler(400, "Please upload a png, jpeg or jpg");
-            }
-            const productImage = await sharp(req.file.buffer)
-                // .resize({width: 640, height: 480})
+            // if (!req.file) {
+            //     throw new ErrorHandler(400, "Please upload a png, jpeg or jpg");
+            // }
+            const base64 = req.body.productImage.split(',')[1];
+            const buffer = new Buffer.from(base64, 'base64'); 
+
+            // const productImage = await sharp(req.file.buffer)
+            const productImage = await sharp(buffer)
                 .resize({width: 1280})
                 .jpeg({
                     quality: 40,
