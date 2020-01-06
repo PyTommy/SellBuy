@@ -38,7 +38,7 @@ const Product = ({
         const image = imageConverter(product.productImage.data);
         let avatar;
         if (product.avatar) {
-            avatar = `data:image/jpg;base64,${imageConverter(product.avatar.data)}`;
+            avatar = `data:image/jpeg;base64,${imageConverter(product.avatar.data)}`;
         } else {
             avatar = require("../../assets/default.png");
         }

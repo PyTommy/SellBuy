@@ -48,8 +48,10 @@ router.post('/',
             }
             const productImage = await sharp(req.file.buffer)
                 // .resize({width: 640, height: 480})
-                .resize({width: 300})
-                .png()
+                .resize({width: 1280})
+                .jpeg({
+                    quality: 40,
+                })
                 .toBuffer(); 
 
             const product = new Product({
@@ -69,7 +71,7 @@ router.post('/',
             user.sellings.unshift({product: product.id});
             await user.save();
 
-            res.send(product);
+            res.send();
         } catch (err) {
             next(err);
         }

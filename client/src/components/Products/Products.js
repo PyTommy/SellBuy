@@ -24,12 +24,13 @@ const Products = ({ getProducts, refreshProducts, product: {products, loading, h
     }
 
     const refresh = () => {
+        console.log("refresh");
         refreshProducts(0, 5);
     };
 
 
-    const productList = products.map((product)=> {
-        return <Product key={product._id} product={product} />;
+    const productList = products.map((singleProduct)=> {
+        return <Product key={singleProduct._id} product={singleProduct} />;
     });
 
     // if (loading.getProducts) {

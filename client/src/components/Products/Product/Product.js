@@ -13,7 +13,7 @@ const product = ({history, product}) => {
     
     let avatar;
     if (product.avatar) {
-        avatar = `data:image/jpg;base64,${imageConverter(product.avatar.data)}`;
+        avatar = `data:image/jpeg;base64,${imageConverter(product.avatar.data)}`;
     } else {
         avatar = require("../../../assets/default.png");
     }
@@ -33,7 +33,7 @@ const product = ({history, product}) => {
             </div>
 
             {/* Main Picture*/}
-            <img alt="pic" className={styles.Image} src={`data:image/jpg;base64,${image}`}/>
+            <img alt="pic" className={styles.Image} src={`data:image/jpeg;base64,${image}`}/>
 
             {/* Texts */}
             <div className={styles.TextBox}>

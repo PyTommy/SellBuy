@@ -137,8 +137,10 @@ router.post('/avatar',
                 throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
             }
             const buffer = await sharp(req.file.buffer)
-                .resize({width: 100, height: 100})
-                .png()
+                .resize({width: 300, height: 300})
+                .jpeg({
+                    quality: 80
+                })
                 .toBuffer();
             user.avatar = buffer;
             await user.save();

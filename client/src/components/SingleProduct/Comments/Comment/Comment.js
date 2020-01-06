@@ -6,7 +6,7 @@ import imageConverter from '../../../../utils/imageConverter';
 const Comment = ({comment}) => {
     let avatar;
     if (comment.avatar) {
-        avatar = `data:image/jpg;base64,${imageConverter(comment.avatar.data)}`;
+        avatar = `data:image/jpeg;base64,${imageConverter(comment.avatar.data)}`;
     } else {
         avatar = require("../../../../assets/default.png");
     }

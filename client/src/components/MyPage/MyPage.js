@@ -25,7 +25,7 @@ const MyPage = ({
 
     let avatar;
     if (auth && auth.user.avatar) {
-        avatar = `data:image/jpg;base64,${imageConverter(auth.user.avatar.data)}`;
+        avatar = `data:image/jpeg;base64,${imageConverter(auth.user.avatar.data)}`;
     } else {
         avatar = require("../../assets/default.png");
     }
