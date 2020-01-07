@@ -9,8 +9,8 @@ import PropTypes from 'prop-types';
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
 import Spinner from '../UI/Spinner/Spinner';
-import ImageEditor from '../UI/ImageEditor/imageEditor';
 import styles from './Sell.module.scss';
+import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
 
 const Sell = ({createProduct, loading, history}) => {
     const [formData, setFormData] = useState({
@@ -22,8 +22,6 @@ const Sell = ({createProduct, loading, history}) => {
     });
 
     const [productImage, setProductImage] = useState('');
-    const [editor, setEditor] = useState(null);
-    const [scaleValue, setScaleValue] = useState(1);
     
     const {
         title,
@@ -41,33 +39,18 @@ const Sell = ({createProduct, loading, history}) => {
             [e.target.name]: e.target.value
         }));
     };
-
-    const setEditorRef = editor => setEditor(prevState => editor);
     
-    const onChangeImage = (e) => {
-        e.preventDefault();
-        e.persist();
-        const file = e.target.files[0];
-        const { type } = file;
-        if (type.match(/(png|PNG|jpeg|JPEG|jpg|JPG)$/) && file.size < 10000000) {
-            setProductImage(() => file);
-        } // todo alert 
+    const setImage = (uploadableFile) => {
+        setProductImage(() => uploadableFile);
     };
-    const onCrop = () => {
-        if (editor != null) {
-            const url = editor.getImageScaledToCanvas().toDataURL();
-
-            setProductImage(() => url );
-        }
-    }
-    const onScaleChange = (e) => {
-        const scaleValue = parseFloat(e.target.value);
-        setScaleValue(prevState => scaleValue );
-    }
 
 
     const onSubmit = (e) => {
         e.preventDefault();
+        if (!productImage) {
+            return alert("Please set Image");
+        }
+        console.log(productImage);
         const newFormData = new FormData();
         newFormData.append('title', title);
         newFormData.append('price', price);
@@ -76,8 +59,6 @@ const Sell = ({createProduct, loading, history}) => {
         newFormData.append('description', description);
         newFormData.append('productImage', productImage);
         createProduct(newFormData);
-        console.log(newFormData.get('title'));
-        console.log(newFormData.get('productImage'));
         history.push('/products');
     };
 
@@ -87,24 +68,13 @@ const Sell = ({createProduct, loading, history}) => {
     
     return (
         <div className={styles.Sell}>
-            <h2>Sell your product</h2>
+            <div className={styles.ImageDropAndCrop}>
+                <ImageDropAndCrop
+                    maxSize={10000000}
+                    setImage={(uploadableFile) => setImage(uploadableFile)}
+                />
+            </div>
             <form className={styles.sellForm} onSubmit={e => onSubmit(e)}>
-                <label>Image</label>
-                <input
-                    id="file"
-                    type="file"
-                    accept="image/png, image/jpeg, image/jpg"
-                    onChange={e => onChangeImage(e)}
-                    required
-                />
-                <ImageEditor
-                    imageSrc={productImage}
-                    setEditorRef={setEditorRef}
-                    onCrop={onCrop}
-                    scaleValue={scaleValue}
-                    onScaleChange={onScaleChange}
-                />
-
                 <label>Product</label>
                 <Input
                     type="text"

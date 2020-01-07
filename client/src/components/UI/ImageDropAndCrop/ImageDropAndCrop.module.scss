@@ -1,0 +1,51 @@
+.Dropzone {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: #f6f6f6;
+    text-align: center;
+
+}
+.DropzoneIcon {
+    margin: 3rem;
+}
+
+.ReactCropContainer {
+    width: 100%;
+    display: grid;
+    grid-gap: 1rem;
+}
+.ReactCrop {
+    width: auto;
+    margin: 0 auto;
+}
+.buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    grid-gap: 4rem;
+}
+
+.crop, .edit, .remove  {
+    font-size: 1.2rem;
+    width: 7rem;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    background-color: white;
+}
+
+.crop {
+    border: 1px solid rgb(110, 230, 110);
+    color: rgb(110, 230, 110);
+}
+.edit {
+    border: 1px solid orangered;
+    color: orangered;
+}
+.remove {
+    border: 1px solid red;
+    color: red;
+}

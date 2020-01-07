@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const {check, validationResult} = require('express-validator');
 const sharp = require('sharp');
-const multer = require('multer');
 const {ErrorHandler} = require('../middleware/error');
 
 // Middleware
@@ -21,7 +20,7 @@ const Product = require('../models/products');
 router.post('/', 
     [
         auth,
-        multer().fields([]),
+        uploadProductPic,
         check('title', 'Title is required').trim().not().isEmpty(), 
         check('description', 'Description is required').not().isEmpty(),
         check('price', 'Price(with Number) is required').isNumeric(),
@@ -31,8 +30,6 @@ router.post('/',
     async (req, res, next) => {
 
         try {
-            // @@@  todo = checking req.body.productImage
-            // Checking req.body was valid
             const errors = validationResult(req);
             if ( !errors.isEmpty() ) {
                 throw new ErrorHandler(400, errors.array());
@@ -46,17 +43,14 @@ router.post('/',
 
             const { title, description, price, category, meetupAt } = req.body;
 
-            // if (!req.file) {
-            //     throw new ErrorHandler(400, "Please upload a png, jpeg or jpg");
-            // }
-            const base64 = req.body.productImage.split(',')[1];
-            const buffer = new Buffer.from(base64, 'base64'); 
+            if (!req.file) {
+                throw new ErrorHandler(400, "Please upload a png, jpeg or jpg");
+            }
 
-            // const productImage = await sharp(req.file.buffer)
-            const productImage = await sharp(buffer)
+            const productImage = await sharp(req.file.buffer)
                 .resize({width: 1280})
                 .jpeg({
-                    quality: 40,
+                    quality: 50,
                 })
                 .toBuffer(); 
 
