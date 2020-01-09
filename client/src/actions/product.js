@@ -101,7 +101,8 @@ export const refreshProducts = (skip = 0, limit = 5) => async dispatch => {
 
 export const getProduct = (productId) => async dispatch => {
     dispatch({
-        type: GET_PRODUCT_START
+        type: GET_PRODUCT_START,
+        payload: productId
     });
 
     try {

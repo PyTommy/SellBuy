@@ -35,7 +35,9 @@ const Product = ({
         content = <p>Not found!</p>
     } else {
         
-        const image = imageConverter(product.productImage.data);
+        const image = product.productImage ? 
+            imageConverter(product.productImage.data):
+            imageConverter(product.productImageLow.data);
         let avatar;
         if (product.avatar) {
             avatar = `data:image/jpeg;base64,${imageConverter(product.avatar.data)}`;

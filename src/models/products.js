@@ -43,6 +43,10 @@ const ProductSchema = new Schema({
         type: Buffer,
         required: true
     },
+    productImageLow: {
+        type: Buffer,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

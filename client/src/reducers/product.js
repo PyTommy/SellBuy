@@ -67,12 +67,19 @@ export default (state = initialState, action) => {
                 products: []
             };
         case GET_PRODUCT_START:
+            let existingProduct = state.products.find((product) => product._id.toString() === payload); 
+            let shouldBeLoading = false;
+            if (!existingProduct) {
+                existingProduct = null;
+                shouldBeLoading = true;
+            }
             return {
                 ...state,
                 loading: {
                     ...state.loading,
-                    getProduct: true
-                } 
+                    getProduct: shouldBeLoading
+                },
+                product: existingProduct
             };
         case DELETE_PRODUCT_START:
             return {

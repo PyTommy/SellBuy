@@ -9,7 +9,7 @@ import PictureRadius from '../../UI/Pictures/PictureRadius/PictureRadius';
 const product = ({history, product}) => {
     const { _id, price, name, title, meetupAt, date, likes, comments } = product;
 
-    const image = imageConverter(product.productImage.data);
+    const image = imageConverter(product.productImageLow.data);
     
     let avatar;
     if (product.avatar) {

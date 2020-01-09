@@ -48,11 +48,18 @@ router.post('/',
             }
 
             const productImage = await sharp(req.file.buffer)
-                .resize({width: 1280})
+                .resize({width: 1200})
+                .jpeg({
+                    quality: 75,
+                })
+                .toBuffer();
+            const productImageLow = await sharp(req.file.buffer)
+                .resize({ width: 600 })
                 .jpeg({
                     quality: 50,
                 })
                 .toBuffer(); 
+            
 
             const product = new Product({
                 user: req.user.id,
@@ -63,7 +70,8 @@ router.post('/',
                 price,
                 category,
                 meetupAt,
-                productImage 
+                productImage, 
+                productImageLow 
             });
 
             await product.save();
@@ -95,8 +103,11 @@ router.get('/', async (req, res, next) => {
     try {
         const products = await Product.find({}, null, {
             limit: limit, 
-            skip: skip
-        }).sort({date: -1});
+            skip: skip,
+            sort: {
+                date: -1
+            }
+        }).select('-productImage');
         // if (!products) {
         //     throw new ErrorHandler(404, "Products Not Found");
         // }
@@ -113,7 +124,7 @@ router.get('/', async (req, res, next) => {
 // @res
 router.get('/:id', async (req, res, next) => {
     try {
-        const product = await Product.findById(req.params.id);
+        const product = await Product.findById(req.params.id).select('-productImageLow');
         if (!product) {
             throw new ErrorHandler(404, "Product Not Found");
         }
