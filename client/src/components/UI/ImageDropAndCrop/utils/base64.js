@@ -84,7 +84,7 @@ function getCroppedImg(image, crop) {
       targetWidth, 
       targetHeight 
     );
-    return canvas.toDataURL('image/jpeg', 0.8);
+    return canvas.toDataURL('image/jpeg', 0.9);
   }
 
 export {

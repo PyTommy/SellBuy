@@ -32,9 +32,4 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-// Listening
-const port = process.env.PORT;
-app.listen(port, () => {
-    console.log(`Server is up on port ${port}`)
-});
-
+module.exports = app;

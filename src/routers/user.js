@@ -55,10 +55,6 @@ router.post('/signup', [
             password
         });
 
-        // hash provided 
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
-
         // save the user on database
         await user.save();
 
@@ -70,7 +66,7 @@ router.post('/signup', [
                 }
             }, 
             process.env.JWT_SECRET,
-            { expiresIn: '1h' });
+            { expiresIn: '7d' });
         res.status(201).send({token});
     } catch(err) {
         next(err);
@@ -100,6 +96,7 @@ router.post('/login', [
             throw new ErrorHandler(400, 'Email or Password is invalid');
         }
 
+        //Check if the password correct
         const isMatch = bcrypt.compareSync(password, user.password); 
         if(!isMatch) {
             throw new ErrorHandler(400, 'Email or Password is invalid');
@@ -113,7 +110,7 @@ router.post('/login', [
                 }
             }, 
             process.env.JWT_SECRET,
-            { expiresIn: '1h' });
+            { expiresIn: '7d' });
         res.status(200).send({token});
     } catch(err) {
         next(err);
@@ -168,7 +165,5 @@ router.get('/:id/avatar', async(req, res, next) => {
         next(err);
     }
 });
-
-
 
 module.exports = router;

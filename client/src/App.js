@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {loadUser} from './actions/auth';
+import PrivateRoute from './hoc/PrivateRoute';
 
 // Import Components
 import Layout from './hoc/Layout/Layout';
@@ -30,9 +31,6 @@ class App extends Component {
     const BoughtPage = () => (
       <p>BoughtPage</p>
     );
-    const SellPage = () => (
-      <p>SellPage</p>
-    );
     const NotFoundPage = () => (
       <p>404</p>
     );
@@ -43,12 +41,12 @@ class App extends Component {
           <Switch>
           <Route path="/products/:id" component={SingleProduct}/> 
           <Route path="/products" exact component={Products} />
-          <Route path="/likes" component={LikePage} />
-          <Route path="/bought" component={BoughtPage} />
-          <Route path="/sell" exact component={Sell} />
-          <Route path="/inbox" component={InboxPage} />
-          <Route path="/mypage/avatar" exact component={Avatar} />
-          <Route path="/mypage" exact component={MyPage} />
+          <PrivateRoute path="/likes" component={LikePage} />
+          <PrivateRoute path="/bought" component={BoughtPage} />
+          <PrivateRoute path="/sell" exact component={Sell} />
+          <PrivateRoute path="/inbox" component={InboxPage} />
+          <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
+          <PrivateRoute path="/mypage" exact component={MyPage} />
           <Route path="/auth" component={Auth} />
           <Redirect from="/" exact to="/products" />
           <Route component={NotFoundPage}/>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import imageConverter from '../../utils/imageConverter';
@@ -8,7 +8,6 @@ import styles from './MyPage.module.scss';
 import Button from '../UI/Button/Button';
 import PictureRadius from '../UI/Pictures/PictureRadius/PictureRadius';
 import Spinner from '../UI/Spinner/Spinner';
-import Backdrop from '../UI/Backdrop/Backdrop';
 
 // action creators
 import {logout} from '../../actions/auth';

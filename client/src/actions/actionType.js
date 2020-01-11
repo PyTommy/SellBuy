@@ -74,3 +74,8 @@ export const SET_LIKE_FAIL = "SET_LIKE_FAIL";
 export const SET_UNLIKE_START = "SET_UNLIKE_START";
 export const SET_UNLIKE_SUCCESS = "SET_UNLIKE_SUCCESS";
 export const SET_UNLIKE_FAIL = "SET_UNLIKE_FAIL";
+
+// Buy
+export const BUY_START = "BUY_START";
+export const BUY_SUCCESS = "BUY_SUCCESS";
+export const BUY_FAIL = "BUY_FAIL";

@@ -25,6 +25,9 @@ import {
     SET_UNLIKE_START,
     SET_UNLIKE_SUCCESS,
     SET_UNLIKE_FAIL,
+    BUY_START,
+    BUY_SUCCESS,
+    BUY_FAIL
 } from './actionType.js';
 import {setAlert} from './alert';
 
@@ -58,7 +61,7 @@ export const createProduct = (formData) => async dispatch => {
 
 
 
-export const getProducts = (skip = 0, limit = 5) => async dispatch => {
+export const getProducts = (skip = 0, limit = 10) => async dispatch => {
     dispatch({
         type: GET_PRODUCTS_START
     });
@@ -195,6 +198,25 @@ export const setUnlike = (productId) => async dispatch => {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: SET_UNLIKE_FAIL
+        });
+    }
+};
+
+export const buyProduct = (productId) => async dispatch => {
+    dispatch({
+        type: BUY_START
+    });
+
+    try {
+        const res = await axios.put(`/api/products/buy/${productId}`);
+        dispatch({
+            type: BUY_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+        dispatch({
+            type: BUY_FAIL
         });
     }
 };

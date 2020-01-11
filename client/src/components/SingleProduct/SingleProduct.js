@@ -1,7 +1,7 @@
 import React, {useEffect, Fragment} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {getProduct, deleteProduct, setLike, setUnlike} from '../../actions/product';
+import {getProduct, deleteProduct, setLike, setUnlike, buyProduct} from '../../actions/product';
 import imageConverter from '../../utils/imageConverter';
 
 import styles from './SingleProduct.module.scss';
@@ -20,7 +20,8 @@ const Product = ({
     deleteProduct,
     auth,
     setLike,
-    setUnlike
+    setUnlike,
+    buyProduct
 }) => {
     useEffect(() => {
         getProduct(match.params.id);
@@ -98,7 +99,11 @@ const Product = ({
             </div>
             <div className={styles.BottomBar}>
                 <div className={styles.BottomBarText}>¥ {product.price.toLocaleString()}</div>
-                <Button btnType="color-primary size-lg">Buy</Button>
+                <Button 
+                    btnType="color-primary size-lg"
+                    onClick={() => buyProduct(match.params.id)}
+                    >{product.sold ? "Sold-out": "Buy"}
+                </Button>
             </div>
 
             {/* Main Picture*/}
@@ -138,6 +143,7 @@ Product.propTypes = {
     auth: PropTypes.object,
     setLike: PropTypes.func.isRequired,
     setUnlike: PropTypes.func.isRequired,
+    buyProduct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -146,4 +152,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps,{getProduct, deleteProduct, setLike, setUnlike})(Product);
+export default connect(mapStateToProps,{getProduct, deleteProduct, setLike, setUnlike, buyProduct})(Product);

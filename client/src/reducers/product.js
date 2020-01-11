@@ -23,6 +23,9 @@ import {
     SET_UNLIKE_START,
     SET_UNLIKE_SUCCESS,
     SET_UNLIKE_FAIL,
+    BUY_START,
+    BUY_SUCCESS,
+    BUY_FAIL,
 } from '../actions/actionType.js';
 
 const initialState = {
@@ -34,7 +37,8 @@ const initialState = {
         getProducts: false,
         deleteProduct: false,
         comments: false,
-        likes: false
+        likes: false,
+        buy: false,
     },
     hasMore: true,
 };
@@ -43,7 +47,9 @@ export default (state = initialState, action) => {
     const {type, payload} = action;
 
     switch (type) {
+        // ====================
         // Start
+        // ====================
         case SET_PRODUCT_START:
             return {
                 ...state,
@@ -106,7 +112,17 @@ export default (state = initialState, action) => {
                     likes: true
                 } 
             }
+        case BUY_START:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    buy: true
+                } 
+            }
+        // ====================
         // SUCCESS
+        // ====================
         case SET_PRODUCT_SUCCESS: // It could be something else
             return {
                 ...state,
@@ -169,6 +185,18 @@ export default (state = initialState, action) => {
                     likes: payload
                 }
             };
+        case BUY_SUCCESS:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    buy: false
+                },
+                product: {
+                    ...state.product,
+                    ...payload
+                } 
+            };
         case DELETE_PRODUCT_SUCCESS:
             let product = state.product;
             if (state.product._id.toString() === payload) {
@@ -182,7 +210,10 @@ export default (state = initialState, action) => {
                 },
                 product
             }
+
+        // ====================
         // FAIL
+        // ====================
         case SET_PRODUCT_FAIL:
             return {
                 ...state,
@@ -192,6 +223,7 @@ export default (state = initialState, action) => {
                 },
             };
         case GET_PRODUCTS_FAIL:
+        case REFRESH_PRODUCTS_FAIL:
             return {
                 ...state,
                 loading: {
@@ -230,7 +262,15 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     likes: false
-                },
+                }
+            };
+        case BUY_FAIL:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    buy: false
+                }
             };
         default:
             return state;

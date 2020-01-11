@@ -8,19 +8,15 @@ import Product from './Product/Product';
 import Spinner from '../UI/Spinner/Spinner';
 import classes from './Products.module.scss';
 
-const Products = ({ getProducts, refreshProducts, product: {products, loading, hasMore}}) => {
-    useEffect(() => {
+const Products = ({ getProducts, refreshProducts, product: {products, hasMore}}) => {
+    useEffect( () => {
         if (products.length === 0) {
-            getProducts(products.length, 5);
+            getProducts(products.length, 10);
         };
-    },[]);
+    },[getProducts, products.length]);
     
     const fetchProducts = () => {
-        if (products < 50) {
-            getProducts(products.length, 10);
-        } else {
-            getProducts(products.length, 15);
-        }
+        getProducts(products.length, 15);
     }
 
     const refresh = () => {
@@ -44,7 +40,7 @@ const Products = ({ getProducts, refreshProducts, product: {products, loading, h
             next={fetchProducts}
             hasMore={hasMore}
             loader={<Spinner size={50}/>}
-            scrollThreshold={products.length < 35 ? 0.1 : 0.8}
+            scrollThreshold={products.length < 35 ? 0 : 0.8}
             endMessage={
                 <p style={{textAlign: 'center'}}>
                 <b>Yay! You have seen it all</b>

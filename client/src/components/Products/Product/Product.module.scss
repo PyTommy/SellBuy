@@ -9,15 +9,12 @@
 
 // User Info
 .User {
-    padding: 1rem;
+    padding: .5rem;
     display: flex;
     align-items: center;
 }
-.UserPicture {
-
-}
 .UserName{
-    margin-left: 1.5rem;
+    margin-left: 1rem;
 }
 .Time {
     margin-left: auto;
@@ -26,33 +23,42 @@
 }
 
 // Main Image
+.imageWrapper{
+    border-radius: 3px;
+    width: 100%;
+    height: auto;
+    position:relative;
+    overflow:hidden;
+}
 .Image {
     width: 100%;
 }
+.soldOut{
+    position: absolute;
+    bottom: 1.5rem;
+    left: 0;
+    font-weight: bold;
+    color:white;
+    // border: 3px solid white;
+    // border-left: none;
+    border-top-right-radius: 100rem;
+    border-bottom-right-radius: 100rem;
+    padding: .5rem 1rem;
+    background-color: rgb(255, 72, 102);
+}
+
 
 // Texts
 .TextBox{
     display: flex;
-    padding: 1rem 1rem .3rem 1rem;
+    padding: .5rem 1rem .3rem 1rem;
     justify-content: space-between;
 }
 .Main {
     font-weight: bold;
     font-size: 2rem;
-    padding: .5rem
 }
-.Subs {
+.Sub {
     text-align: right;
-    font-size: 1.5rem;
-}
-
-
-// Bottom Bar
-.BottomBar {
-    padding: .5rem 2rem;
-    font-size: 1.3rem;
-    color: #999;
-
-    display: flex;
-    justify-content: space-between;
+    font-size: 2rem;
 }

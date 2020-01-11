@@ -7,7 +7,7 @@ import styles from './Product.module.scss';
 import PictureRadius from '../../UI/Pictures/PictureRadius/PictureRadius';
 
 const product = ({history, product}) => {
-    const { _id, price, name, title, meetupAt, date, likes, comments } = product;
+    const { _id, price, name, meetupAt, date} = product;
 
     const image = imageConverter(product.productImageLow.data);
     
@@ -25,31 +25,25 @@ const product = ({history, product}) => {
                 <PictureRadius 
                     alt="ProfilePic"
                     src={avatar}
-                    size="3rem"
-                    className={styles.UserPicture}
+                    size="2.5rem"
                 />
                 <div className={styles.UserName}>{name}</div>
                 <div className={styles.Time}>{moment(date).fromNow()}</div>
             </div>
 
             {/* Main Picture*/}
-            <img alt="pic" className={styles.Image} src={`data:image/jpeg;base64,${image}`}/>
+            <div className={styles.imageWrapper}>
+                <img alt="pic" className={styles.Image} src={`data:image/jpeg;base64,${image}`}/>
+                {product.sold && 
+                    <div className={styles.soldOut}>SOLD-OUT</div>
+                }
+            </div>
+
 
             {/* Texts */}
             <div className={styles.TextBox}>
                 <div className={styles.Main}>¥ {price.toLocaleString()}</div>
-                <div className={styles.Subs}>
-                    <div>{title}</div>
-                    <div>{meetupAt}</div>
-                </div>
-            </div>
-
-            {/* Bottom bar*/}
-            <div className={styles.BottomBar}>
-                <div>
-                    {likes.length} Likes
-                </div>
-                <div>{comments.length} Comments</div>
+                <div className={styles.Sub}>{meetupAt}</div>
             </div>
         </div>
     );

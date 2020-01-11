@@ -48,13 +48,13 @@ router.post('/',
             }
 
             const productImage = await sharp(req.file.buffer)
-                .resize({width: 1200})
+                .resize({width: 720})
                 .jpeg({
-                    quality: 75,
+                    quality: 80,
                 })
                 .toBuffer();
             const productImageLow = await sharp(req.file.buffer)
-                .resize({ width: 600 })
+                .resize({ width: 500 })
                 .jpeg({
                     quality: 50,
                 })
@@ -337,7 +337,7 @@ router.put('/buy/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(400, "User not found");
         }
         if (!product) {
-            throw new ErrorHandler(404, "Product not foun");
+            throw new ErrorHandler(404, "Product not found");
         }
         if (product.sold !== false) {
             throw new ErrorHandler(400, "This product is already sold-out");
@@ -351,7 +351,10 @@ router.put('/buy/:id', auth, async (req, res, next) => {
         await product.save();
         await user.save();
 
-        res.json({msg: `You bought ${product.title}`});
+        res.json({
+            sold: product.sold, 
+            buyer:product.buyer 
+        });
     } catch(err) {
         next(err)
     }
