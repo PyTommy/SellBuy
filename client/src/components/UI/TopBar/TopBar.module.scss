@@ -1,0 +1,37 @@
+@import '../../../styles/setting.module.scss';
+
+//TopBar
+.TopBar {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    height: 5.5rem;
+    padding: 0 2rem;
+    border-bottom: .5px solid $color-light-gray;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.GoBack{
+    width: 10rem;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.items {
+    flex-grow: 1;
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 1rem;
+    justify-content: end;
+    align-items: center;
+}

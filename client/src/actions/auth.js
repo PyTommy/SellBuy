@@ -25,10 +25,13 @@ import {
 } from './actionType';
 import { setAlert } from './alert';
 
-export const loadUser = (token) => async dispatch => {
+export const loadUser = () => async dispatch => {
     if (localStorage.token) {
         axios.setAuthToken(localStorage.token);
     } else {
+        dispatch({
+            type: LOAD_USER_FAIL
+        });
         return null;
     }
 

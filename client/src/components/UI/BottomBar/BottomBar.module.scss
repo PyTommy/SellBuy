@@ -1,0 +1,36 @@
+@import '../../../styles//setting.module.scss';
+
+// Bottom Bar
+.BottomBar {
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    height: 5.5rem;
+    padding: 0 2rem;
+    border-top: .5px solid $color-light-gray;
+
+    display: grid;
+    padding: 1rem;
+    grid-template-columns: auto minmax(auto, 60%);
+    grid-gap: 1rem;
+}
+
+.text {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.button {
+    font-size: inherit;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    color: white;
+    background-color: $color-primary;
+}
+
+

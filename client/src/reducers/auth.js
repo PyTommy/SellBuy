@@ -29,7 +29,7 @@ import axios from '../axios';
 const authReducerDefaultState = {
     token: localStorage.token,
     isAuthenticated: false,
-    loading: false,
+    loading: true,
     user: null
 };
 const authReducer = (state = authReducerDefaultState, {type, payload}) => {

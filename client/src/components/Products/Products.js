@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProducts, refreshProducts } from '../../actions/product';
@@ -9,29 +9,18 @@ import Spinner from '../UI/Spinner/Spinner';
 import classes from './Products.module.scss';
 
 const Products = ({ getProducts, refreshProducts, product: {products, hasMore}}) => {
-    useEffect( () => {
-        if (products.length === 0) {
-            getProducts(products.length, 10);
-        };
-    },[getProducts, products.length]);
-    
     const fetchProducts = () => {
         getProducts(products.length, 15);
     }
 
     const refresh = () => {
-        console.log("refresh");
         refreshProducts(0, 5);
     };
-
 
     const productList = products.map((singleProduct)=> {
         return <Product key={singleProduct._id} product={singleProduct} />;
     });
 
-    // if (loading.getProducts) {
-    //     return <Spinner/>;
-    // }
 
 
     return (

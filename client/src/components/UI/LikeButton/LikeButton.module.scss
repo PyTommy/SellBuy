@@ -1,0 +1,16 @@
+.likeButton {
+    background: none;
+    outline: none;
+    border: none;
+}
+.Like {
+    width: 3.5rem;
+    height: 3.5rem;
+    color: rgb(252, 122, 140);
+}
+.Unlike{
+    width: 3.5rem;
+    height: 3.5rem;
+    color: white;
+    filter: drop-shadow( 0 0 1.5px rgba(black, .6));
+}

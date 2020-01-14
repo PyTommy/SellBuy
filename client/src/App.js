@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {loadUser} from './actions/auth';
 import PrivateRoute from './hoc/PrivateRoute';
+
+// Actions
+import {loadUser} from './actions/auth';
+import { getProducts } from './actions/product';
 
 // Import Components
 import Layout from './hoc/Layout/Layout';
@@ -19,7 +22,8 @@ import Avatar from './components/Avatar/Avatar';
 
 class App extends Component {
   componentDidMount() {
-    this.props.loadUser(null);
+    this.props.loadUser();
+    this.props.getProducts();
   }
 
   render() {
@@ -67,4 +71,4 @@ App.propTypes = {
   auth: PropTypes.object,
 };
 
-export default connect(mapStateToProps, {loadUser})(App);
+export default connect(mapStateToProps, {loadUser, getProducts})(App);

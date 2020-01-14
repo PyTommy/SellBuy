@@ -18,6 +18,7 @@ connectDB();
 // Routers
 app.use('/api/user', require('./routers/user'));
 app.use('/api/products', require('./routers/products'));
+app.use('/api/messages', require('./routers/message'));
 
 app.use((err, req, res, next) => {
     if (err) handleError(err, res);

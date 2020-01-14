@@ -1,67 +1,35 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import imageConverter from '../../utils/imageConverter';
 import styles from './MyPage.module.scss';
 
 // components
-import Button from '../UI/Button/Button';
-import PictureRadius from '../UI/Pictures/PictureRadius/PictureRadius';
 import Spinner from '../UI/Spinner/Spinner';
-
-// action creators
-import {logout} from '../../actions/auth';
+import DisplayProfile from './DisplayProfile/DisplayProfile';
+import Logout from './Logout/Logout';
 
 
 const MyPage = ({
-    auth,
-    history,
-    logout,
+    auth
 }) => {    
-    if (!auth.user || auth.loading) {
+    if (auth.loading) {
         return <Spinner size={100}/>;
     }
 
-    let avatar;
-    if (auth && auth.user.avatar) {
-        avatar = `data:image/jpeg;base64,${imageConverter(auth.user.avatar.data)}`;
-    } else {
-        avatar = require("../../assets/default.png");
-    }
-
-    const logoutHandler = () => {
-        logout();
-        history.push('/');
-    };
-    const profileClickedHandler = () => {
-        history.push('mypage/avatar')
-    };
     return (
         <div className={styles.mypage}>
-            <div className={styles.header}>
-                <div>{auth.user.name}</div>
-                <PictureRadius 
-                    onClick={profileClickedHandler}
-                    src={avatar}
-                    size="5rem" />
-            </div>
-            <Button 
-                btnType="border-gray size-lg" 
-                onClick={logoutHandler}
-                >Logout
-            </Button>
-
+            <DisplayProfile />
+            <Logout />
         </div>
     );
 };
 
 MyPage.propTypes = {
-    auth: PropTypes.object.isRequired,
-    logout: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {logout})(MyPage);
+export default connect(mapStateToProps, null)(MyPage);
