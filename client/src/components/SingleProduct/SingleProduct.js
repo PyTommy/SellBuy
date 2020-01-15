@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {getProduct, buyProduct} from '../../actions/product';
+import { getProduct, buyProduct } from '../../actions/product';
 
 // Components
 import Spinner from '../UI/Spinner/Spinner';
@@ -10,19 +10,19 @@ import TopBar from './TopBar/TopBar';
 import Main from './Main/Main';
 
 const Product = ({
-    loading, 
-    product, 
+    loading,
+    product,
     getProduct,
     match,
     buyProduct
 }) => {
     useEffect(() => {
         getProduct(match.params.id);
-    },[getProduct, match.params.id]);
+    }, [getProduct, match.params.id]);
 
-    if (loading.getProduct) return <Spinner/>;
+    if (loading.getProduct) return <Spinner />;
 
-    if (!product) return <p>Not found!</p>; 
+    if (!product) return <p>Not found!</p>;
 
     return (
         <div>
@@ -51,4 +51,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps,{getProduct, buyProduct})(Product);
+export default connect(mapStateToProps, { getProduct, buyProduct })(Product);

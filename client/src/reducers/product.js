@@ -2,6 +2,9 @@ import {
     SET_PRODUCT_START,
     SET_PRODUCT_SUCCESS,
     SET_PRODUCT_FAIL,
+    EDIT_PRODUCT_START,
+    EDIT_PRODUCT_SUCCESS,
+    EDIT_PRODUCT_FAIL,
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
@@ -44,19 +47,20 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    const {type, payload} = action;
+    const { type, payload } = action;
 
     switch (type) {
         // ====================
         // Start
         // ====================
         case SET_PRODUCT_START:
+        case EDIT_PRODUCT_START:
             return {
                 ...state,
                 loading: {
                     ...state.loading,
                     setProduct: true
-                } 
+                }
             };
         case GET_PRODUCTS_START:
             return {
@@ -64,7 +68,7 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     getProducts: true
-                } 
+                }
             };
         case REFRESH_PRODUCTS_START:
             return {
@@ -73,7 +77,7 @@ export default (state = initialState, action) => {
                 products: []
             };
         case GET_PRODUCT_START:
-            let existingProduct = state.products.find((product) => product._id.toString() === payload); 
+            let existingProduct = state.products.find((product) => product._id.toString() === payload);
             let shouldBeLoading = false;
             if (!existingProduct) {
                 existingProduct = null;
@@ -93,7 +97,7 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     deleteProduct: true
-                } 
+                }
             };
         case ADD_COMMENT_START:
             return {
@@ -101,7 +105,7 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     comments: true
-                } 
+                }
             };
         case SET_LIKE_START:
         case SET_UNLIKE_START:
@@ -110,7 +114,7 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     likes: true
-                } 
+                }
             }
         case BUY_START:
             return {
@@ -118,12 +122,13 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     buy: true
-                } 
+                }
             }
         // ====================
         // SUCCESS
         // ====================
         case SET_PRODUCT_SUCCESS: // It could be something else
+        case EDIT_PRODUCT_SUCCESS:
             return {
                 ...state,
                 loading: {
@@ -133,23 +138,14 @@ export default (state = initialState, action) => {
             };
         case GET_PRODUCTS_SUCCESS:
         case REFRESH_PRODUCTS_SUCCESS:
-            if (payload.length === 0) {
-                return {
-                    ...state,
-                    loading: {
-                        ...state.loading,
-                        getProducts: false
-                    },
-                    hasMore: false
-                };
-            }
             return {
                 ...state,
                 loading: {
                     ...state.loading,
                     getProducts: false
                 },
-                products: [...state.products, ...payload]
+                hasMore: payload.hasMore,
+                products: [...state.products, ...payload.products]
             };
         case GET_PRODUCT_SUCCESS:
             return {
@@ -195,13 +191,13 @@ export default (state = initialState, action) => {
                 product: {
                     ...state.product,
                     ...payload
-                } 
+                }
             };
         case DELETE_PRODUCT_SUCCESS:
             let product = state.product;
             if (state.product._id.toString() === payload) {
                 product = null
-            } 
+            }
             return {
                 ...state,
                 loading: {
@@ -215,6 +211,7 @@ export default (state = initialState, action) => {
         // FAIL
         // ====================
         case SET_PRODUCT_FAIL:
+        case EDIT_PRODUCT_FAIL:
             return {
                 ...state,
                 loading: {

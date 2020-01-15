@@ -9,12 +9,12 @@ import Button from '../../UI/Button/Button';
 import LikeButton from '../../UI/LikeButton/LikeButton';
 
 const TopBar = ({
-    history, 
+    history,
     match,
     // store    
-    auth, 
-    product, 
-    loadingLike, 
+    auth,
+    product,
+    loadingLike,
     // actions
     deleteProduct,
     setLike,
@@ -33,6 +33,10 @@ const TopBar = ({
         isLiked ? setUnlike(match.params.id) : setLike(match.params.id);
     }
 
+    const onEditButtonClicked = () => {
+        history.push(`/edit/${product._id}`)
+    };
+
     const onDeleteButtonClicked = () => {
         deleteProduct(match.params.id);
         history.push('/products');
@@ -44,12 +48,16 @@ const TopBar = ({
         >
             {auth.isAuthenticated && auth.user._id === product.user && (
                 <Fragment>
-                    <Button btnType="color-orange size-sm">Edit</Button>
+                    <Button
+                        btnType="color-orange size-sm"
+                        onClick={onEditButtonClicked}
+                    >Edit
+                    </Button>
                     <Button
                         btnType="color-danger size-sm"
                         onClick={onDeleteButtonClicked}
                     >Delete
-                        </Button>
+                    </Button>
                 </Fragment>)
             }
             <LikeButton

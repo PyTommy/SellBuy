@@ -74,17 +74,41 @@ router.get('/', auth, async (req, res, next) => {
             {
                 $group: {
                     "_id": {
-                        "last_message_between": {
-                            $cond: [
-                                { $gt: ["$recipient", "$sender"] },
-                                { $concatArrays: [["$recipient"], ["$sender"]] },
-                                { $concatArrays: [["$sender"], ["$recipient"]] }
-                            ]
-                        }
+                        $cond: [
+                            { $gt: ["$recipient", "$sender"] },
+                            { $concatArrays: [["$recipient"], ["$sender"]] },
+                            { $concatArrays: [["$sender"], ["$recipient"]] }
+                        ]
                     }, "message": { $first: "$$ROOT" }
                 }
             }
         ]);
+        const ids = [];
+        let counterPartyArray;
+        if (messages) {
+            // extracting ids of counter party
+            messages.forEach(message => {
+                message._id.forEach(ID => {
+                    if (ID.toString() !== req.user.id) {
+                        message["counterParty"] = {
+                            _id: new mongoose.Types.ObjectId(ID)
+                        };
+                        ids.push(new mongoose.Types.ObjectId(ID));
+                    }
+                })
+            });
+
+            // find avatar and name for each counter party
+            counterPartyArray = await User.find({ _id: { $in: ids } }).select('avatar name');
+
+            // embed avatar and name to messages[counterParty]
+            messages.forEach(message => {
+                const index = counterPartyArray.findIndex(cp => {
+                    return cp._id.toString() === message.counterParty._id.toString();
+                });
+                message.counterParty = counterPartyArray[index];
+            });
+        }
 
         res.send(messages);
     } catch (err) {
@@ -120,7 +144,16 @@ router.get('/:counterPartyId', auth, async (req, res, next) => {
         if (!messages) {
             throw new ErrorHandler(404, "Message Not Found");
         }
-        res.send(messages);
+
+        // get avatar and name of the counterParty
+        const counterParty = await User.findById(req.params.counterPartyId).select('avatar name');
+
+        const result = {
+            messages,
+            counterParty
+        };
+
+        res.send(result);
     } catch (err) {
         next(err);
     }

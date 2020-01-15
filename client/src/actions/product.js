@@ -4,6 +4,9 @@ import {
     SET_PRODUCT_START,
     SET_PRODUCT_SUCCESS,
     SET_PRODUCT_FAIL,
+    EDIT_PRODUCT_START,
+    EDIT_PRODUCT_SUCCESS,
+    EDIT_PRODUCT_FAIL,
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
@@ -29,7 +32,7 @@ import {
     BUY_SUCCESS,
     BUY_FAIL
 } from './actionType.js';
-import {setAlert} from './alert';
+import { setAlert } from './alert';
 
 export const createProduct = (formData) => async dispatch => {
     dispatch({
@@ -60,18 +63,48 @@ export const createProduct = (formData) => async dispatch => {
 };
 
 
+export const editProduct = (productId, formData) => async dispatch => {
+    dispatch({
+        type: EDIT_PRODUCT_START
+    });
 
-export const getProducts = (skip = 0, limit = 10) => async dispatch => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+
+    try {
+        const res = await axios.put(`/api/products/${productId}`, formData, config);
+
+        dispatch(setAlert("Edited Product", "success"));
+        dispatch({
+            type: EDIT_PRODUCT_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+        dispatch({
+            type: EDIT_PRODUCT_FAIL
+        });
+    }
+};
+
+
+export const getProducts = (skip = 0, limit = 15) => async dispatch => {
     dispatch({
         type: GET_PRODUCTS_START
     });
 
     try {
         const res = await axios.get(`/api/products?limit=${limit}&skip=${skip}`);
-
+        const hasMore = res.data.length >= limit;
         dispatch({
             type: GET_PRODUCTS_SUCCESS,
-            payload: res.data
+            payload: {
+                products: res.data,
+                hasMore
+            }
         });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
@@ -88,10 +121,14 @@ export const refreshProducts = (skip = 0, limit = 5) => async dispatch => {
 
     try {
         const res = await axios.get(`/api/products?limit=${limit}&skip=${skip}`);
+        const hasMore = res.data.length >= limit;
 
         dispatch({
             type: REFRESH_PRODUCTS_SUCCESS,
-            payload: res.data
+            payload: {
+                products: res.data,
+                hasMore
+            }
         });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
@@ -150,8 +187,8 @@ export const addComment = (productId, text) => async dispatch => {
     });
 
     try {
-        const res = await axios.post(`/api/products/comment/${productId}`, {text});
-        
+        const res = await axios.post(`/api/products/comment/${productId}`, { text });
+
         dispatch(setAlert("Added Comment", "success"));
         dispatch({
             type: ADD_COMMENT_SUCCESS,
@@ -171,7 +208,7 @@ export const setLike = (productId) => async dispatch => {
     });
 
     try {
-        const res = await axios.put(`/api/products/like/${productId}`);        
+        const res = await axios.put(`/api/products/like/${productId}`);
         dispatch({
             type: SET_LIKE_SUCCESS,
             payload: res.data
@@ -189,7 +226,7 @@ export const setUnlike = (productId) => async dispatch => {
     });
 
     try {
-        const res = await axios.put(`/api/products/unlike/${productId}`);        
+        const res = await axios.put(`/api/products/unlike/${productId}`);
         dispatch({
             type: SET_UNLIKE_SUCCESS,
             payload: res.data

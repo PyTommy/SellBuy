@@ -8,9 +8,9 @@ const ProductSchema = new Schema({
         ref: 'users'
     },
     name: {
-      type: String,
-      trim: true,
-      required: true
+        type: String,
+        trim: true,
+        required: true
     },
     avatar: {
         type: Buffer
@@ -47,10 +47,6 @@ const ProductSchema = new Schema({
         type: Buffer,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
     // Sell Status
     sold: {
         type: Boolean,
@@ -59,9 +55,9 @@ const ProductSchema = new Schema({
     },
     buyer: {
         user: {
-                type: Schema.Types.ObjectId,
-                ref: 'users'
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'users'
+        }
     },
     // Interactions
     likes: [
@@ -93,6 +89,6 @@ const ProductSchema = new Schema({
             }
         }
     ]
-});
+}, { timestamps: true });
 
 module.exports = Post = mongoose.model('product', ProductSchema);

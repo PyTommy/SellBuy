@@ -1,15 +1,18 @@
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/lib/ReactCrop.scss';
 import { getCroppedImg, base64StringtoFile } from './utils/base64';
 import verifyFile from './utils/verify';
 import styles from './ImageDropAndCrop.module.scss';
-import {IoMdImage} from 'react-icons/io';
+import { IoMdImage } from 'react-icons/io';
 
-// Props
+// @@@@ Props @@@@
 // [Func] setImage( uploadableFile ) 
 // (option) [Num] maxSize @default = 10000000 (10MB)
+
+// @@@@@ Additional props for Edit mode @@@@@@@
+// [String(base64)] defaultImage
 
 class ImgDropAndCrop extends PureComponent {
     state = {
@@ -20,8 +23,18 @@ class ImgDropAndCrop extends PureComponent {
             width: 70,
             aspect: 4 / 3
         },
-        croppedImageBase64: null
+        croppedImageBase64: null,
+        isModified: true
     };
+
+    // This is for editPage (Don't have to be in DidMount)
+    componentDidMount() {
+        this.setState(() => ({
+            croppedImageBase64: this.props.defaultImage || null,
+            isModified: this.props.defaultImage ? false : true,
+            src: this.props.defaultImage ? true : null
+        }));
+    }
 
     onSelectFile = (files, rejectedFiles) => {
         if (rejectedFiles && rejectedFiles.length > 0) {
@@ -59,7 +72,10 @@ class ImgDropAndCrop extends PureComponent {
                 crop,
                 'newFile.png'
             );
-            this.setState({ croppedImageBase64 });
+            this.setState({
+                croppedImageBase64,
+                isModified: true
+            });
         }
     };
     onCropChange = (crop, percentCrop) => {
@@ -74,7 +90,7 @@ class ImgDropAndCrop extends PureComponent {
 
     render() {
         // Var
-        const {cropping, src, crop, croppedImageBase64} = this.state;
+        const { cropping, src, crop, croppedImageBase64 } = this.state;
         const maxSize = this.props.maxSize || 10000000;
         const acceptedFileTypes = 'image/png, image/jpg, image/jpeg';
 
@@ -93,14 +109,14 @@ class ImgDropAndCrop extends PureComponent {
                         </div>
                     )}
                     {src && !cropping && (
-                            <img
-                                alt="Crop"
-                                style={{ width: '100%' }}
-                                src={croppedImageBase64}
-                            />
+                        <img
+                            alt="Crop"
+                            style={{ width: '100%' }}
+                            src={croppedImageBase64}
+                        />
                     )}
                     <div className={styles.buttons}>
-                        {src && cropping && 
+                        {src && cropping &&
                             <button
                                 className={styles.crop}
                                 onClick={this.readyToUpload}
@@ -108,7 +124,7 @@ class ImgDropAndCrop extends PureComponent {
                                 Crop
                             </button>
                         }
-                        {src && !cropping && 
+                        {src && !cropping && this.state.isModified &&
                             <button
                                 className={styles.edit}
                                 onClick={() => {
@@ -161,5 +177,5 @@ class ImgDropAndCrop extends PureComponent {
     }
 }
 
-export default ImgDropAndCrop; 
+export default ImgDropAndCrop;
 

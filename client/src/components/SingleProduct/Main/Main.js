@@ -19,20 +19,20 @@ const Main = ({
         title
     }
 }) => {
-    const imageSrc = productImage 
-        ? imageConverter(productImage.data) 
+    const imageSrc = productImage
+        ? imageConverter(productImage.data)
         : imageConverter(productImageLow.data);
 
     return (
         <div className={styles.Main}>
-            <img alt="pic" className={styles.Image} src={`data:image/jpg;base64,${imageSrc}`} />
+            <img alt="pic" className={styles.Image} src={`data:image/jpeg;base64,${imageSrc}`} />
             <div className={styles.Container}>
                 <h2 >{title}</h2>
                 <ul className={styles.ItemList}>
                     <li>Category: {category}</li>
                     <li>Meetup Place: {meetupAt}</li>
                 </ul>
-                <UserInfo name={name} avatar={avatar}/>
+                <UserInfo name={name} avatar={avatar} />
                 <h3>Description</h3>
                 <div>{description}</div>
                 <Comments />
