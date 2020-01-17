@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import imageConverter from '../../../utils/imageConverter';
 import styles from './Main.module.scss';
@@ -16,7 +17,8 @@ const Main = ({
         description,
         category,
         meetupAt,
-        title
+        title,
+        user
     }
 }) => {
     const imageSrc = productImage
@@ -32,7 +34,9 @@ const Main = ({
                     <li>Category: {category}</li>
                     <li>Meetup Place: {meetupAt}</li>
                 </ul>
-                <UserInfo name={name} avatar={avatar} />
+                <Link to={`/profile/${user}`}>
+                    <UserInfo name={name} avatar={avatar} />
+                </Link>
                 <h3>Description</h3>
                 <div>{description}</div>
                 <Comments />

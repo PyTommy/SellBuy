@@ -29,6 +29,12 @@ import {
     BUY_START,
     BUY_SUCCESS,
     BUY_FAIL,
+    CANCEL_START,
+    CANCEL_SUCCESS,
+    CANCEL_FAIL,
+    REJECT_START,
+    REJECT_SUCCESS,
+    REJECT_FAIL,
 } from '../actions/actionType.js';
 
 const initialState = {
@@ -117,6 +123,8 @@ export default (state = initialState, action) => {
                 }
             }
         case BUY_START:
+        case CANCEL_START:
+        case REJECT_START:
             return {
                 ...state,
                 loading: {
@@ -182,6 +190,8 @@ export default (state = initialState, action) => {
                 }
             };
         case BUY_SUCCESS:
+        case CANCEL_SUCCESS:
+        case REJECT_SUCCESS:
             return {
                 ...state,
                 loading: {
@@ -262,6 +272,8 @@ export default (state = initialState, action) => {
                 }
             };
         case BUY_FAIL:
+        case CANCEL_FAIL:
+        case REJECT_FAIL:
             return {
                 ...state,
                 loading: {

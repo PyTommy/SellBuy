@@ -19,6 +19,9 @@ import SingleProduct from './components/SingleProduct/SingleProduct';
 import Sell from './components/Sell/Sell';
 import EditPage from './components/EditPage/EditPage';
 import Avatar from './components/Avatar/Avatar';
+import Profile from './components/Profile/Profile';
+import conversation from './components/Conversation/Conversation';
+import Conversation from './components/Conversation/Conversation';
 
 
 class App extends Component {
@@ -46,12 +49,14 @@ class App extends Component {
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
+            <PrivateRoute path="/messages/:id" component={Conversation} />
             <PrivateRoute path="/likes" component={LikePage} />
             <PrivateRoute path="/bought" component={BoughtPage} />
             <PrivateRoute path="/sell" exact component={Sell} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
             <PrivateRoute path="/inbox" component={InboxPage} />
             <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
+            <Route path="/profile/:id" component={Profile} />
             <PrivateRoute path="/mypage" exact component={MyPage} />
             <Route path="/auth" component={Auth} />
             <Redirect from="/" exact to="/products" />

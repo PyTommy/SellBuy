@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProduct, buyProduct } from '../../actions/product';
+import { getProduct, buyProduct, cancelProduct, rejectProduct } from '../../actions/product';
 
 // Components
 import Spinner from '../UI/Spinner/Spinner';
@@ -12,9 +12,13 @@ import Main from './Main/Main';
 const Product = ({
     loading,
     product,
+    auth,
     getProduct,
+    history,
     match,
-    buyProduct
+    buyProduct,
+    cancelProduct,
+    rejectProduct
 }) => {
     useEffect(() => {
         getProduct(match.params.id);
@@ -24,14 +28,43 @@ const Product = ({
 
     if (!product) return <p>Not found!</p>;
 
+    const onBuyHandler = () => buyProduct(match.params.id);
+    const onCancelHandler = () => cancelProduct(match.params.id);
+    const onRejectHandler = () => rejectProduct(match.params.id);
+    const onUnauthorizedHandler = () => history.push('/auth');
+
+    let buttonText = "BUY";
+    let onClickHandler = onBuyHandler;
+    if (!product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
+        buttonText = "EDIT";
+        onClickHandler = () => history.push(`/edit/${match.params.id}`);
+    } else if (product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
+        buttonText = "REJECT";
+        onClickHandler = onRejectHandler;
+    } else if (product.sold && auth.isAuthenticated && product.buyer.user.toString() === auth.user._id.toString()) {
+        buttonText = "CANCEL";
+        onClickHandler = onCancelHandler;
+    } else if (product.sold) {
+        buttonText = "SOLD OUT";
+        onClickHandler = () => null;
+    }
+    if (!auth.isAuthenticated) {
+        onClickHandler = onUnauthorizedHandler
+    }
+    if (loading.buy) {
+        buttonText = <Spinner size={15} style={{ margin: 0 }} color="white" ></Spinner>;
+        onClickHandler = () => null;
+    }
+
+
     return (
         <div>
             <TopBar />
             <Main />
             <BottomBar
                 text={`¥ ${product.price.toLocaleString()}`}
-                buttonText={product.sold ? "Sold-out" : "Buy"}
-                onButtonClick={() => buyProduct(match.params.id)}
+                buttonText={buttonText}
+                onButtonClick={onClickHandler}
             />
         </div>
     );
@@ -43,6 +76,8 @@ Product.propTypes = {
     getProduct: PropTypes.func.isRequired,
     auth: PropTypes.object,
     buyProduct: PropTypes.func.isRequired,
+    cancelProduct: PropTypes.func.isRequired,
+    rejectProduct: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -51,4 +86,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getProduct, buyProduct })(Product);
+export default connect(mapStateToProps, { getProduct, buyProduct, cancelProduct, rejectProduct })(Product);

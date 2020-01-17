@@ -1,0 +1,25 @@
+.Profile {
+    width: 100%;
+    margin-bottom: 5.5rem;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.profileImage {
+    width: 10rem;
+    margin: 5rem 0 1rem 0;
+}
+
+.icons {
+    display: flex;
+}
+
+.hr {
+    width: 90%;
+    margin: 1rem;
+    background-color: #ccc;
+    height: 1px;
+}

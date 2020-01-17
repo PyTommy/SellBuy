@@ -17,7 +17,6 @@ const BottomBar = ({ text, buttonText, onButtonClick }) => {
 
 BottomBar.propTypes = {
     text: PropTypes.string,
-    buttonText: PropTypes.string.isRequired,
     onButtonClick: PropTypes.func.isRequired,
 }
 

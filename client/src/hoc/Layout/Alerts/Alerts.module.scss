@@ -1,0 +1,39 @@
+@import '../../../styles/setting.module.scss';
+
+
+.Alerts {
+    position: fixed;
+    left: 50%;
+    z-index: 500;
+    background-color: white;
+    border-radius: 3px;
+
+    width: auto;
+    height: auto;
+    transform: translateX(-50%);
+
+    @media only screen and (max-width: 600px) {
+        bottom: 5.6rem;
+    }
+    @media only screen and (min-width: 600px) {
+        top: 5.6rem;
+    }
+}
+
+.Alert {
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+}
+
+.Success {
+    background: rgba(#00C851, .1);
+    color: rgb(22, 190, 90);
+
+}
+
+.Danger {
+    background: rgba(#ff4444, .1);
+    color: rgb(231, 25, 25);
+}

@@ -30,7 +30,13 @@ import {
     SET_UNLIKE_FAIL,
     BUY_START,
     BUY_SUCCESS,
-    BUY_FAIL
+    BUY_FAIL,
+    CANCEL_START,
+    CANCEL_SUCCESS,
+    CANCEL_FAIL,
+    REJECT_START,
+    REJECT_SUCCESS,
+    REJECT_FAIL,
 } from './actionType.js';
 import { setAlert } from './alert';
 
@@ -254,6 +260,44 @@ export const buyProduct = (productId) => async dispatch => {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: BUY_FAIL
+        });
+    }
+};
+
+export const cancelProduct = (productId) => async dispatch => {
+    dispatch({
+        type: CANCEL_START
+    });
+
+    try {
+        const res = await axios.put(`/api/products/cancel/${productId}`);
+        dispatch({
+            type: CANCEL_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+        dispatch({
+            type: CANCEL_FAIL
+        });
+    }
+};
+
+export const rejectProduct = (productId) => async dispatch => {
+    dispatch({
+        type: REJECT_START
+    });
+
+    try {
+        const res = await axios.put(`/api/products/reject/${productId}`);
+        dispatch({
+            type: REJECT_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+        dispatch({
+            type: REJECT_FAIL
         });
     }
 };

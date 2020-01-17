@@ -1,15 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import classes from './Message.module.scss';
 
-const message = props => {
+const message = ({
+    conversation: {
+        counterParty,
+        message
+    }
+}) => {
     return (
-        <div className={classes.Message}>
-            <img className={classes.Image} src={require("../../../assets/default.png")} alt="profile_picture" />
-            <p className={classes.Name}>Avex</p>
-            <p className={classes.Time}>1 day ago</p>
-            <p className={classes.Text}>Thank you for buying our event ticket. If you have any question, feel free to contact us.</p>
-        </div>
+        <Link className={classes.Link} to={`/messages/${counterParty._id}`}>
+            <div className={classes.Message}>
+                <img className={classes.Image} src={require("../../../assets/default.png")} alt="profile_picture" />
+                <p className={classes.Name}>{counterParty.name}</p>
+                <p className={classes.Time}>{message.createdAt}</p>
+                <p className={classes.Text}>{message.text}</p>
+            </div>
+        </Link>
     );
 };
 

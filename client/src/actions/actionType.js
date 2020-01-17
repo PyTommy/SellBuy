@@ -84,3 +84,23 @@ export const SET_UNLIKE_FAIL = "SET_UNLIKE_FAIL";
 export const BUY_START = "BUY_START";
 export const BUY_SUCCESS = "BUY_SUCCESS";
 export const BUY_FAIL = "BUY_FAIL";
+// Cancel
+export const CANCEL_START = "CANCEL_START";
+export const CANCEL_SUCCESS = "CANCEL_SUCCESS";
+export const CANCEL_FAIL = "CANCEL_FAIL";
+// Reject
+export const REJECT_START = "REJECT_START";
+export const REJECT_SUCCESS = "REJECT_SUCCESS";
+export const REJECT_FAIL = "REJECT_FAIL";
+
+
+// ==========
+// Messages
+// ==========
+export const GET_CONVERSATIONS_START = "GET_CONVERSATIONS_START";
+export const GET_CONVERSATIONS_SUCCESS = "GET_CONVERSATIONS_SUCCESS";
+export const GET_CONVERSATIONS_FAIL = "GET_CONVERSATIONS_FAIL";
+
+export const GET_MESSAGES_START = "GET_MESSAGES_START";
+export const GET_MESSAGES_SUCCESS = "GET_MESSAGES_SUCCESS";
+export const GET_MESSAGES_FAIL = "GET_MESSAGES_FAIL";
