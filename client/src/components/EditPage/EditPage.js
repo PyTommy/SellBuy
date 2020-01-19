@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProduct, editProduct } from '../../actions/product';
@@ -10,6 +10,7 @@ import Button from '../UI/Button/Button';
 import styles from './EditPage.module.scss';
 import Spinner from '../UI/Spinner/Spinner';
 import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
+import TopBar from '../UI/TopBar/TopBar';
 
 const EditPage = ({ product, getProduct, editProduct, match, history, loading }) => {
     const [formData, setFormData] = useState({
@@ -37,7 +38,7 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
         setProductImage(
             loading.getProduct || !product
                 ? ""
-                : `data:image/jpeg;base64,${imageConverter(product.productImage.data)}`
+                : imageConverter(product.productImage.data)
         );
     }, [getProduct, setFormData, loading.getProduct, match.params.id, product]);
 
@@ -84,71 +85,74 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
     if (loading.getProduct) return <Spinner />;
 
     return (
-        <div className={styles.Sell}>
-            <div className={styles.ImageDropAndCrop}>
-                {(productImage || imgModified) &&
-                    <ImageDropAndCrop
-                        maxSize={10000000}
-                        setImage={(uploadableFile) => setImage(uploadableFile)}
-                        defaultImage={productImage}
+        <Fragment>
+            <TopBar />
+            <div className={styles.Sell}>
+                <div className={styles.ImageDropAndCrop}>
+                    {(productImage || imgModified) &&
+                        <ImageDropAndCrop
+                            maxSize={10000000}
+                            setImage={(uploadableFile) => setImage(uploadableFile)}
+                            defaultImage={productImage}
+                        />
+                    }
+                </div>
+                <form className={styles.sellForm} onSubmit={e => onSubmit(e)}>
+                    <label>Product</label>
+                    <Input
+                        type="text"
+                        placeholder="Product Name (20 words or less)"
+                        name="title"
+                        value={title}
+                        onChange={e => onChange(e)}
+                        required
                     />
-                }
+
+                    <label>Price</label>
+                    <Input
+                        type="number"
+                        placeholder="Price in Yen"
+                        name="price"
+                        value={price}
+                        onChange={e => onChange(e)}
+                        required
+                    />
+
+                    <label>Category</label>
+                    <Input
+                        type="text"
+                        placeholder="Category"
+                        name="category"
+                        value={category}
+                        onChange={e => onChange(e)}
+                        required
+                    />
+
+                    <label>Meetup Place</label>
+                    <Input
+                        type="text"
+                        placeholder="Meetup Place"
+                        name="meetupAt"
+                        value={meetupAt}
+                        onChange={e => onChange(e)}
+                        required
+                    />
+
+                    <label>Description</label>
+                    <Input
+                        type="textarea"
+                        placeholder="Description here"
+                        name="description"
+                        value={description}
+                        onChange={e => onChange(e)}
+                        required
+                    />
+                    <Button className={styles.btn} btnType="color-primary size-lg">
+                        Start Selling
+                    </Button>
+                </form>
             </div>
-            <form className={styles.sellForm} onSubmit={e => onSubmit(e)}>
-                <label>Product</label>
-                <Input
-                    type="text"
-                    placeholder="Product Name (20 words or less)"
-                    name="title"
-                    value={title}
-                    onChange={e => onChange(e)}
-                    required
-                />
-
-                <label>Price</label>
-                <Input
-                    type="number"
-                    placeholder="Price in Yen"
-                    name="price"
-                    value={price}
-                    onChange={e => onChange(e)}
-                    required
-                />
-
-                <label>Category</label>
-                <Input
-                    type="text"
-                    placeholder="Category"
-                    name="category"
-                    value={category}
-                    onChange={e => onChange(e)}
-                    required
-                />
-
-                <label>Meetup Place</label>
-                <Input
-                    type="text"
-                    placeholder="Meetup Place"
-                    name="meetupAt"
-                    value={meetupAt}
-                    onChange={e => onChange(e)}
-                    required
-                />
-
-                <label>Description</label>
-                <Input
-                    type="textarea"
-                    placeholder="Description here"
-                    name="description"
-                    value={description}
-                    onChange={e => onChange(e)}
-                    required
-                />
-                <Button className={styles.btn} btnType="color-primary size-lg">
-                    Start Selling
-                </Button>
-            </form>
-        </div>
+        </Fragment>
     );
 }
 

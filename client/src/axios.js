@@ -8,18 +8,17 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(request => {
-  console.log('Starting Request: ', request)
-  return request
+    console.log('Starting Request: ', request)
+    return request
 });
 instance.interceptors.response.use(response => {
-  console.log('Response: ', response)
-  return response
+    console.log('Response: ', response)
+    return response
 })
 
 
 instance.setAuthToken = token => {
     if (token) {
-        console.log("Set auth token");
         instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
         delete instance.defaults.headers.common['Authorization'];

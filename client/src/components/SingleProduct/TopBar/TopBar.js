@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'
 import { deleteProduct, setLike, setUnlike } from '../../../actions/product';
+import styles from './TopBar.module.scss';
 
 import UITopBar from '../../UI/TopBar/TopBar';
 import Button from '../../UI/Button/Button';
@@ -43,28 +44,28 @@ const TopBar = ({
     };
 
     return (
-        <UITopBar
-            goBack={() => history.goBack()}
-        >
-            {auth.isAuthenticated && auth.user._id === product.user && (
-                <Fragment>
-                    <Button
-                        btnType="color-orange size-sm"
-                        onClick={onEditButtonClicked}
-                    >Edit
-                    </Button>
-                    <Button
-                        btnType="color-danger size-sm"
-                        onClick={onDeleteButtonClicked}
-                    >Delete
-                    </Button>
-                </Fragment>)
-            }
-            <LikeButton
-                loading={loadingLike}
-                onClick={() => onLikeButtonClicked()}
-                isLiked={isLiked}
-            />
+        <UITopBar>
+            <div className={styles.items}>
+                {auth.isAuthenticated && auth.user._id === product.user && (
+                    <Fragment>
+                        <Button
+                            btnType="color-orange size-sm"
+                            onClick={onEditButtonClicked}
+                        >Edit
+                        </Button>
+                        <Button
+                            btnType="color-danger size-sm"
+                            onClick={onDeleteButtonClicked}
+                        >Delete
+                        </Button>
+                    </Fragment>)
+                }
+                <LikeButton
+                    loading={loadingLike}
+                    onClick={() => onLikeButtonClicked()}
+                    isLiked={isLiked}
+                />
+            </div>
         </UITopBar>
     )
 }

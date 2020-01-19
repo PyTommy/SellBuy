@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { addComment } from '../../../actions/product';
 
 import styles from './Comments.module.scss';
-import Comment from './Comment/Comment';
+import Comment from '../Comment/Comment';
 import Button from '../../UI/Button/Button';
 import Spinner from '../../UI/Spinner/Spinner';
 

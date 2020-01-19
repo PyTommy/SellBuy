@@ -1,25 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { withRouter } from 'react-router-dom';
 import styles from './TopBar.module.scss';
 
-const TopBar = ({children, goBack}) => {
+const TopBar = ({ children, history }) => {
     return (
         <div className={styles.TopBar}>
             <div
                 className={styles.GoBack}
-                onClick={e => goBack()}
-                >
-                <span>{"< "}Back</span>
+                onClick={e => history.goBack()}
+            >
+                <span>{"<"}</span>
             </div>
-            <div className={styles.items}>
-                {children}
-            </div>
+            {children}
         </div>
     )
 }
 
-TopBar.propTypes = {
-    goBack: PropTypes.func,
-}
-
-export default TopBar
+export default withRouter(TopBar);

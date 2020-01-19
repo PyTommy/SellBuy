@@ -1,12 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import imageConverter from '../../../utils/imageConverter';
 import styles from './Main.module.scss';
 
 import Comments from '../Comments/Comments';
-import UserInfo from '../UserInfo/UserInfo';
+import UserInfo from '../../UI/UserInfo/UserInfo';
 
 const Main = ({
     product: {
@@ -27,16 +26,14 @@ const Main = ({
 
     return (
         <div className={styles.Main}>
-            <img alt="pic" className={styles.Image} src={`data:image/jpeg;base64,${imageSrc}`} />
+            <img alt="pic" className={styles.Image} src={imageSrc} />
             <div className={styles.Container}>
                 <h2 >{title}</h2>
                 <ul className={styles.ItemList}>
                     <li>Category: {category}</li>
                     <li>Meetup Place: {meetupAt}</li>
                 </ul>
-                <Link to={`/profile/${user}`}>
-                    <UserInfo name={name} avatar={avatar} />
-                </Link>
+                <UserInfo name={name} avatar={avatar} userId={user} imageLeft={false} />
                 <h3>Description</h3>
                 <div>{description}</div>
                 <Comments />

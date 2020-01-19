@@ -11,7 +11,6 @@ import { getProducts } from './actions/product';
 // Import Components
 import Layout from './hoc/Layout/Layout';
 import MyPage from './components/MyPage/MyPage';
-import InboxPage from './containers/InboxPage/InboxPage';
 
 import Auth from './components/Auth/Auth';
 import Products from './components/Products/Products';
@@ -20,8 +19,9 @@ import Sell from './components/Sell/Sell';
 import EditPage from './components/EditPage/EditPage';
 import Avatar from './components/Avatar/Avatar';
 import Profile from './components/Profile/Profile';
-import conversation from './components/Conversation/Conversation';
-import Conversation from './components/Conversation/Conversation';
+import Inbox from './components/Inbox/Inbox';
+import MessageBox from './components/MessageBox/MessageBox';
+import MessageForm from './components/MessageForm/MessageForm';
 
 
 class App extends Component {
@@ -49,15 +49,17 @@ class App extends Component {
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
-            <PrivateRoute path="/messages/:id" component={Conversation} />
             <PrivateRoute path="/likes" component={LikePage} />
             <PrivateRoute path="/bought" component={BoughtPage} />
             <PrivateRoute path="/sell" exact component={Sell} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
-            <PrivateRoute path="/inbox" component={InboxPage} />
-            <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
-            <Route path="/profile/:id" component={Profile} />
             <PrivateRoute path="/mypage" exact component={MyPage} />
+            <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
+            <PrivateRoute path="/inbox" exact component={Inbox} />
+            <PrivateRoute path="/inbox/recieved/:id" component={MessageBox} />
+            <PrivateRoute path="/inbox/sent/:id" component={MessageBox} />
+            <PrivateRoute path="/messages/:id" component={MessageForm} />
+            <Route path="/profile/:id" component={Profile} />
             <Route path="/auth" component={Auth} />
             <Redirect from="/" exact to="/products" />
             <Route component={NotFoundPage} />

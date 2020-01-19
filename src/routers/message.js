@@ -53,62 +53,23 @@ router.post('/:recipientId',
 );
 
 // GET /messages
-// desc latest massages for each counterParty
+// desc massages
 router.get('/', auth, async (req, res, next) => {
     try {
         const userId = new mongoose.Types.ObjectId(req.user.id);
-        const messages = await Message.aggregate([
-            {
-                $match: {
-                    $or: [
-                        {
-                            sender: userId
-                        },
-                        {
-                            recipient: userId
-                        }
-                    ]
-                }
-            },
-            { $sort: { createdAt: -1 } },
-            {
-                $group: {
-                    "_id": {
-                        $cond: [
-                            { $gt: ["$recipient", "$sender"] },
-                            { $concatArrays: [["$recipient"], ["$sender"]] },
-                            { $concatArrays: [["$sender"], ["$recipient"]] }
-                        ]
-                    }, "message": { $first: "$$ROOT" }
-                }
-            }
-        ]);
-        const ids = [];
-        let counterPartyArray;
-        if (messages) {
-            // extracting ids of counter party
-            messages.forEach(message => {
-                message._id.forEach(ID => {
-                    if (ID.toString() !== req.user.id) {
-                        message["counterParty"] = {
-                            _id: new mongoose.Types.ObjectId(ID)
-                        };
-                        ids.push(new mongoose.Types.ObjectId(ID));
-                    }
-                })
-            });
+        const messages = await Message.find({ recipient: userId }, null, { sort: { createdAt: -1 } }).populate('sender', 'avatar');
+        res.send(messages);
+    } catch (err) {
+        next(err);
+    }
+});
 
-            // find avatar and name for each counter party
-            counterPartyArray = await User.find({ _id: { $in: ids } }).select('avatar name');
-
-            // embed avatar and name to messages[counterParty]
-            messages.forEach(message => {
-                const index = counterPartyArray.findIndex(cp => {
-                    return cp._id.toString() === message.counterParty._id.toString();
-                });
-                message.counterParty = counterPartyArray[index];
-            });
-        }
+// GET /messages/sent
+// desc massages
+router.get('/sent', auth, async (req, res, next) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user.id);
+        const messages = await Message.find({ sender: userId }, null, { sort: { createdAt: -1 } }).populate('recipient', 'avatar');
 
         res.send(messages);
     } catch (err) {
@@ -116,44 +77,18 @@ router.get('/', auth, async (req, res, next) => {
     }
 });
 
-// GET /messages/:counterPartyId
-// 
-// Private
-router.get('/:counterPartyId', auth, async (req, res, next) => {
+// GET /messages/:id
+router.get('/:id', auth, async (req, res, next) => {
     try {
-        const messages = await Message.aggregate([
-            {
-                $match:
-                {
-                    $or: [
-                        {
-                            sender: new mongoose.Types.ObjectId(req.user.id),
-                            recipient: new mongoose.Types.ObjectId(req.params.counterPartyId)
-                        },
-                        {
-                            recipient: new mongoose.Types.ObjectId(req.user.id),
-                            sender: new mongoose.Types.ObjectId(req.params.counterPartyId)
-                        }
-                    ]
-                }
-            },
-            {
-                $sort: { createdAt: -1 }
-            }
-        ]);
-        if (!messages) {
-            throw new ErrorHandler(404, "Message Not Found");
+        const message = await Message.findById(req.params.id)
+            .populate('sender', "avatar")
+            .populate('recipient', "avatar");
+
+        if (message.sender._id.toString() !== req.user.id.toString() && message.recipient._id.toString() !== req.user.id.toString()) {
+            throw new ErrorHandler(400, "Not allowed to see the message");
         }
 
-        // get avatar and name of the counterParty
-        const counterParty = await User.findById(req.params.counterPartyId).select('avatar name');
-
-        const result = {
-            messages,
-            counterParty
-        };
-
-        res.send(result);
+        res.send(message);
     } catch (err) {
         next(err);
     }

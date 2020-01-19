@@ -4,7 +4,7 @@
 }
 .Message {
     line-height: 1.2;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     height: 6.5rem;
     width: 100%;
     padding: .25rem;
@@ -12,7 +12,7 @@
     
     display: grid;
     grid-template-rows: 1fr 1.5fr;
-    grid-template-columns: 6rem 1fr 1fr;
+    grid-template-columns: 6rem 1fr auto;
     align-items: center;
     grid-gap: 3px;
 
@@ -46,4 +46,5 @@
     align-self: start;
     grid-column: 2/-1;
     grid-row: 2/3;
+    color: #888;
 }

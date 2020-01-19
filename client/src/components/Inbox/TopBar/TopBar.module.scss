@@ -1,0 +1,30 @@
+@import '../../../styles//setting.module.scss';
+.TopBar {
+    position:fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: white;
+    height: 5.5rem;
+    border-bottom: .5px solid #ddd;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+    @media only screen and (min-width: 600px) {
+        top: 5rem;
+    }
+}
+
+.button {
+    background-color: #eee;
+    border: none;
+    color: #aaa;
+    font-weight: bold;
+}
+
+.active {
+    background-color: white;
+    color: $color-primary;
+}

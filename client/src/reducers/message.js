@@ -1,15 +1,28 @@
 import {
-    GET_CONVERSATIONS_START,
-    GET_CONVERSATIONS_SUCCESS,
-    GET_CONVERSATIONS_FAIL,
+    GET_RECIEVED_START,
+    GET_RECIEVED_SUCCESS,
+    GET_RECIEVED_FAIL,
+    GET_SENT_START,
+    GET_SENT_SUCCESS,
+    GET_SENT_FAIL,
+    GET_MESSAGE_START,
+    GET_MESSAGE_SUCCESS,
+    GET_MESSAGE_FAIL,
+    SEND_MESSAGE_START,
+    SEND_MESSAGE_SUCCESS,
+    SEND_MESSAGE_FAIL,
+    CLEAR_MESSAGES
 } from '../actions/actionType';
 
 const initialState = {
-    conversations: [],
-    messages: null,
+    recieved: [],
+    sent: [],
+    message: null,
     loading: {
-        conversations: false,
-        messages: true
+        getRecieved: false,
+        getSent: false,
+        getMessage: false,
+        sendMessage: false
     },
 };
 
@@ -17,32 +30,132 @@ export default (state = initialState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case GET_CONVERSATIONS_START:
+        // ===================
+        // Get recieved messages
+        // ===================
+        case GET_RECIEVED_START:
             return {
                 ...state,
                 loading: {
                     ...state.loading,
-                    conversations: true
+                    getRecieved: true
                 }
             };
-        case GET_CONVERSATIONS_SUCCESS:
+        case GET_RECIEVED_SUCCESS:
             return {
                 ...state,
-                conversations: payload,
+                recieved: payload,
                 loading: {
                     ...state.loading,
-                    conversations: false
+                    getRecieved: false
                 }
             }
-        case GET_CONVERSATIONS_FAIL:
+        case GET_RECIEVED_FAIL:
             return {
                 ...state,
-                conversations: payload,
+                recieved: payload,
                 loading: {
                     ...state.loading,
-                    conversations: false
+                    getRecieved: false
                 }
             };
+        // ===================
+        // Get sent messages
+        // ===================
+        case GET_SENT_START:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    getSent: true
+                }
+            };
+        case GET_SENT_SUCCESS:
+            return {
+                ...state,
+                sent: payload,
+                loading: {
+                    ...state.loading,
+                    getSent: false
+                }
+            }
+        case GET_SENT_FAIL:
+            return {
+                ...state,
+                sent: payload,
+                loading: {
+                    ...state.loading,
+                    getSent: false
+                }
+            };
+        // ===================
+        // Get a message
+        // ===================
+        case GET_MESSAGE_START:
+            let message = state.recieved.find((msg) => msg._id.toString() === payload);
+            if (!message) {
+                message = state.sent.find((msg) => msg._id.toString() === payload);
+            };
+            if (!message) message = null;
+
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    getMessage: true
+                },
+                message
+            };
+        case GET_MESSAGE_SUCCESS:
+            return {
+                ...state,
+                message: payload,
+                loading: {
+                    ...state.loading,
+                    getMessage: false
+                }
+            }
+        case GET_MESSAGE_FAIL:
+            return {
+                ...state,
+                sent: payload,
+                loading: {
+                    ...state.loading,
+                    getMessage: false
+                }
+            };
+        // ===================
+        // Send a message
+        // ===================
+        case SEND_MESSAGE_START:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    sendMessage: true
+                }
+            };
+        case SEND_MESSAGE_SUCCESS:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    sendMessage: false
+                }
+            }
+        case SEND_MESSAGE_FAIL:
+            return {
+                ...state,
+                loading: {
+                    ...state.loading,
+                    sendMessage: false
+                }
+            };
+
+        case CLEAR_MESSAGES:
+            return {
+                ...initialState
+            }
         default:
             return state;
     }

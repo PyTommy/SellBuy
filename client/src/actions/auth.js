@@ -9,9 +9,9 @@ import {
     REGISTER_START,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    
+
     // LOGIN
-    LOGIN_START, 
+    LOGIN_START,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
 
@@ -24,6 +24,7 @@ import {
     SET_AVATAR_FAIL,
 } from './actionType';
 import { setAlert } from './alert';
+import { clearMessages } from './message';
 
 export const loadUser = () => async dispatch => {
     if (localStorage.token) {
@@ -48,21 +49,21 @@ export const loadUser = () => async dispatch => {
             payload: res.data
         });
     } catch (err) {
-        dispatch(setAlert(err.response.data.message, "danger"));
+        // dispatch(setAlert(err.response.data.message, "danger")); Doesnt work 
         dispatch({
             type: LOAD_USER_FAIL
         });
     }
-    
+
 };
 
 export const login = ({ email, password }) => async dispatch => {
     dispatch({
         type: LOGIN_START
-    }); 
-    
-    const body = JSON.stringify({ email, password});
-    
+    });
+
+    const body = JSON.stringify({ email, password });
+
     try {
         const res = await axios.post('/api/user/login', body);
 
@@ -72,7 +73,7 @@ export const login = ({ email, password }) => async dispatch => {
             payload: res.data
         });
         dispatch(loadUser(localStorage.token));
-    } catch(err) {
+    } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: LOGIN_FAIL,
@@ -82,13 +83,13 @@ export const login = ({ email, password }) => async dispatch => {
 };
 
 // REGISTER
-export const register = ({ name, email, password}) => async dispatch => {
+export const register = ({ name, email, password }) => async dispatch => {
     dispatch({
-        type:REGISTER_START
+        type: REGISTER_START
     });
 
-    const body = JSON.stringify({ name, email, password});
-    
+    const body = JSON.stringify({ name, email, password });
+
     try {
         const res = await axios.post('/api/user/signup', body);
 
@@ -97,7 +98,7 @@ export const register = ({ name, email, password}) => async dispatch => {
             payload: res.data
         });
         dispatch(loadUser(localStorage.token));
-    } catch(err) {
+    } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: REGISTER_FAIL
@@ -105,9 +106,10 @@ export const register = ({ name, email, password}) => async dispatch => {
     }
 };
 
-export const logout = () => ({
-    type: LOGOUT
-});
+export const logout = () => dispatch => {
+    dispatch({ type: LOGOUT });
+    dispatch(clearMessages());
+};
 
 export const setAvatar = (avatar) => async dispatch => {
     dispatch({
@@ -130,7 +132,7 @@ export const setAvatar = (avatar) => async dispatch => {
             type: SET_AVATAR_SUCCESS,
             payload: res.data
         });
-    } catch(err) {
+    } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: SET_AVATAR_FAIL

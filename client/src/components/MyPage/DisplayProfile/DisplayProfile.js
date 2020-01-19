@@ -1,5 +1,5 @@
 import React from 'react'
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import styles from './DisplayProfile.module.scss'
@@ -16,8 +16,8 @@ const DisplayProfile = ({
     }
 }) => {
     const avatarSrc = avatar
-        ? `data:image/jpeg;base64,${imageConverter(avatar.data)}`
-        : require("../../../assets/default.png");
+        ? imageConverter(avatar.data)
+        : imageConverter(null);
 
     const profileClickedHandler = () => history.push('mypage/avatar');
 
