@@ -37,7 +37,7 @@ const UserSchema = new Schema({
             }
         }
     ],
-    boughts: [
+    purchases: [
         {
             product: {
                 type: Schema.Types.ObjectId,
@@ -45,7 +45,7 @@ const UserSchema = new Schema({
             }
         }
     ],
-    sellings:[
+    sellings: [
         {
             product: {
                 type: Schema.Types.ObjectId,

@@ -1,9 +1,9 @@
 const express = require('express');
-const bcrypt =　require('bcryptjs');
-const { check, validationResult } = require('express-validator'); 
+const bcrypt = require('bcryptjs');
+const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const sharp = require('sharp');
-const {ErrorHandler} = require('../middleware/error');
+const { ErrorHandler } = require('../middleware/error');
 
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
         res.json(user);
-    } catch(err) {
+    } catch (err) {
         next(err);
     }
 });
@@ -30,9 +30,9 @@ router.get('/', auth, async (req, res, next) => {
 // @access    Public
 // @res       { token: ... }
 router.post('/signup', [
-    check('name', 'Name is required').trim().not().isEmpty(), 
+    check('name', 'Name is required').trim().not().isEmpty(),
     check('email', 'Please include a valid email').trim().isEmail(),
-    check('password', 'Please enter a password with 6 or more characters').trim().isLength({min: 6})
+    check('password', 'Please enter a password with 6 or more characters').trim().isLength({ min: 6 })
 ], async (req, res, next) => {
     try {
         // Check if the req are valid
@@ -48,7 +48,7 @@ router.post('/signup', [
         if (user) {
             throw new ErrorHandler(400, "User already exists");
         }
-        
+
         user = new User({
             name,
             email,
@@ -60,15 +60,15 @@ router.post('/signup', [
 
         // Publishing Jsonwebtoken
         const token = jwt.sign(
-            { 
+            {
                 user: {
-                    id: user.id 
+                    id: user.id
                 }
-            }, 
+            },
             process.env.JWT_SECRET,
             { expiresIn: '7d' });
-        res.status(201).send({token});
-    } catch(err) {
+        res.status(201).send({ token });
+    } catch (err) {
         next(err);
     }
 });
@@ -79,7 +79,7 @@ router.post('/signup', [
 // @res       { token:... }
 router.post('/login', [
     check('email', 'Please include a valid email').trim().isEmail(),
-    check('password', 'Please enter a password with 6 or more characters').trim().isLength({min: 6})
+    check('password', 'Please enter a password with 6 or more characters').trim().isLength({ min: 6 })
 ], async (req, res, next) => {
     try {
         // Check if the req are valid
@@ -97,70 +97,70 @@ router.post('/login', [
         }
 
         //Check if the password correct
-        const isMatch = bcrypt.compareSync(password, user.password); 
-        if(!isMatch) {
+        const isMatch = bcrypt.compareSync(password, user.password);
+        if (!isMatch) {
             throw new ErrorHandler(400, 'Email or Password is invalid');
         }
 
         // Publishing Jsonwebtoken
         const token = jwt.sign(
-            { 
+            {
                 user: {
-                    id: user.id 
+                    id: user.id
                 }
-            }, 
+            },
             process.env.JWT_SECRET,
             { expiresIn: '7d' });
-        res.status(200).send({token});
-    } catch(err) {
+        res.status(200).send({ token });
+    } catch (err) {
         next(err);
     }
 });
 
 
-// @route     POST /api/user/avatar
-// @desc      Upload a profile pic
+// // @route     POST /api/user/avatar
+// // @desc      Upload a profile pic
+// // @access    Private
+// // @res       {msg: "..."}
+// router.post('/avatar',
+//     [
+//         auth,
+//         uploadAvatar
+//     ],
+//     async (req, res, next) => {
+//         try {
+//             const user = await User.findById(req.user.id);
+//             if (!req.file) {
+//                 throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
+//             }
+//             const buffer = await sharp(req.file.buffer)
+//                 .resize({ width: 300, height: 300 })
+//                 .jpeg({
+//                     quality: 80
+//                 })
+//                 .toBuffer();
+//             user.avatar = buffer;
+//             await user.save();
+//             res.send({ message: "Uploaded the avatar image" });
+//         } catch (err) {
+//             next(err);
+//         }
+//     }
+// );
+
+// @route     GET /api/user/:id
+// @desc      Get user info
 // @access    Private
-// @res       {msg: "..."}
-router.post('/avatar', 
-    [
-        auth,
-        uploadAvatar
-    ],
-    async (req, res, next) => {
-        try {
-            const user = await User.findById(req.user.id);
-            if (!req.file) {
-                throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
-            }
-            const buffer = await sharp(req.file.buffer)
-                .resize({width: 300, height: 300})
-                .jpeg({
-                    quality: 80
-                })
-                .toBuffer();
-            user.avatar = buffer;
-            await user.save();
-            res.send({message: "Uploaded the avatar image"});
-        } catch (err) {
-            next(err);
-        }
-    }
-);
-
-// @route     GET /api/user/avatar
-// @desc      Get a avatar
-// @access    Public
-// @res       {avatar: Buffer}
-router.get('/:id/avatar', async(req, res, next) => {
+// @res       {avatar, sellings, name}
+router.get('/:id', async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id);
+        const user = await User.findById(req.params.id).select("name avatar sellings");
 
-        if (!user || !user.avatar) {
-            throw new ErrorHandler(404, 'The avatar is not exists.');
+        if (!user) {
+            throw new ErrorHandler(404, 'User not found');
         }
-        res.set('Content-Type', 'image/png');
-        res.send(user.avatar);
+
+        res.send(user);
     } catch (err) {
         next(err);
     }

@@ -20,7 +20,7 @@ app.use('/api/user', require('./routers/user'));
 app.use('/api/products', require('./routers/products/products'));
 app.use('/api/products', require('./routers/products/like'));
 app.use('/api/products', require('./routers/products/comment'));
-app.use('/api/products', require('./routers/products/buy'));
+app.use('/api/products', require('./routers/products/purchase'));
 app.use('/api/messages', require('./routers/message'));
 
 app.use((err, req, res, next) => {

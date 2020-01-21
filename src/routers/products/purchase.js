@@ -10,10 +10,10 @@ const User = require('../../models/user');
 const Product = require('../../models/products');
 
 
-// @route         PUT api/products/buy/:id
-// @description   Buy a product
+// @route         PUT api/products/purchase/:id
+// @description   purchase a product
 // @access        Private
-router.put('/buy/:id', auth, async (req, res, next) => {
+router.put('/purchase/:id', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
@@ -29,16 +29,16 @@ router.put('/buy/:id', auth, async (req, res, next) => {
         }
 
         product.sold = true;
-        product.buyer = { user: req.user.id };
+        product.purchaser = { user: req.user.id };
 
-        user.boughts.unshift({ product: product.id });
+        user.purchases.unshift({ product: product.id });
 
         await product.save();
         await user.save();
 
         res.json({
             sold: product.sold,
-            buyer: product.buyer
+            purchaser: product.purchaser
         });
     } catch (err) {
         next(err)
@@ -54,18 +54,18 @@ router.put('/cancel/:id', auth, async (req, res, next) => {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
 
-        if (!product.buyer || !product.buyer.user) throw new ErrorHandler(400, "Not sold yet");
+        if (!product.purchaser || !product.purchaser.user) throw new ErrorHandler(400, "Not sold yet");
 
-        if (product.buyer.user.toString() !== req.user.id) {
+        if (product.purchaser.user.toString() !== req.user.id) {
             throw new ErrorHandler(400, "Not allowed to cancel");
         }
 
-        product.buyer = null;
+        product.purchaser = null;
         product.sold = false;
 
-        const index = user.boughts.findIndex((bought) => bought.product.toString() === req.params.id);
+        const index = user.purchases.findIndex((bought) => bought.product.toString() === req.params.id);
         if (index > -1) {
-            user.boughts.splice(index, 1);
+            user.purchases.splice(index, 1);
         } else {
             throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
         }
@@ -75,7 +75,7 @@ router.put('/cancel/:id', auth, async (req, res, next) => {
 
         res.json({
             sold: product.sold,
-            buyer: product.buyer
+            purchaser: product.purchaser
         });
     } catch (err) {
         next(err)
@@ -89,31 +89,31 @@ router.put('/reject/:id', auth, async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
 
-        if (!product.buyer || !product.buyer.user) throw new ErrorHandler(400, "Not sold yet");
+        if (!product.purchaser || !product.purchaser.user) throw new ErrorHandler(400, "Not sold yet");
 
         if (product.user.toString() !== req.user.id) {
             throw new ErrorHandler(400, "Not allowed to reject");
         }
 
-        const buyer = await User.findById(product.buyer.user);
-        if (!buyer) throw new ErrorHandler(404, "The buyer not exists");
+        const purchaser = await User.findById(product.purchaser.user);
+        if (!purchaser) throw new ErrorHandler(404, "The purchaser not exists");
 
-        product.buyer = null;
+        product.purchaser = null;
         product.sold = false;
 
-        const index = buyer.boughts.findIndex((bought) => bought.product.toString() === req.params.id);
+        const index = purchaser.purchases.findIndex((bought) => bought.product.toString() === req.params.id);
         if (index > -1) {
-            buyer.boughts.splice(index, 1);
+            purchaser.purchases.splice(index, 1);
         } else {
             throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
         }
 
         await product.save();
-        await buyer.save();
+        await purchaser.save();
 
         res.json({
             sold: product.sold,
-            buyer: product.buyer
+            purchaser: product.purchaser
         });
     } catch (err) {
         next(err)

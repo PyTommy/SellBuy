@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProduct, buyProduct, cancelProduct, rejectProduct } from '../../actions/product';
+import { getProduct, purchaseProduct, cancelProduct, rejectProduct } from '../../actions/product';
 
 // Components
 import Spinner from '../UI/Spinner/Spinner';
@@ -16,7 +16,7 @@ const Product = ({
     getProduct,
     history,
     match,
-    buyProduct,
+    purchaseProduct,
     cancelProduct,
     rejectProduct
 }) => {
@@ -28,20 +28,20 @@ const Product = ({
 
     if (!product) return <p>Not found!</p>;
 
-    const onBuyHandler = () => buyProduct(match.params.id);
+    const onPurchaseHandler = () => purchaseProduct(match.params.id);
     const onCancelHandler = () => cancelProduct(match.params.id);
     const onRejectHandler = () => rejectProduct(match.params.id);
     const onUnauthorizedHandler = () => history.push('/auth');
 
-    let buttonText = "BUY";
-    let onClickHandler = onBuyHandler;
+    let buttonText = "Purchase";
+    let onClickHandler = onPurchaseHandler;
     if (!product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
         buttonText = "EDIT";
         onClickHandler = () => history.push(`/edit/${match.params.id}`);
     } else if (product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
         buttonText = "REJECT";
         onClickHandler = onRejectHandler;
-    } else if (product.sold && auth.isAuthenticated && product.buyer.user.toString() === auth.user._id.toString()) {
+    } else if (product.sold && auth.isAuthenticated && product.purchaser.user.toString() === auth.user._id.toString()) {
         buttonText = "CANCEL";
         onClickHandler = onCancelHandler;
     } else if (product.sold) {
@@ -51,7 +51,7 @@ const Product = ({
     if (!auth.isAuthenticated) {
         onClickHandler = onUnauthorizedHandler
     }
-    if (loading.buy) {
+    if (loading.purchase) {
         buttonText = <Spinner size={15} style={{ margin: 0 }} color="white" ></Spinner>;
         onClickHandler = () => null;
     }
@@ -75,7 +75,7 @@ Product.propTypes = {
     loading: PropTypes.object.isRequired,
     getProduct: PropTypes.func.isRequired,
     auth: PropTypes.object,
-    buyProduct: PropTypes.func.isRequired,
+    purchaseProduct: PropTypes.func.isRequired,
     cancelProduct: PropTypes.func.isRequired,
     rejectProduct: PropTypes.func.isRequired,
 };
@@ -86,4 +86,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { getProduct, buyProduct, cancelProduct, rejectProduct })(Product);
+export default connect(mapStateToProps, { getProduct, purchaseProduct, cancelProduct, rejectProduct })(Product);

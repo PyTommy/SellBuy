@@ -1,5 +1,5 @@
 @import '../../../styles//setting.module.scss';
-.TopBar {
+.Switcher {
     position:fixed;
     top: 0;
     left: 0;
@@ -10,7 +10,6 @@
     border-bottom: .5px solid #ddd;
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
     
     @media only screen and (min-width: 600px) {
         top: 5rem;

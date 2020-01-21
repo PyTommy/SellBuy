@@ -26,9 +26,9 @@ import {
     SET_UNLIKE_START,
     SET_UNLIKE_SUCCESS,
     SET_UNLIKE_FAIL,
-    BUY_START,
-    BUY_SUCCESS,
-    BUY_FAIL,
+    PURCHASE_START,
+    PURCHASE_SUCCESS,
+    PURCHASE_FAIL,
     CANCEL_START,
     CANCEL_SUCCESS,
     CANCEL_FAIL,
@@ -47,7 +47,7 @@ const initialState = {
         deleteProduct: false,
         comments: false,
         likes: false,
-        buy: false,
+        purchase: false,
     },
     hasMore: true,
 };
@@ -80,7 +80,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 hasMore: true,
-                products: []
+                products: [],
+                loading: {
+                    ...state.loading,
+                    getProducts: true
+                }
             };
         case GET_PRODUCT_START:
             let existingProduct = state.products.find((product) => product._id.toString() === payload);
@@ -122,14 +126,14 @@ export default (state = initialState, action) => {
                     likes: true
                 }
             }
-        case BUY_START:
+        case PURCHASE_START:
         case CANCEL_START:
         case REJECT_START:
             return {
                 ...state,
                 loading: {
                     ...state.loading,
-                    buy: true
+                    purchase: true
                 }
             }
         // ====================
@@ -189,14 +193,14 @@ export default (state = initialState, action) => {
                     likes: payload
                 }
             };
-        case BUY_SUCCESS:
+        case PURCHASE_SUCCESS:
         case CANCEL_SUCCESS:
         case REJECT_SUCCESS:
             return {
                 ...state,
                 loading: {
                     ...state.loading,
-                    buy: false
+                    purchase: false
                 },
                 product: {
                     ...state.product,
@@ -271,14 +275,14 @@ export default (state = initialState, action) => {
                     likes: false
                 }
             };
-        case BUY_FAIL:
+        case PURCHASE_FAIL:
         case CANCEL_FAIL:
         case REJECT_FAIL:
             return {
                 ...state,
                 loading: {
                     ...state.loading,
-                    buy: false
+                    purchase: false
                 }
             };
         default:

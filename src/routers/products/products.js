@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 const sharp = require('sharp');
 const { ErrorHandler } = require('../../middleware/error');
 
 // Middleware
 const auth = require('../../middleware/auth');
+const getUserId = require('../../middleware/getUserId');
 const uploadProductPic = require('../../middleware/uploadProductPic');
 
 // Models
@@ -90,7 +92,12 @@ router.post('/',
 // @desc      Get product
 // @access    Public
 // @res       [...products]
-router.get('/', async (req, res, next) => {
+// @queries
+//      @@ limit = Num
+//      @@ skip = Num
+//      @@ likes true
+//      @@ 
+router.get('/', getUserId, async (req, res, next) => {
     let limit = 10;
     if (req.query && req.query.limit) {
         limit = parseInt(req.query.limit, 10);
@@ -99,18 +106,21 @@ router.get('/', async (req, res, next) => {
     if (req.query && req.query.skip) {
         skip = parseInt(req.query.skip, 10);
     }
+    let findLikes = {};
+    if (req.query && req.query.likes && req.query.likes === "true") {
+        findLikes = { "likes.user": new mongoose.Types.ObjectId(req.user.id) }
+
+    };
+
 
     try {
-        const products = await Product.find({}, null, {
+        const products = await Product.find({ ...findLikes }, null, {
             limit: limit,
             skip: skip,
             sort: {
                 createdAt: -1
             }
         }).select('-productImage');
-        // if (!products) {
-        //     throw new ErrorHandler(404, "Products Not Found");
-        // }
 
         res.send(products);
     } catch (err) {

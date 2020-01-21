@@ -81,9 +81,9 @@ export const SET_UNLIKE_SUCCESS = "SET_UNLIKE_SUCCESS";
 export const SET_UNLIKE_FAIL = "SET_UNLIKE_FAIL";
 
 // Buy
-export const BUY_START = "BUY_START";
-export const BUY_SUCCESS = "BUY_SUCCESS";
-export const BUY_FAIL = "BUY_FAIL";
+export const PURCHASE_START = "PURCHASE_START";
+export const PURCHASE_SUCCESS = "PURCHASE_SUCCESS";
+export const PURCHASE_FAIL = "PURCHASE_FAIL";
 // Cancel
 export const CANCEL_START = "CANCEL_START";
 export const CANCEL_SUCCESS = "CANCEL_SUCCESS";
@@ -114,3 +114,11 @@ export const SEND_MESSAGE_SUCCESS = "SEND_MESSAGE_SUCCESS";
 export const SEND_MESSAGE_FAIL = "SEND_MESSAGE_FAIL";
 
 export const CLEAR_MESSAGES = "CLEAR_MESSAGES"
+
+
+// ==========
+// Profile
+// ==========
+export const GET_PROFILE_START = "GET_PROFILE_START";
+export const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
+export const GET_PROFILE_FAIL = "GET_PROFILE_FAIL";

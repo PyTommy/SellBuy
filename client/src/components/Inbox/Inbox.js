@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getRecieved, getSent } from '../../actions/message';
 import Spinner from '../UI/Spinner/Spinner';
-import TopBar from './TopBar/TopBar';
+import Switcher from '../UI/Switcher/Switcher';
 
 import styles from './Inbox.module.scss';
 import Message from './Message/Message';
@@ -47,6 +47,20 @@ const Inbox
             }
         };
 
+        const buttons = [
+            {
+                text: "Recieved",
+                active: checkRecieved,
+                onClickHandler: () => onStatusChange(true)
+            },
+            {
+                text: "Sent",
+                active: !checkRecieved,
+                onClickHandler: () => onStatusChange(false)
+            }
+        ];
+
+
 
         const spinner = (checkRecieved && loading.getRecieved) || (!checkRecieved && loading.getSent)
             ? <Spinner />
@@ -57,9 +71,8 @@ const Inbox
 
         return (
             <div>
-                <TopBar
-                    onClickHandler={onStatusChange}
-                    checkRecieved={checkRecieved}
+                <Switcher
+                    items={buttons}
                 />
                 <ul className={styles.messages}>
                     {spinner}

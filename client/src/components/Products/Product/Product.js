@@ -4,10 +4,9 @@ import imageConverter from '../../../utils/imageConverter';
 import ago from '../../../utils/ago';
 
 import styles from './Product.module.scss';
-import PictureRadius from '../../UI/Pictures/PictureRadius/PictureRadius';
 
 const product = ({ history, product }) => {
-    const { _id, price, name, meetupAt, createdAt } = product;
+    const { _id, price, meetupAt } = product;
 
     const imageSrc = imageConverter(product.productImageLow.data);
 

@@ -11,7 +11,7 @@ import { getProducts } from './actions/product';
 // Import Components
 import Layout from './hoc/Layout/Layout';
 import MyPage from './components/MyPage/MyPage';
-
+import MyList from './components/MyList/MyList';
 import Auth from './components/Auth/Auth';
 import Products from './components/Products/Products';
 import SingleProduct from './components/SingleProduct/SingleProduct';
@@ -27,18 +27,10 @@ import MessageForm from './components/MessageForm/MessageForm';
 class App extends Component {
   componentDidMount() {
     this.props.loadUser();
-    this.props.getProducts();
+    // this.props.getProducts();
   }
 
   render() {
-
-
-    const LikePage = () => (
-      <p>LikePage</p>
-    );
-    const BoughtPage = () => (
-      <p>BoughtPage</p>
-    );
     const NotFoundPage = () => (
       <p>404</p>
     );
@@ -49,8 +41,7 @@ class App extends Component {
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
-            <PrivateRoute path="/likes" component={LikePage} />
-            <PrivateRoute path="/bought" component={BoughtPage} />
+            <PrivateRoute path="/mylist" exact component={MyList} />
             <PrivateRoute path="/sell" exact component={Sell} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
             <PrivateRoute path="/mypage" exact component={MyPage} />

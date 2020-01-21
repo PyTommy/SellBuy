@@ -28,9 +28,9 @@ import {
     SET_UNLIKE_START,
     SET_UNLIKE_SUCCESS,
     SET_UNLIKE_FAIL,
-    BUY_START,
-    BUY_SUCCESS,
-    BUY_FAIL,
+    PURCHASE_START,
+    PURCHASE_SUCCESS,
+    PURCHASE_FAIL,
     CANCEL_START,
     CANCEL_SUCCESS,
     CANCEL_FAIL,
@@ -245,21 +245,21 @@ export const setUnlike = (productId) => async dispatch => {
     }
 };
 
-export const buyProduct = (productId) => async dispatch => {
+export const purchaseProduct = (productId) => async dispatch => {
     dispatch({
-        type: BUY_START
+        type: PURCHASE_START
     });
 
     try {
-        const res = await axios.put(`/api/products/buy/${productId}`);
+        const res = await axios.put(`/api/products/purchase/${productId}`);
         dispatch({
-            type: BUY_SUCCESS,
+            type: PURCHASE_SUCCESS,
             payload: res.data
         });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
-            type: BUY_FAIL
+            type: PURCHASE_FAIL
         });
     }
 };
