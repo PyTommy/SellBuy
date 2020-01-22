@@ -21,8 +21,6 @@ import Profile from './components/Profile/Profile';
 import Inbox from './components/Inbox/Inbox';
 import MessageBox from './components/MessageBox/MessageBox';
 import MessageForm from './components/MessageForm/MessageForm';
-import ScrollToTop from './components/ScrollToTop';
-
 
 class App extends Component {
   componentDidMount() {
@@ -36,7 +34,6 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <ScrollToTop />
         <Layout>
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />

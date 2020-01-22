@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProduct, purchaseProduct, cancelProduct, rejectProduct } from '../../actions/product';
 
+
 // Components
+import ScrollToTop from '../ScrollToTop';
 import Spinner from '../UI/Spinner/Spinner';
 import BottomBar from '../UI/BottomBar/BottomBar';
 import TopBar from './TopBar/TopBar';
@@ -59,6 +61,7 @@ const Product = ({
 
     return (
         <div>
+            <ScrollToTop />
             <TopBar />
             <Main />
             <BottomBar
