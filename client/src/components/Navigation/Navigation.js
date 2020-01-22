@@ -18,9 +18,9 @@ const Navigation = (props) => {
     const navs = props.auth.isAuthenticated ? (
         <React.Fragment>
 
-            <MyList linkTo="/mylist">My List</MyList>
+            <MyList linkTo="/mylist/liked">My List</MyList>
             <SellNav linkTo="/sell">Sell</SellNav>
-            <InboxNav linkTo="/inbox">Inbox</InboxNav>
+            <InboxNav linkTo="/inbox/recieved">Inbox</InboxNav>
             <MyPageNav linkTo="/mypage">My Page</MyPageNav>
         </React.Fragment>
     )

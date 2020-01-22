@@ -4,36 +4,47 @@ import {
     SET_PRODUCT_START,
     SET_PRODUCT_SUCCESS,
     SET_PRODUCT_FAIL,
+
     EDIT_PRODUCT_START,
     EDIT_PRODUCT_SUCCESS,
     EDIT_PRODUCT_FAIL,
+
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
+
     REFRESH_PRODUCTS_START,
     REFRESH_PRODUCTS_SUCCESS,
     REFRESH_PRODUCTS_FAIL,
+
     GET_PRODUCT_START,
     GET_PRODUCT_SUCCESS,
     GET_PRODUCT_FAIL,
+
     DELETE_PRODUCT_START,
     DELETE_PRODUCT_SUCCESS,
     DELETE_PRODUCT_FAIL,
+
     ADD_COMMENT_START,
     ADD_COMMENT_SUCCESS,
     ADD_COMMENT_FAIL,
+
     SET_LIKE_START,
     SET_LIKE_SUCCESS,
     SET_LIKE_FAIL,
+
     SET_UNLIKE_START,
     SET_UNLIKE_SUCCESS,
     SET_UNLIKE_FAIL,
+
     PURCHASE_START,
     PURCHASE_SUCCESS,
     PURCHASE_FAIL,
+
     CANCEL_START,
     CANCEL_SUCCESS,
     CANCEL_FAIL,
+
     REJECT_START,
     REJECT_SUCCESS,
     REJECT_FAIL,
@@ -104,7 +115,7 @@ export const getProducts = (skip = 0, limit = 15) => async dispatch => {
 
     try {
         const res = await axios.get(`/api/products?limit=${limit}&skip=${skip}`);
-        const hasMore = res.data.length >= limit;
+        const hasMore = res.data.length === limit;
         dispatch({
             type: GET_PRODUCTS_SUCCESS,
             payload: {

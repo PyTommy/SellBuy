@@ -6,6 +6,7 @@ import alertReducer from '../reducers/alert';
 import productReducer from '../reducers/product';
 import messageReducer from '../reducers/message';
 import profileReducer from '../reducers/profile';
+import mylistReducer from '../reducers/mylist';
 
 const middleware = [thunk];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     alerts: alertReducer,
     product: productReducer,
     message: messageReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    mylist: mylistReducer,
 });
 
 

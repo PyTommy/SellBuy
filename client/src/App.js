@@ -6,7 +6,6 @@ import PrivateRoute from './hoc/PrivateRoute';
 
 // Actions
 import { loadUser } from './actions/auth';
-import { getProducts } from './actions/product';
 
 // Import Components
 import Layout from './hoc/Layout/Layout';
@@ -22,12 +21,12 @@ import Profile from './components/Profile/Profile';
 import Inbox from './components/Inbox/Inbox';
 import MessageBox from './components/MessageBox/MessageBox';
 import MessageForm from './components/MessageForm/MessageForm';
+import ScrollToTop from './components/ScrollToTop';
 
 
 class App extends Component {
   componentDidMount() {
     this.props.loadUser();
-    // this.props.getProducts();
   }
 
   render() {
@@ -37,18 +36,19 @@ class App extends Component {
 
     return (
       <BrowserRouter>
+        <ScrollToTop />
         <Layout>
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
-            <PrivateRoute path="/mylist" exact component={MyList} />
+            <PrivateRoute path="/mylist/:status" component={MyList} />
             <PrivateRoute path="/sell" exact component={Sell} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
             <PrivateRoute path="/mypage" exact component={MyPage} />
             <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
-            <PrivateRoute path="/inbox" exact component={Inbox} />
             <PrivateRoute path="/inbox/recieved/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/sent/:id" component={MessageBox} />
+            <PrivateRoute path="/inbox/:status" component={Inbox} />
             <PrivateRoute path="/messages/:id" component={MessageForm} />
             <Route path="/profile/:id" component={Profile} />
             <Route path="/auth" component={Auth} />
@@ -71,4 +71,4 @@ App.propTypes = {
   auth: PropTypes.object,
 };
 
-export default connect(mapStateToProps, { loadUser, getProducts })(App);
+export default connect(mapStateToProps, { loadUser })(App);

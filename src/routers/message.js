@@ -54,10 +54,22 @@ router.post('/:recipientId',
 
 // GET /messages
 // desc massages
-router.get('/', auth, async (req, res, next) => {
+router.get('/recieved', auth, async (req, res, next) => {
+    if (!req.query) req.query = {};
+
+    let limit = 10;
+    if (req.query.limit) limit = parseInt(req.query.limit, 10);
+
+    let skip = 0;
+    if (req.query.skip) skip = parseInt(req.query.skip, 10);
+
     try {
         const userId = new mongoose.Types.ObjectId(req.user.id);
-        const messages = await Message.find({ recipient: userId }, null, { sort: { createdAt: -1 } }).populate('sender', 'avatar');
+        const messages = await Message.find({ recipient: userId }, null, {
+            limit: limit,
+            skip: skip,
+            sort: { createdAt: -1 }
+        }).populate('sender', 'avatar');
         res.send(messages);
     } catch (err) {
         next(err);
@@ -67,10 +79,21 @@ router.get('/', auth, async (req, res, next) => {
 // GET /messages/sent
 // desc massages
 router.get('/sent', auth, async (req, res, next) => {
+    if (!req.query) req.query = {};
+
+    let limit = 10;
+    if (req.query.limit) limit = parseInt(req.query.limit, 10);
+
+    let skip = 0;
+    if (req.query.skip) skip = parseInt(req.query.skip, 10);
+
     try {
         const userId = new mongoose.Types.ObjectId(req.user.id);
-        const messages = await Message.find({ sender: userId }, null, { sort: { createdAt: -1 } }).populate('recipient', 'avatar');
-
+        const messages = await Message.find({ sender: userId }, null, {
+            limit: limit,
+            skip: skip,
+            sort: { createdAt: -1 }
+        }).populate('recipient', 'avatar');
         res.send(messages);
     } catch (err) {
         next(err);

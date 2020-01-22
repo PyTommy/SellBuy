@@ -106,15 +106,34 @@ router.get('/', getUserId, async (req, res, next) => {
     if (req.query && req.query.skip) {
         skip = parseInt(req.query.skip, 10);
     }
-    let findLikes = {};
-    if (req.query && req.query.likes && req.query.likes === "true") {
-        findLikes = { "likes.user": new mongoose.Types.ObjectId(req.user.id) }
 
+    let findLiked = {};
+    if (req.query && req.query.liked && req.query.liked === "true") {
+        if (!req.user.id) {
+            throw new ErrorHandler(400, "Need to be authorized to get liked");
+        }
+        findLiked = { "likes.user": new mongoose.Types.ObjectId(req.user.id) }
+    };
+
+    let findPurchased = {};
+    if (req.query && req.query.purchased && req.query.purchased === "true") {
+        if (!req.user.id) {
+            throw new ErrorHandler(400, "Need to be authorized to get purchased");
+        }
+        findPurchased = { "purchaser.user": new mongoose.Types.ObjectId(req.user.id) }
+    };
+
+    let findSellings = {};
+    if (req.query && req.query.sellings && req.query.sellings === "true") {
+        if (!req.user.id) {
+            throw new ErrorHandler(400, "Need to be authorized to get sellings");
+        }
+        findSellings = { "user": new mongoose.Types.ObjectId(req.user.id) }
     };
 
 
     try {
-        const products = await Product.find({ ...findLikes }, null, {
+        const products = await Product.find({ ...findLiked, ...findPurchased, ...findSellings }, null, {
             limit: limit,
             skip: skip,
             sort: {
@@ -122,6 +141,37 @@ router.get('/', getUserId, async (req, res, next) => {
             }
         }).select('-productImage');
 
+        res.send(products);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// @route     GET /api/products/sellings/:userId
+// @desc      Get selling products of a user
+// @access    Public
+// @res       [...products]
+// @ query 
+// @@@@ skip
+// @@@@ limit
+router.get('/sellings/:userId', async (req, res, next) => {
+    let limit = 10;
+    if (req.query && req.query.limit) {
+        limit = parseInt(req.query.limit, 10);
+    }
+    let skip = 0;
+    if (req.query && req.query.skip) {
+        skip = parseInt(req.query.skip, 10);
+    }
+
+    try {
+        const products = await Product.find({ user: new mongoose.Types.ObjectId(req.params.userId) }, null, {
+            limit: limit,
+            skip: skip,
+            sort: {
+                createdAt: -1
+            }
+        }).select('-productImage');
         res.send(products);
     } catch (err) {
         next(err);

@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {connect} from 'react-redux';
+import React, { useState } from 'react'
+import { connect } from 'react-redux';
 import { createProduct } from '../../actions/product';
 import PropTypes from 'prop-types';
 
@@ -12,7 +12,7 @@ import Spinner from '../UI/Spinner/Spinner';
 import styles from './Sell.module.scss';
 import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
 
-const Sell = ({createProduct, loading, history}) => {
+const Sell = ({ createProduct, loading, history }) => {
     const [formData, setFormData] = useState({
         title: "",
         price: "",
@@ -22,7 +22,7 @@ const Sell = ({createProduct, loading, history}) => {
     });
 
     const [productImage, setProductImage] = useState('');
-    
+
     const {
         title,
         price,
@@ -30,7 +30,7 @@ const Sell = ({createProduct, loading, history}) => {
         meetupAt,
         description
     } = formData;
-    
+
     const onChange = (e) => {
         e.preventDefault();
         e.persist()
@@ -39,7 +39,7 @@ const Sell = ({createProduct, loading, history}) => {
             [e.target.name]: e.target.value
         }));
     };
-    
+
     const setImage = (uploadableFile) => {
         setProductImage(() => uploadableFile);
     };
@@ -62,10 +62,10 @@ const Sell = ({createProduct, loading, history}) => {
         history.push('/products');
     };
 
-    if (loading.setProduct) return <Spinner/>;
+    if (loading.setProduct) return <Spinner />;
 
 
-    
+
     return (
         <div className={styles.Sell}>
             <div className={styles.ImageDropAndCrop}>
@@ -142,4 +142,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, {createProduct})(Sell);
+export default connect(mapStateToProps, { createProduct })(Sell);

@@ -39,6 +39,7 @@ import {
 
 const initialState = {
     products: [],
+    hasMore: true,
     product: null,
     loading: {
         setProduct: false,
@@ -49,7 +50,20 @@ const initialState = {
         likes: false,
         purchase: false,
     },
-    hasMore: true,
+    mylist: {
+        liked: {
+            hasMore: true,
+            products: []
+        },
+        purchased: {
+            hasMore: true,
+            products: []
+        },
+        sellings: {
+            hasMore: true,
+            products: []
+        }
+    },
 };
 
 export default (state = initialState, action) => {
@@ -87,6 +101,7 @@ export default (state = initialState, action) => {
                 }
             };
         case GET_PRODUCT_START:
+            // concat state.products,
             let existingProduct = state.products.find((product) => product._id.toString() === payload);
             let shouldBeLoading = false;
             if (!existingProduct) {
