@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { clearRecievedMessages, clearSentMessages, getRecieved, getSent } from '../../actions/message';
+import { clearRecievedMessages, clearSentMessages, getRecieved, getSent } from '../../store/actions/message';
 import Switcher from '../UI/Switcher/Switcher';
 
 import styles from './Inbox.module.scss';

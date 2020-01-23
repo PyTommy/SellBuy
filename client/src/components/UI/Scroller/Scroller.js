@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import PullToRefresh from 'rmc-pull-to-refresh';
@@ -12,7 +12,7 @@ const Scroller = ({
     spinnerSize = 50,
     spinnerMarginTop = "3rem",
 }) => {
-    const [switchContainer, setSwitchContainer] = useState(true);
+    const switchContainer = true;
     const invisible = <span style={{ display: "none" }}></span>;
     const activate = <p style={{
         position: "absolute",

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux';
-import { createProduct } from '../../actions/product';
+import { createProduct } from '../../store/actions/product';
 import PropTypes from 'prop-types';
 
 

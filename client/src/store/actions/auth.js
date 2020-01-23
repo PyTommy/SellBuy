@@ -1,4 +1,4 @@
-import axios from '../axios';
+import axios from '../../axios';
 import {
     // LOAD_USER
     LOAD_USER_START,

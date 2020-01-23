@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import styles from './AuthForm.module.scss';
 
 // Actions
-import { setAlert } from '../../../actions/alert';
-import { register, login } from '../../../actions/auth';
+import { setAlert } from '../../../store/actions/alert';
+import { register, login } from '../../../store/actions/auth';
 
 // Components
 import Input from '../../UI/Input/Input';

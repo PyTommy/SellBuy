@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import PrivateRoute from './hoc/PrivateRoute';
 
 // Actions
-import { loadUser } from './actions/auth';
+import { loadUser } from './store/actions/auth';
 
 // Import Components
 import Layout from './hoc/Layout/Layout';

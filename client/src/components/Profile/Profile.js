@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import styles from './Profile.module.scss'
-import { getProfile, getProfileProducts } from '../../actions/profile';
+import { getProfile, getProfileProducts } from '../../store/actions/profile';
 import imageConverter from '../../utils/imageConverter';
 
 // import { IoLogoFacebook } from 'react-icons/io';
@@ -32,7 +32,7 @@ const Profile = ({
         if (!user || user._id.toString() !== match.params.id) {
             getProfile(match.params.id);
         }
-    }, [getProfile]);
+    }, [getProfile, user, match.params.id]);
 
     let avatarSrc;
     if (user) {
@@ -63,6 +63,7 @@ const Profile = ({
             <Fragment>
                 <img
                     src={avatarSrc}
+                    alt="Profile"
                     className={styles.profileImage} />
                 <h2>{user.name}</h2>
                 <div className={styles.icons}>

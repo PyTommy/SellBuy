@@ -1,4 +1,4 @@
-import {SET_ALERT, REMOVE_ALERT} from '../actions/actionType';
+import { SET_ALERT, REMOVE_ALERT } from '../actions/actionType';
 
 // Initial state
 const alertReducerDefaultState = [];
@@ -10,11 +10,11 @@ const authReducer = (state = alertReducerDefaultState, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case SET_ALERT: 
+        case SET_ALERT:
             return [...state, payload];
         case REMOVE_ALERT:
             return state.filter(alert => alert.id !== payload);
-        default: 
+        default:
             return state;
     };
 };

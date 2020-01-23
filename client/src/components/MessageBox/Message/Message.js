@@ -24,7 +24,9 @@ const Message = ({ message, counterParty, amIRecipient }) => {
 }
 
 Message.propTypes = {
-
+    amIRecipient: PropTypes.bool.isRequired,
+    message: PropTypes.object.isRequired,
+    counterParty: PropTypes.object.isRequired,
 }
 
 export default Message

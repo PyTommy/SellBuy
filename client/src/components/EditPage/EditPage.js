@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProduct, editProduct } from '../../actions/product';
+import { getProduct, editProduct } from '../../store/actions/product';
 import imageConverter from '../../utils/imageConverter';
 
 //Components

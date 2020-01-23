@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
-import { clearLiked, getLiked, clearPurchased, getPurchased, clearSellings, getSellings } from '../../actions/mylist';
+import { clearLiked, getLiked, clearPurchased, getPurchased, clearSellings, getSellings } from '../../store/actions/mylist';
 import styles from './MyList.module.scss';
 
 import Switcher from '../UI/Switcher/Switcher';

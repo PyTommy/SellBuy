@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getMessage, sendMessage } from '../../actions/message'
+import { getMessage, sendMessage } from '../../store/actions/message'
 
 import styles from './MessageBox.module.scss';
 import Spinner from '../UI/Spinner/Spinner';
@@ -18,7 +18,7 @@ const MessageBox = ({
 }) => {
     useEffect(() => {
         getMessage(match.params.id);
-    }, [getMessage]);
+    }, [getMessage, match.params.id]);
 
     const onSubmitHandler = (text) => {
         sendMessage(message.sender._id, text);
@@ -70,14 +70,15 @@ const MessageBox = ({
 }
 
 MessageBox.propTypes = {
-
+    message: PropTypes.object,
+    loading: PropTypes.object.isRequired,
+    getMessage: PropTypes.func.isRequired,
+    sendMessage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
     message: state.message.message,
     loading: state.message.loading,
-    getMessage: PropTypes.func.isRequired,
-    sendMessage: PropTypes.func.isRequired,
 });
 
 export default connect(mapStateToProps, { getMessage, sendMessage })(MessageBox);

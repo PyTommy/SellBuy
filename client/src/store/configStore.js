@@ -1,12 +1,12 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import authReducer from '../reducers/auth';
-import alertReducer from '../reducers/alert';
-import productReducer from '../reducers/product';
-import messageReducer from '../reducers/message';
-import profileReducer from '../reducers/profile';
-import mylistReducer from '../reducers/mylist';
+import authReducer from './reducers/auth';
+import alertReducer from './reducers/alert';
+import productReducer from './reducers/product';
+import messageReducer from './reducers/message';
+import profileReducer from './reducers/profile';
+import mylistReducer from './reducers/mylist';
 
 const middleware = [thunk];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

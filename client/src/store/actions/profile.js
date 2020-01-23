@@ -1,4 +1,4 @@
-import axios from '../axios';
+import axios from '../../axios';
 import {
     GET_PROFILE_START,
     GET_PROFILE_SUCCESS,

@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import {connect} from 'react-redux';
-import {setAvatar} from '../../actions/auth'
+import React, { useState } from 'react'
+import { connect } from 'react-redux';
+import { setAvatar } from '../../store/actions/auth'
 
 
-const Avatar = ({setAvatar, history}) => {
+const Avatar = ({ setAvatar, history }) => {
     const [avatarFile, setAvatarFile] = useState(null);
 
     const onSubmit = (e) => {
@@ -15,13 +15,13 @@ const Avatar = ({setAvatar, history}) => {
     return (
         <div>
             <form onSubmit={onSubmit}>
-                <input 
-                    type="file" 
+                <input
+                    type="file"
                     onChange={e => {
                         setAvatarFile(() => e.target.files[0]);
                     }}
                     required
-                    />
+                />
                 <button>Submit</button>
             </form>
         </div>
@@ -36,4 +36,4 @@ const mapStateToProps = state => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, {setAvatar})(Avatar);
+export default connect(mapStateToProps, { setAvatar })(Avatar);

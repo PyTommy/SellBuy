@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProduct, purchaseProduct, cancelProduct, rejectProduct } from '../../actions/product';
+import { getProduct, purchaseProduct, cancelProduct, rejectProduct } from '../../store/actions/product';
 
 
 // Components

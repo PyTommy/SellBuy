@@ -8,9 +8,9 @@ import {
     REGISTER_START,
     REGISTER_SUCCESS,
     REGISTER_FAIL,
-    
+
     // LOGIN
-    LOGIN_START, 
+    LOGIN_START,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
 
@@ -21,7 +21,7 @@ import {
     SET_AVATAR_SUCCESS,
     SET_AVATAR_FAIL,
 } from '../actions/actionType';
-import axios from '../axios';
+import axios from '../../axios';
 
 // ==========
 // Reducers
@@ -32,7 +32,7 @@ const authReducerDefaultState = {
     loading: true,
     user: null
 };
-const authReducer = (state = authReducerDefaultState, {type, payload}) => {
+const authReducer = (state = authReducerDefaultState, { type, payload }) => {
     switch (type) {
         case REGISTER_START:
         case LOGIN_START:
@@ -47,7 +47,7 @@ const authReducer = (state = authReducerDefaultState, {type, payload}) => {
                 ...state,
                 isAuthenticated: true,
                 loading: false,
-                user: {...payload}
+                user: { ...payload }
             };
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
@@ -84,7 +84,7 @@ const authReducer = (state = authReducerDefaultState, {type, payload}) => {
                 ...state,
                 loading: false
             };
-        default: 
+        default:
             return state;
     };
 };

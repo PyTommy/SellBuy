@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getProducts, refreshProducts } from '../../actions/product';
+import { getProducts, refreshProducts } from '../../store/actions/product';
 
 
 import Product from '../UI/Product/Product';

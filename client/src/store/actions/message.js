@@ -1,4 +1,4 @@
-import axios from '../axios';
+import axios from '../../axios';
 import {
     CLEAR_RECIEVED_MESSAGES,
     CLEAR_SENT_MESSAGES,

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'
-import { deleteProduct, setLike, setUnlike } from '../../../actions/product';
+import { deleteProduct, setLike, setUnlike } from '../../../store/actions/product';
 import styles from './TopBar.module.scss';
 
 import UITopBar from '../../UI/TopBar/TopBar';

@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { addComment } from '../../../actions/product';
+import { addComment } from '../../../store/actions/product';
 
 import styles from './Comments.module.scss';
 import Comment from '../Comment/Comment';
