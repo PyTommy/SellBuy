@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { clearLiked, getLiked, clearPurchased, getPurchased, clearSellings, getSellings } from '../../store/actions/mylist';
@@ -24,85 +25,65 @@ const MyList = ({
     clearSellings,
     getSellings
 }) => {
+    // Assign "liked", "purchased" or "sellings"
     const status = match.params.status;
 
     const buttons = [
         {
             text: "Liked",
             active: status === 'liked',
-            onClickHandler: () => {
-                if (status !== "liked") history.push('/mylist/liked');
-            },
+            onClickHandler: () => status !== "liked" && history.push('/mylist/liked')
         },
         {
             text: "Purchased",
             active: status === 'purchased',
-            onClickHandler: () => {
-                if (status !== "purchased") history.push('/mylist/purchased')
-            }
+            onClickHandler: () => status !== "purchased" && history.push('/mylist/purchased')
         },
         {
             text: "Sellings",
             active: status === 'sellings',
-            onClickHandler: () => {
-                if (status !== "sellings") history.push('/mylist/sellings');
-            }
+            onClickHandler: () => status !== "sellings" && history.push('/mylist/sellings')
         }
     ];
 
-    const fetchProducts = () => {
-        if (!auth || !auth.isAuthenticated) return null;
 
-        // If url = "myllist/liked"
-        if (status === "liked" && !liked.loading) {
-            getLiked(liked.products.length);
-        }
-        // If url = "myllist/purchased"
-        if (status === "purchased" && !purchased.loading) {
-            getPurchased(purchased.products.length);
-        }
-        // If url = "myllist/sellings"
-        if (status === "sellings" && !sellings.loading) {
-            getSellings(sellings.products.length);
-        }
-
-
+    let
+        hasMore = true,
+        productArray = [],
+        fetchProducts = () => null,
+        refresh = () => null;
+    switch (status) {
+        case "liked":
+            productArray = liked.products;
+            hasMore = liked.hasMore;
+            if (auth.isAuthenticated && !liked.loading) {
+                fetchProducts = () => getLiked(liked.products.length);
+                refresh = () => clearLiked();
+            }
+            break;
+        case "purchased":
+            productArray = purchased.products;
+            hasMore = purchased.hasMore;
+            if (auth.isAuthenticated && !purchased.loading) {
+                fetchProducts = () => getPurchased(purchased.products.length);
+                refresh = () => clearPurchased();
+            }
+            break;
+        case "sellings":
+            productArray = sellings.products;
+            hasMore = sellings.hasMore;
+            if (auth.isAuthenticated && !sellings.loading) {
+                fetchProducts = () => getSellings(sellings.products.length);
+                refresh = () => clearSellings();
+            }
+            break;
+        default:
+            return <Redirect to="404" />
     }
 
-    const refresh = () => {
-        if (!auth || !auth.isAuthenticated) return null;
-
-        // If url = "myllist/liked"
-        if (status === "liked" && !liked.loading) {
-            clearLiked();
-            getLiked();
-        }
-        // If url = "myllist/purchased"
-        if (status === "purchased" && !purchased.loading) {
-            clearPurchased();
-            getPurchased();
-        }
-        // If url = "myllist/sellings"
-        if (status === "sellings" && !sellings.loading) {
-            clearSellings();
-            getSellings();
-        }
-    };
-
-    let hasMore;
-    if (status === "liked") hasMore = liked.hasMore;
-    if (status === "purchased") hasMore = purchased.hasMore;
-    if (status === "sellings") hasMore = sellings.hasMore;
-
-    let productArray;
-    if (status === "liked") productArray = liked.products;
-    if (status === "purchased") productArray = purchased.products;
-    if (status === "sellings") productArray = sellings.products;
-    const productList = productArray.map((singleProduct) => {
-        return <Product key={singleProduct._id} product={singleProduct} />;
+    const productList = productArray.map((product) => {
+        return <Product key={product._id} product={product} />;
     });
-
-
 
     return (
         <Fragment>

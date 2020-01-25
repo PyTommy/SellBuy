@@ -118,35 +118,36 @@ router.post('/login', [
 });
 
 
-// // @route     POST /api/user/avatar
-// // @desc      Upload a profile pic
-// // @access    Private
-// // @res       {msg: "..."}
-// router.post('/avatar',
-//     [
-//         auth,
-//         uploadAvatar
-//     ],
-//     async (req, res, next) => {
-//         try {
-//             const user = await User.findById(req.user.id);
-//             if (!req.file) {
-//                 throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
-//             }
-//             const buffer = await sharp(req.file.buffer)
-//                 .resize({ width: 300, height: 300 })
-//                 .jpeg({
-//                     quality: 80
-//                 })
-//                 .toBuffer();
-//             user.avatar = buffer;
-//             await user.save();
-//             res.send({ message: "Uploaded the avatar image" });
-//         } catch (err) {
-//             next(err);
-//         }
-//     }
-// );
+// @route     POST /api/user/avatar
+// @desc      Upload a profile pic
+// @access    Private
+// @res       {msg: "..."}
+router.put('/avatar',
+    [
+        auth,
+        uploadAvatar
+    ],
+    async (req, res, next) => {
+        try {
+            const user = await User.findById(req.user.id);
+            if (!req.file) {
+                throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
+            }
+            const buffer = await sharp(req.file.buffer)
+                .resize({ width: 300, height: 300 })
+                .jpeg({
+                    quality: 80
+                })
+                .toBuffer();
+            user.avatar = buffer;
+            await user.save();
+            const storedAvatar = await User.findById(req.user.id).select("avatar");
+            res.send(storedAvatar);
+        } catch (err) {
+            next(err);
+        }
+    }
+);
 
 // @route     GET /api/user/:id
 // @desc      Get user info
@@ -161,6 +162,112 @@ router.get('/:id', async (req, res, next) => {
         }
 
         res.send(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// @route     PUT /api/user/profile
+// @desc      Change profile
+// @access    Private
+// @req.body  {name, facebook}
+// @res       user
+router.put('/profile', [
+    check('name', 'Name is required').trim().not().isEmpty(),
+    auth
+], async (req, res, next) => {
+    try {
+        // Check if the req are valid
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            throw new ErrorHandler(400, errors.array());
+        }
+        const { name, facebook } = req.body;
+
+        const user = await User.findById(req.user.id).select("-password");
+
+        user.name = name;
+        if (facebook) user.facebook = facebook;
+
+        await user.save();
+
+        res.send(user);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// @route     PUT /api/user/email
+// @desc      Update email
+// @access    Private
+// @res       user -password
+router.put('/email', [
+    check('email', 'Please include a valid email').trim().isEmail(),
+    check('password', 'Please enter a password with 6 or more characters').trim().isLength({ min: 6 }),
+    auth
+], async (req, res, next) => {
+    try {
+        // Check if the req are valid
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            throw new ErrorHandler(400, errors.array());
+        }
+
+        const { email, password } = req.body;
+
+        // Check if the User exists
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            throw new ErrorHandler(500, 'Something wrong with server');
+        }
+
+        //Check if the password correct
+        const isMatch = bcrypt.compareSync(password, user.password);
+        if (!isMatch) {
+            throw new ErrorHandler(400, 'Password is invalid');
+        }
+
+        user.email = email;
+        await user.save();
+
+        res.status(200).send(user.email);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// @route     PUT /api/user/password
+// @desc      Update password
+// @access    Private
+// @res       user -password
+router.put('/password', [
+    check('curPassword', 'Please enter a current password with 6 or more characters').trim().isLength({ min: 6 }),
+    check('newPassword', 'Please enter a new password with 6 or more characters').trim().isLength({ min: 6 }),
+    auth
+], async (req, res, next) => {
+    try {
+        // Check if the req are valid
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            throw new ErrorHandler(400, errors.array());
+        }
+
+        const { curPassword, newPassword } = req.body;
+
+        // Check if the User exists
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            throw new ErrorHandler(500, 'Something wrong with server');
+        }
+
+        //Check if the password correct
+        const isMatch = bcrypt.compareSync(curPassword, user.password);
+        if (!isMatch) throw new ErrorHandler(400, 'Current Password is invalid');
+
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).send({ message: "Changed Password" });
     } catch (err) {
         next(err);
     }

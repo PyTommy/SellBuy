@@ -5,7 +5,7 @@ import styles from './Navigation.module.scss';
 const NavItem = (WrapperComponent) => {
     return (props) => (
         <li>
-            <NavLink to={props.linkTo} activeClassName={styles.active}>
+            <NavLink to={props.linkTo} className={styles.Link} activeClassName={[styles.Link, styles.active].join(" ")}>
                 <WrapperComponent className={styles.Icon} />
                 <span className={styles.menuTitle}>{props.children}</span>
             </NavLink>

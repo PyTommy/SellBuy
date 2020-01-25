@@ -21,6 +21,10 @@ button, a {
     }
 }
 
+a {
+    text-decoration: none
+}
+
 body {
 margin: 0;
 font-size: $default-size;

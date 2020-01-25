@@ -16,11 +16,14 @@ import Products from './components/Products/Products';
 import SingleProduct from './components/SingleProduct/SingleProduct';
 import Sell from './components/Sell/Sell';
 import EditPage from './components/EditPage/EditPage';
-import Avatar from './components/Avatar/Avatar';
 import Profile from './components/Profile/Profile';
 import Inbox from './components/Inbox/Inbox';
 import MessageBox from './components/MessageBox/MessageBox';
 import MessageForm from './components/MessageForm/MessageForm';
+import UpdateAvatar from './components/UpdateAvatar/UpdateAvatar';
+import UpdateProfile from './components/UpdateProfile/UpdateProfile';
+import UpdateEmail from './components/UpdateEmail/UpdateEmail';
+import UpdatePassword from './components/UpdatePassword/UpdatePassword';
 
 class App extends Component {
   componentDidMount() {
@@ -42,7 +45,10 @@ class App extends Component {
             <PrivateRoute path="/sell" exact component={Sell} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
             <PrivateRoute path="/mypage" exact component={MyPage} />
-            <PrivateRoute path="/mypage/avatar" exact component={Avatar} />
+            <PrivateRoute path="/mypage/update/avatar" exact component={UpdateAvatar} />
+            <PrivateRoute path="/mypage/update/profile" exact component={UpdateProfile} />
+            <PrivateRoute path="/mypage/update/email" exact component={UpdateEmail} />
+            <PrivateRoute path="/mypage/update/password" exact component={UpdatePassword} />
             <PrivateRoute path="/inbox/recieved/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/sent/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/:status" component={Inbox} />

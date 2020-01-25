@@ -8,9 +8,7 @@ import {
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
-    REFRESH_PRODUCTS_START,
-    REFRESH_PRODUCTS_SUCCESS,
-    REFRESH_PRODUCTS_FAIL,
+    REFRESH_PRODUCTS,
     GET_PRODUCT_START,
     GET_PRODUCT_SUCCESS,
     GET_PRODUCT_FAIL,
@@ -90,15 +88,11 @@ export default (state = initialState, action) => {
                     getProducts: true
                 }
             };
-        case REFRESH_PRODUCTS_START:
+        case REFRESH_PRODUCTS:
             return {
                 ...state,
                 hasMore: true,
                 products: [],
-                loading: {
-                    ...state.loading,
-                    getProducts: true
-                }
             };
         case GET_PRODUCT_START:
             // concat state.products,
@@ -164,7 +158,6 @@ export default (state = initialState, action) => {
                 },
             };
         case GET_PRODUCTS_SUCCESS:
-        case REFRESH_PRODUCTS_SUCCESS:
             return {
                 ...state,
                 loading: {
@@ -249,7 +242,6 @@ export default (state = initialState, action) => {
                 },
             };
         case GET_PRODUCTS_FAIL:
-        case REFRESH_PRODUCTS_FAIL:
             return {
                 ...state,
                 loading: {

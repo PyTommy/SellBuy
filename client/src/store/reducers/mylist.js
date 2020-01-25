@@ -69,7 +69,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 liked: {
-                    products: payload.products,
+                    products: [...state.liked.products, ...payload.products],
                     loading: false,
                     hasMore: payload.hasMore
                 }
@@ -97,7 +97,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 purchased: {
-                    products: payload.products,
+                    products: [...state.purchased.products, ...payload.products],
                     loading: false,
                     hasMore: payload.hasMore
                 }
@@ -125,7 +125,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 sellings: {
-                    products: payload.products,
+                    products: [...state.sellings.products, ...payload.products],
                     loading: false,
                     hasMore: payload.hasMore
                 }

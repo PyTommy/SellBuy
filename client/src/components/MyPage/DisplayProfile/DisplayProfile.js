@@ -19,7 +19,7 @@ const DisplayProfile = ({
         ? imageConverter(avatar.data)
         : imageConverter(null);
 
-    const profileClickedHandler = () => history.push('mypage/avatar');
+    const profileClickedHandler = () => history.push('mypage/update/avatar');
 
     return (
         <div className={styles.DisplayProfile}>

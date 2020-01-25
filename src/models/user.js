@@ -9,6 +9,10 @@ const UserSchema = new Schema({
         required: true,
         trim: true
     },
+    facebook: {
+        type: String,
+        trim: true
+    },
     email: {
         type: String,
         required: true,

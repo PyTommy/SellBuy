@@ -17,9 +17,9 @@ import {
     // LOGOUT
     LOGOUT,
 
-    SET_AVATAR_START,
-    SET_AVATAR_SUCCESS,
-    SET_AVATAR_FAIL,
+    UPDATE_AVATAR_SUCCESS,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_EMAIL_SUCCESS
 } from '../actions/actionType';
 import axios from '../../axios';
 
@@ -37,7 +37,6 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
         case REGISTER_START:
         case LOGIN_START:
         case LOAD_USER_START:
-        case SET_AVATAR_START:
             return {
                 ...state,
                 loading: true
@@ -58,15 +57,27 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
                 isAuthenticated: true,
                 loading: false,
             };
-        case SET_AVATAR_SUCCESS:
+        case UPDATE_AVATAR_SUCCESS:
             return {
                 ...state,
-                loading: false,
-                // user: {
-                //     ...state.user,
-                //     avatar: payload
-                // } // @@@ TO DO later
+                user: {
+                    ...state.user,
+                    avatar: payload.avatar
+                }
             };
+        case UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                user: payload
+            };
+        case UPDATE_EMAIL_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    email: payload
+                }
+            }
         case REGISTER_FAIL:
         case LOGIN_FAIL:
         case LOAD_USER_FAIL:
@@ -79,11 +90,6 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
                 loading: false,
                 user: null
             }
-        case SET_AVATAR_FAIL:
-            return {
-                ...state,
-                loading: false
-            };
         default:
             return state;
     };

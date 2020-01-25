@@ -72,12 +72,10 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
         newFormData.append('category', category);
         newFormData.append('meetupAt', meetupAt);
         newFormData.append('description', description);
-        if (!productImage) {
-            return alert("Please set Image");
-        }
-        if (imgModified) {
-            newFormData.append('productImage', productImage);
-        }
+
+        if (!productImage) return alert("Please set Image");
+        imgModified && newFormData.append('productImage', productImage);
+
         editProduct(match.params.id, newFormData);
         history.push('/products');
     };
@@ -120,13 +118,18 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
 
                     <label>Category</label>
                     <Input
-                        type="text"
-                        placeholder="Category"
+                        type="select"
                         name="category"
                         value={category}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+                        onChange={e => { onChange(e) }}>
+                        <option value="Home">Home</option>
+                        <option value="Academic">Academic</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Ticket">Ticket</option>
+                        <option value="Women">Women</option>
+                        <option value="Men">Men</option>
+                        <option value="Other">Other</option>
+                    </Input>
 
                     <label>Meetup Place</label>
                     <Input

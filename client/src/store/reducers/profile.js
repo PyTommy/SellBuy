@@ -62,7 +62,7 @@ const profileReducer = (state = profileReducerDefaultState, { type, payload }) =
             return {
                 ...state,
                 products: {
-                    products: payload.products,
+                    products: [...state.products.products, ...payload.products],
                     hasMore: payload.hasMore,
                 },
                 loading: {

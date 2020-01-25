@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import { createProduct } from '../../store/actions/product';
 import PropTypes from 'prop-types';
-
+import ScrollToTop from '../ScrollToTop';
 
 
 //Components
@@ -16,7 +16,7 @@ const Sell = ({ createProduct, loading, history }) => {
     const [formData, setFormData] = useState({
         title: "",
         price: "",
-        category: "",
+        category: "Home",
         meetupAt: "",
         description: ""
     });
@@ -47,10 +47,7 @@ const Sell = ({ createProduct, loading, history }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (!productImage) {
-            return alert("Please set Image");
-        }
-        console.log(productImage);
+        if (!productImage) return alert("Please set Image");
         const newFormData = new FormData();
         newFormData.append('title', title);
         newFormData.append('price', price);
@@ -64,10 +61,9 @@ const Sell = ({ createProduct, loading, history }) => {
 
     if (loading.setProduct) return <Spinner />;
 
-
-
     return (
         <div className={styles.Sell}>
+            <ScrollToTop />
             <div className={styles.ImageDropAndCrop}>
                 <ImageDropAndCrop
                     maxSize={10000000}
@@ -97,13 +93,18 @@ const Sell = ({ createProduct, loading, history }) => {
 
                 <label>Category</label>
                 <Input
-                    type="text"
-                    placeholder="Category"
+                    type="select"
                     name="category"
                     value={category}
-                    onChange={e => onChange(e)}
-                    required
-                />
+                    onChange={e => { onChange(e) }}>
+                    <option value="Home">Home</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Ticket">Ticket</option>
+                    <option value="Women">Women</option>
+                    <option value="Men">Men</option>
+                    <option value="Other">Other</option>
+                </Input>
 
                 <label>Meetup Place</label>
                 <Input

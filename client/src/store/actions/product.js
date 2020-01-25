@@ -13,9 +13,7 @@ import {
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
 
-    REFRESH_PRODUCTS_START,
-    REFRESH_PRODUCTS_SUCCESS,
-    REFRESH_PRODUCTS_FAIL,
+    REFRESH_PRODUCTS,
 
     GET_PRODUCT_START,
     GET_PRODUCT_SUCCESS,
@@ -108,13 +106,18 @@ export const editProduct = (productId, formData) => async dispatch => {
 };
 
 
-export const getProducts = (skip = 0, limit = 15) => async dispatch => {
+export const getProducts = ({ skip = 0, limit = 15, search = null, category = null }) => async dispatch => {
     dispatch({
         type: GET_PRODUCTS_START
     });
+    let queries = [];
+    queries.push(`limit=${limit}`);
+    queries.push(`skip=${skip}`);
+    if (search) queries.push(`search=${search}`);
+    if (category) queries.push(`category=${category}`);
 
     try {
-        const res = await axios.get(`/api/products?limit=${limit}&skip=${skip}`);
+        const res = await axios.get(`/api/products?${queries.join('&')}`);
         const hasMore = res.data.length === limit;
         dispatch({
             type: GET_PRODUCTS_SUCCESS,
@@ -131,28 +134,10 @@ export const getProducts = (skip = 0, limit = 15) => async dispatch => {
     }
 };
 
-export const refreshProducts = (skip = 0, limit = 5) => async dispatch => {
+export const refreshProducts = () => async dispatch => {
     dispatch({
-        type: REFRESH_PRODUCTS_START
+        type: REFRESH_PRODUCTS
     });
-
-    try {
-        const res = await axios.get(`/api/products?limit=${limit}&skip=${skip}`);
-        const hasMore = res.data.length >= limit;
-
-        dispatch({
-            type: REFRESH_PRODUCTS_SUCCESS,
-            payload: {
-                products: res.data,
-                hasMore
-            }
-        });
-    } catch (err) {
-        dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: REFRESH_PRODUCTS_FAIL
-        });
-    }
 };
 
 

@@ -3,18 +3,19 @@ import classes from './Input.module.scss';
 
 const Input = ({
     id,
-    type, 
-    placeholder, 
-    value = "", 
-    onChange, 
-    name, 
-    required = false, 
+    type,
+    placeholder,
+    value = "",
+    onChange,
+    name,
+    required = false,
     className,
-    style
+    style,
+    children
 }) => {
     let input;
     if (type === "textarea") {
-        input = (<textarea 
+        input = (<textarea
             placeholder={placeholder}
             value={value}
             onChange={onChange}
@@ -23,14 +24,24 @@ const Input = ({
             className={[classes.Textarea, className].join(" ")}
             style={style}
         />);
+
+    } else if (type === "select") {
+        input = (<select
+            value={value}
+            onChange={onChange}
+            name={name}
+            required={required}
+            className={[classes.Input, className].join(" ")}
+            style={style}
+        >{children}</select>);
     } else {
-        input = (<input 
-            type={type} 
+        input = (<input
+            type={type}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
             name={name}
-            required={required}            
+            required={required}
             className={[classes.Input, className].join(" ")}
             style={style}
         />);

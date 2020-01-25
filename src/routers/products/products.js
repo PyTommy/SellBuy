@@ -93,52 +93,64 @@ router.post('/',
 // @access    Public
 // @res       [...products]
 // @queries
-//      @@ limit = Num
-//      @@ skip = Num
-//      @@ likes true
-//      @@ 
+//      @@ limit : Num
+//      @@ skip : Num
+//      @@ category : Str
+//      @@ search : Str
+//      @@ liked : Boolean
+//      @@ purchased : Boolean
+//      @@ sellings : Boolean
 router.get('/', getUserId, async (req, res, next) => {
     let limit = 10;
-    if (req.query && req.query.limit) {
+    if (req.query.limit) {
         limit = parseInt(req.query.limit, 10);
     }
     let skip = 0;
-    if (req.query && req.query.skip) {
+    if (req.query.skip) {
         skip = parseInt(req.query.skip, 10);
     }
 
-    let findLiked = {};
-    if (req.query && req.query.liked && req.query.liked === "true") {
-        if (!req.user.id) {
-            throw new ErrorHandler(400, "Need to be authorized to get liked");
-        }
+    let findLiked = {}, findPurchased = {}, findSellings = {}, search = {}, category = {};
+    if (req.query.liked === "true") {
+        if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get liked");
         findLiked = { "likes.user": new mongoose.Types.ObjectId(req.user.id) }
-    };
-
-    let findPurchased = {};
-    if (req.query && req.query.purchased && req.query.purchased === "true") {
-        if (!req.user.id) {
-            throw new ErrorHandler(400, "Need to be authorized to get purchased");
-        }
+    } else if (req.query.purchased === "true") {
+        if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get purchased")
         findPurchased = { "purchaser.user": new mongoose.Types.ObjectId(req.user.id) }
-    };
-
-    let findSellings = {};
-    if (req.query && req.query.sellings && req.query.sellings === "true") {
-        if (!req.user.id) {
-            throw new ErrorHandler(400, "Need to be authorized to get sellings");
-        }
+    } else if (req.query.sellings === "true") {
+        if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get sellings");
         findSellings = { "user": new mongoose.Types.ObjectId(req.user.id) }
     };
+    if (req.query.search) {
+        const words = req.query.search.split(" ");
+        const regexArray = words.map((word) => new RegExp(".*" + word + ".*", "i"));
+        search = {
+            $or: [
+                { title: { $all: regexArray } },
+                { description: { $all: regexArray } },
+                { name: { $all: regexArray } },
+                { meetupAt: { $all: regexArray } }
+            ]
+        }
+    };
 
+    if (req.query.category) {
+        category = { category: req.query.category };
+    };
 
     try {
-        const products = await Product.find({ ...findLiked, ...findPurchased, ...findSellings }, null, {
+        const products = await Product.find({
+            ...findLiked,
+            ...findPurchased,
+            ...findSellings,
+            ...category,
+            ...search,
+        }, null, {
             limit: limit,
             skip: skip,
             sort: {
                 createdAt: -1
-            }
+            },
         }).select('-productImage');
 
         res.send(products);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './MyPage.module.scss';
 
@@ -7,18 +7,22 @@ import styles from './MyPage.module.scss';
 import Spinner from '../UI/Spinner/Spinner';
 import DisplayProfile from './DisplayProfile/DisplayProfile';
 import Logout from './Logout/Logout';
+import Setting from './Setting/Setting';
 
 
 const MyPage = ({
     auth
-}) => {    
+}) => {
     if (auth.loading) {
-        return <Spinner size={100}/>;
+        return <Spinner size={100} />;
     }
 
     return (
         <div className={styles.mypage}>
             <DisplayProfile />
+            <div className={styles.hr}></div>
+            <Setting />
+            <div className={styles.hr}></div>
             <Logout />
         </div>
     );

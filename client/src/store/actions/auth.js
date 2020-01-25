@@ -19,9 +19,9 @@ import {
     LOGOUT,
 
     // AVATAR
-    SET_AVATAR_START,
-    SET_AVATAR_SUCCESS,
-    SET_AVATAR_FAIL,
+    UPDATE_AVATAR_SUCCESS,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_EMAIL_SUCCESS,
 } from './actionType';
 import { setAlert } from './alert';
 import { clearMessages } from './message';
@@ -111,31 +111,54 @@ export const logout = () => dispatch => {
     dispatch(clearMessages());
 };
 
-export const setAvatar = (avatar) => async dispatch => {
-    dispatch({
-        type: SET_AVATAR_START
-    });
-
+export const updateAvatar = (avatar) => async dispatch => {
     const config = {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
     }
+
     const formData = new FormData();
     formData.append('avatar', avatar);
 
     try {
-        const res = await axios.post('/api/user/avatar', formData, config);
+        const res = await axios.put('/api/user/avatar', formData, config);
 
-        dispatch(setAlert(`Uploaded profile`, "success"));
+        dispatch(setAlert(`Uploaded profile image`, "success"));
         dispatch({
-            type: SET_AVATAR_SUCCESS,
+            type: UPDATE_AVATAR_SUCCESS,
             payload: res.data
         });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: SET_AVATAR_FAIL
-        });
     }
 };
+
+export const updateProfile = (obj) => async dispatch => {
+    try {
+        const res = await axios.put('/api/user/profile', obj);
+
+        dispatch(setAlert(`Updated Profile`, "success"));
+        dispatch({
+            type: UPDATE_PROFILE_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+    }
+};
+
+export const updateEmail = (obj) => async dispatch => {
+    try {
+        const res = await axios.put('/api/user/email', obj);
+
+        dispatch(setAlert(`Updated Email`, "success"));
+        dispatch({
+            type: UPDATE_EMAIL_SUCCESS,
+            payload: res.data
+        });
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+    }
+};
+

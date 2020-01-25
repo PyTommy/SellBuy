@@ -28,16 +28,12 @@ const Inbox
             {
                 text: "Recieved",
                 active: checkRecieved,
-                onClickHandler: () => {
-                    if (!checkRecieved) history.push('/inbox/recieved');
-                }
+                onClickHandler: () => !checkRecieved && history.push('/inbox/recieved')
             },
             {
                 text: "Sent",
                 active: !checkRecieved,
-                onClickHandler: () => {
-                    if (checkRecieved) history.push('/inbox/sent');
-                }
+                onClickHandler: () => checkRecieved && history.push('/inbox/sent')
             }
         ];
 
@@ -76,24 +72,15 @@ const Inbox
 
         const noMsg = <p style={{ height: "75vh" }}>No recieved message yet</p>;
 
-        let getMessages = () => null;
+        let getMessages = () => null,
+            refreshMessages = () => null;
         if (auth.isAuthenticated && checkRecieved && !recieved.loading) {
             getMessages = () => getRecieved(recieved.messages.length);
+            refreshMessages = () => clearRecievedMessages();
         }
         if (auth.isAuthenticated && !checkRecieved && !sent.loading) {
             getMessages = () => getSent(sent.messages.length);
-        }
-
-        let refreshMessages = () => null;
-        if (auth.isAuthenticated && checkRecieved && !recieved.loading) {
-            refreshMessages = () => {
-                clearRecievedMessages();
-            };
-        }
-        if (auth.isAuthenticated && !checkRecieved && !sent.loading) {
-            refreshMessages = () => {
-                clearSentMessages();
-            };
+            refreshMessages = () => clearSentMessages();
         }
 
         const hasMore = checkRecieved ? recieved.hasMore : sent.hasMore;
