@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoIosSearch, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";

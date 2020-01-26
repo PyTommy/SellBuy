@@ -1,9 +1,10 @@
-@import '../../../styles//setting.module.scss';
+@import '../../../styles/setting.module.scss';
 
 .Link {
     width: 100%;
     color: inherit;
 }
+
 .Notification {
     line-height: 1.2;
     font-size: 1.4rem;
@@ -13,7 +14,7 @@
     border-bottom: 1px solid #efefef;
     
     display: flex;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .Image {

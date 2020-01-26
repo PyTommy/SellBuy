@@ -35,6 +35,7 @@ const Product = ({
     const onRejectHandler = () => rejectProduct(match.params.id);
     const onUnauthorizedHandler = () => history.push('/auth');
 
+    const { purchaser } = product;
     let buttonText = "Purchase";
     let onClickHandler = onPurchaseHandler;
     if (!product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
@@ -43,7 +44,7 @@ const Product = ({
     } else if (product.sold && auth.isAuthenticated && product.user.toString() === auth.user._id.toString()) {
         buttonText = "REJECT";
         onClickHandler = onRejectHandler;
-    } else if (product.sold && auth.isAuthenticated && product.purchaser.user.toString() === auth.user._id.toString()) {
+    } else if (product.sold && auth.isAuthenticated && purchaser._id && purchaser._id.toString() === auth.user._id.toString()) {
         buttonText = "CANCEL";
         onClickHandler = onCancelHandler;
     } else if (product.sold) {

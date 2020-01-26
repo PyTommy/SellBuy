@@ -24,7 +24,7 @@ const TopBar = ({
     let isLiked = false;
     if (auth.isAuthenticated && product) { // set product before didmount to remove "&& product"
         isLiked = !!product.likes.find((like) => {
-            return like.user === auth.user._id;
+            return like === auth.user._id;
         });
     }
     const onLikeButtonClicked = () => {

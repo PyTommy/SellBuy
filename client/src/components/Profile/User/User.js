@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import imageConverter from '../../../utils/imageConverter';
 import styles from './User.module.scss';
 import { AiOutlineMessage } from 'react-icons/ai';
+import { IoLogoFacebook } from 'react-icons/io';
 
 const User = ({ user, match }) => {
 
@@ -28,12 +29,14 @@ const User = ({ user, match }) => {
                         size={"4rem"}
                     />
                 </Link>
-                {/* <a target="_blank" href="https://www.facebook.com/php?id=100009155066626">
-                                <IoLogoFacebook
-                                    size={"4rem"}
-                                    color={"#0084ff"}
-                                />
-                            </a> */}
+                {user.facebook &&
+                    <a target="_blank" style={{ marginLeft: "1rem" }} href={user.facebook}>
+                        <IoLogoFacebook
+                            size={"4rem"}
+                            color={"#0084ff"}
+                        />
+                    </a>
+                }
             </div>
         </Fragment>
     )

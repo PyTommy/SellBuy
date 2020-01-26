@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './UpdatePassword.module.scss';

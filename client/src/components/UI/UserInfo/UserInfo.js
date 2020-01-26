@@ -46,7 +46,7 @@ const UserInfo = ({
         </div>;
 
     return (
-        <div className={[styles.User, style].join(" ")} onClick={() => history.push(`/profile/${userId}`)}>
+        <div className={[styles.User, style].join(" ")} onClick={userId ? () => history.push(`/profile/${userId}`) : () => null}>
             {
                 imageLeft
                     ? <Fragment>{picture}{nameDiv}</Fragment>
@@ -58,7 +58,7 @@ const UserInfo = ({
 
 UserInfo.propTypes = {
     name: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
+    userId: PropTypes.string,
 
     // styles
     imageSize: PropTypes.string,

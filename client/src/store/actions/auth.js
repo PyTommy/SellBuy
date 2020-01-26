@@ -113,6 +113,7 @@ export const logout = () => dispatch => {
     dispatch({ type: LOGOUT });
     dispatch(clearMessages());
     dispatch(clearNotifications());
+
 };
 
 export const updateAvatar = (avatar) => async dispatch => {

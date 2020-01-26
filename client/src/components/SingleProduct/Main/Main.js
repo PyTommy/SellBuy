@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import imageConverter from '../../../utils/imageConverter';
@@ -9,16 +10,17 @@ import Comments from '../Comments/Comments';
 import UserInfo from '../../UI/UserInfo/UserInfo';
 
 const Main = ({
+    history,
     product: {
         productImage,
         productImageLow,
         avatar,
         name,
         description,
-        category,
         meetupAt,
         title,
-        user
+        user,
+        purchaser
     }
 }) => {
     const imageSrc = productImage
@@ -36,20 +38,34 @@ const Main = ({
                     <p>{meetupAt}</p>
                 </div>
                 <h3>Seller</h3>
-                <div className={styles.card}>
+                <div className={styles.card} onClick={() => history.push(`/profile/${user}`)} >
                     <UserInfo
                         name={name}
                         avatar={avatar}
-                        userId={user}
                         imageLeft={false}
                         fontSize="1.6rem"
                         imageSize="4rem"
                     />
                     <IoIosArrowForward />
                 </div>
+                {purchaser && purchaser.name &&
+                    <Fragment>
+                        <h3> Purchaser</h3>
+                        <div className={styles.card} onClick={() => history.push(`/profile/${purchaser._id}`)}>
+                            <UserInfo
+                                name={purchaser.name}
+                                avatar={purchaser.avatar}
+                                imageLeft={false}
+                                fontSize="1.6rem"
+                                imageSize="4rem"
+                            />
+                            <IoIosArrowForward />
+                        </div>
+                    </Fragment>
+                }
                 <Comments />
             </div>
-        </div>
+        </div >
     )
 }
 
@@ -61,4 +77,4 @@ const mapStateToProps = state => ({
     product: state.product.product
 });
 
-export default connect(mapStateToProps, null)(Main);
+export default connect(mapStateToProps, null)(withRouter(Main));
