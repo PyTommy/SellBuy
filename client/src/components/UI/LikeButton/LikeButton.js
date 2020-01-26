@@ -14,8 +14,8 @@ const LikeButton = ({
 
     return (
         <button className={styles.likeButton} onClick={(e) => onClick()} >
-            { isLiked 
-                ? <IoIosHeart className={styles.Like}/>
+            {isLiked
+                ? <IoIosHeart className={styles.Like} />
                 : <IoIosHeartEmpty className={styles.Unlike} />
             }
         </button>

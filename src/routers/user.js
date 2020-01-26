@@ -155,7 +155,7 @@ router.put('/avatar',
 // @res       {avatar, sellings, name}
 router.get('/:id', async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id).select("name avatar sellings");
+        const user = await User.findById(req.params.id).select("name avatar sellings facebook");
 
         if (!user) {
             throw new ErrorHandler(404, 'User not found');

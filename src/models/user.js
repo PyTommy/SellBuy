@@ -33,30 +33,6 @@ const UserSchema = new Schema({
         type: Buffer,
         default: null
     },
-    likes: [
-        {
-            product: {
-                type: Schema.Types.ObjectId,
-                ref: 'products'
-            }
-        }
-    ],
-    purchases: [
-        {
-            product: {
-                type: Schema.Types.ObjectId,
-                ref: 'products'
-            }
-        }
-    ],
-    sellings: [
-        {
-            product: {
-                type: Schema.Types.ObjectId,
-                ref: 'products'
-            }
-        }
-    ],
     date: {
         type: Date,
         default: Date.now

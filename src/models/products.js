@@ -5,7 +5,7 @@ const ProductSchema = new Schema({
     // user info
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'User'
     },
     name: {
         type: String,
@@ -54,25 +54,21 @@ const ProductSchema = new Schema({
         default: false
     },
     purchaser: {
-        user: {
-            type: Schema.Types.ObjectId,
-            ref: 'users'
-        }
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     },
     // Interactions
     likes: [
         {
-            user: {
-                type: Schema.Types.ObjectId,
-                ref: 'users'
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     ],
     comments: [
         {
             user: {
                 type: Schema.Types.ObjectId,
-                ref: 'users'
+                ref: 'User'
             },
             name: {
                 type: String,

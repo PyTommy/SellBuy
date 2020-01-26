@@ -29,11 +29,8 @@ router.put('/purchase/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(400, "This product is already sold-out");
         }
 
-
         product.sold = true;
-        product.purchaser = { user: req.user.id };
-
-        user.purchases.unshift({ product: product.id });
+        product.purchaser = req.user.id;
 
         const notification = new Notification({
             innerHTML: `<b>${user.name}</b> purchased your product.`,
@@ -46,7 +43,6 @@ router.put('/purchase/:id', auth, async (req, res, next) => {
         });
 
         await product.save();
-        await user.save();
         await notification.save();
 
         res.json({
@@ -67,21 +63,14 @@ router.put('/cancel/:id', auth, async (req, res, next) => {
         const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
 
-        if (!product.purchaser || !product.purchaser.user) throw new ErrorHandler(400, "Not sold yet");
+        if (!product.purchaser || !product.purchaser) throw new ErrorHandler(400, "Not sold yet");
 
-        if (product.purchaser.user.toString() !== req.user.id) {
+        if (product.purchaser.toString() !== req.user.id) {
             throw new ErrorHandler(400, "Not allowed to cancel");
         }
 
         product.purchaser = null;
         product.sold = false;
-
-        const index = user.purchases.findIndex((bought) => bought.product.toString() === req.params.id);
-        if (index > -1) {
-            user.purchases.splice(index, 1);
-        } else {
-            throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
-        }
 
         const notification = new Notification({
             innerHTML: `<b>${user.name}</b> canceled purchase of your product.`,
@@ -94,7 +83,6 @@ router.put('/cancel/:id', auth, async (req, res, next) => {
         });
 
         await product.save();
-        await user.save();
         await notification.save();
 
         res.json({
@@ -113,13 +101,13 @@ router.put('/reject/:id', auth, async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
 
-        if (!product.purchaser || !product.purchaser.user) throw new ErrorHandler(400, "Not sold yet");
+        if (!product.purchaser || !product.purchaser) throw new ErrorHandler(400, "Not sold yet");
 
         if (product.user.toString() !== req.user.id) {
             throw new ErrorHandler(400, "Not allowed to reject");
         }
 
-        const purchaser = await User.findById(product.purchaser.user);
+        const purchaser = await User.findById(product.purchaser);
         if (!purchaser) throw new ErrorHandler(404, "The purchaser not exists");
 
         product.purchaser = null;

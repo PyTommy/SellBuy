@@ -30,7 +30,6 @@ router.post('/',
         check('meetupAt', 'MeetupAt is required').trim().not().isEmpty()
     ],
     async (req, res, next) => {
-
         try {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -39,9 +38,6 @@ router.post('/',
 
             // Get User info
             const user = await User.findById(req.user.id);
-            if (!user) {
-                throw new ErrorHandler(400, "User not found");
-            }
 
             const { title, description, price, category, meetupAt } = req.body;
 
@@ -78,9 +74,6 @@ router.post('/',
 
             await product.save();
 
-            user.sellings.unshift({ product: product.id });
-            await user.save();
-
             res.send("created");
         } catch (err) {
             next(err);
@@ -113,10 +106,10 @@ router.get('/', getUserId, async (req, res, next) => {
     let findLiked = {}, findPurchased = {}, findSellings = {}, search = {}, category = {};
     if (req.query.liked === "true") {
         if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get liked");
-        findLiked = { "likes.user": new mongoose.Types.ObjectId(req.user.id) }
+        findLiked = { "likes": new mongoose.Types.ObjectId(req.user.id) }
     } else if (req.query.purchased === "true") {
         if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get purchased")
-        findPurchased = { "purchaser.user": new mongoose.Types.ObjectId(req.user.id) }
+        findPurchased = { "purchaser": new mongoose.Types.ObjectId(req.user.id) }
     } else if (req.query.sellings === "true") {
         if (!req.user.id) throw new ErrorHandler(400, "Need to be authorized to get sellings");
         findSellings = { "user": new mongoose.Types.ObjectId(req.user.id) }
@@ -198,7 +191,8 @@ router.get('/:id', async (req, res, next) => {
     try {
         const product = await Product
             .findById(req.params.id)
-            .select('-productImageLow');
+            .select('-productImageLow')
+            .populate('purchaser', 'name avatar');
         if (!product) {
             throw new ErrorHandler(404, "Product Not Found");
         }
@@ -291,7 +285,6 @@ router.put('/:id',
 // @access    Private
 router.delete('/:id', auth, async (req, res, next) => {
     try {
-        const user = await User.findById(req.user.id);
         const product = await Product.findById(req.params.id);
         if (!product) {
             throw new ErrorHandler(404, "Product Not found");
@@ -300,17 +293,7 @@ router.delete('/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(404, "You are not allowed to delete this product because you are not the user");
         }
 
-        // Delete product id from user.sellings
-        // @@ need improvement
-        const index = user.sellings.findIndex((selling) => selling.product.toString() === req.params.id);
-        if (index > -1) {
-            user.sellings.splice(index, 1);
-        } else {
-            throw new ErrorHandler(400, "Cannot find product in User's selling list.");
-        }
-
         await product.remove();
-        await user.save();
 
         res.send({ msg: "Deleted!!" });
     } catch (err) {
