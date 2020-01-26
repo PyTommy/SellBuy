@@ -13,7 +13,8 @@ import {
     SEND_MESSAGE_START,
     SEND_MESSAGE_SUCCESS,
     SEND_MESSAGE_FAIL,
-    CLEAR_MESSAGES
+    CLEAR_MESSAGES,
+    COUNT_UNSEEN_MESSAGES
 } from '../actions/actionType';
 
 const initialState = {
@@ -32,6 +33,7 @@ const initialState = {
         getMessage: false,
         sendMessage: false
     },
+    count: null
 };
 
 export default (state = initialState, action) => {
@@ -130,13 +132,27 @@ export default (state = initialState, action) => {
                 message
             };
         case GET_MESSAGE_SUCCESS:
+            let decrease = 0;
+            const newMessages = state.recieved.messages.map((message) => {
+                if (payload._id.toString() === message._id.toString() && message.seen === false) {
+                    message.seen = true;
+                    decrease++
+                }
+                return message;
+            });
+
             return {
                 ...state,
                 message: payload,
                 loading: {
                     ...state.loading,
                     getMessage: false
-                }
+                },
+                recieved: {
+                    ...state.recieved,
+                    messages: newMessages
+                },
+                count: state.count - decrease
             }
         case GET_MESSAGE_FAIL:
             return {
@@ -179,6 +195,11 @@ export default (state = initialState, action) => {
             return {
                 ...initialState
             }
+        case COUNT_UNSEEN_MESSAGES:
+            return {
+                ...state,
+                count: payload
+            };
         default:
             return state;
     }

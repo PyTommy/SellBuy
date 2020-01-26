@@ -15,14 +15,28 @@ import {
     SEND_MESSAGE_START,
     SEND_MESSAGE_SUCCESS,
     SEND_MESSAGE_FAIL,
-    CLEAR_MESSAGES
+    CLEAR_MESSAGES,
+    COUNT_UNSEEN_MESSAGES
 } from './actionType';
 import { setAlert } from './alert';
+
+export const countUnseenMessages = () => async dispatch => {
+    try {
+        const res = await axios.get(`/api/messages/count`);
+        dispatch({
+            type: COUNT_UNSEEN_MESSAGES,
+            payload: res.data.count
+        })
+    } catch (err) {
+        dispatch(setAlert(err.response.data.message, "danger"));
+    }
+};
 
 export const clearRecievedMessages = () => async dispatch => {
     dispatch({
         type: CLEAR_RECIEVED_MESSAGES
     });
+    dispatch(countUnseenMessages());
 };
 export const clearSentMessages = () => async dispatch => {
     dispatch({
@@ -86,6 +100,7 @@ export const getMessage = (messageId) => async dispatch => {
             payload: res.data
         });
     } catch (err) {
+        console.log(err);
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: GET_MESSAGE_FAIL

@@ -8,6 +8,7 @@ const auth = require('../../middleware/auth');
 // Models
 const User = require('../../models/user');
 const Product = require('../../models/products');
+const Notification = require('../../models/notification');
 
 
 // @route         PUT api/products/purchase/:id
@@ -28,13 +29,25 @@ router.put('/purchase/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(400, "This product is already sold-out");
         }
 
+
         product.sold = true;
         product.purchaser = { user: req.user.id };
 
         user.purchases.unshift({ product: product.id });
 
+        const notification = new Notification({
+            innerHTML: `<b>${user.name}</b> purchased your product.`,
+            product: product._id,
+            trigger: {
+                _id: user._id,
+                avatar: user.avatar
+            },
+            recipient: product.user,
+        });
+
         await product.save();
         await user.save();
+        await notification.save();
 
         res.json({
             sold: product.sold,
@@ -45,7 +58,7 @@ router.put('/purchase/:id', auth, async (req, res, next) => {
     }
 });
 
-// @route         PUT api/products/unlike/:id
+// @route         PUT api/products/cancel/:id
 // @description   Unlike a product
 // @access        Private
 // @res           [{id:..., user: ...}, ...]
@@ -70,8 +83,19 @@ router.put('/cancel/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
         }
 
+        const notification = new Notification({
+            innerHTML: `<b>${user.name}</b> canceled purchase of your product.`,
+            product: product._id,
+            trigger: {
+                _id: user._id,
+                avatar: user.avatar
+            },
+            recipient: product.user,
+        });
+
         await product.save();
         await user.save();
+        await notification.save();
 
         res.json({
             sold: product.sold,
@@ -108,8 +132,19 @@ router.put('/reject/:id', auth, async (req, res, next) => {
             throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
         }
 
+        const notification = new Notification({
+            innerHTML: `<b>${product.name}</b> rejected your purchase.`,
+            product: product._id,
+            trigger: {
+                _id: product.user,
+                avatar: product.avatar
+            },
+            recipient: purchaser._id,
+        });
+
         await product.save();
         await purchaser.save();
+        await notification.save();
 
         res.json({
             sold: product.sold,

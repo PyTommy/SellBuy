@@ -13,7 +13,8 @@ const message = ({
     text,
     checkRecieved,
     partialPath,
-    avatar
+    avatar,
+    seen = true
 }) => {
     let avatarSrc = avatar
         ? imageConverter(avatar.data)
@@ -33,6 +34,7 @@ const message = ({
                 </p>
                 <p className={classes.Time}>{`${ago(createdAt)} ago`}</p>
                 <p className={classes.Text}>{textAbstract(text, 40)}</p>
+                {!seen && <span className={classes.unseen}></span>}
             </div>
         </Link>
     );

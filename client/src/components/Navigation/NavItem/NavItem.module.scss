@@ -1,0 +1,68 @@
+@import '../../../styles/setting.module.scss';
+
+.Link {
+    position: relative;
+    height: 100%;
+    width: 6rem;
+    text-decoration: none;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid transparent;
+    color: $color-light-gray;
+
+    cursor: pointer;
+    transition: all .3s;
+    
+    @media only screen and (min-width: 600px) {
+        width: 5.5rem;
+        padding: 0 .5rem;
+        border-top: none;
+        border-bottom: 1px solid transparent;
+    }
+    @media only screen and (min-width: 1200px) {
+        width: 10rem;
+        padding: 0 .5rem;
+        border-top: none;
+        border-bottom: 1px solid transparent;
+        flex-direction: row;
+    }
+}
+
+.Icon {
+    width: 2rem;
+    height: 2rem;
+    color: inherit;
+    @media only screen and (min-width: 1200px) {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+.menuTitle {
+    color: inherit;
+    font-size: 1rem;
+    @media only screen and (min-width: 1200px) {
+        margin-left: .5rem;
+        font-size: 1.4rem;
+    }
+}
+.counter {
+    position: absolute;
+    top: .2rem;
+    right: .3rem;
+    width: 2rem;
+    height: 2rem;
+    color: white;
+    background-color: red;
+    border-radius: 100rem;
+    font-size: 1rem;
+    font-weight: bold;
+    
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}

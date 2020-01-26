@@ -50,6 +50,7 @@ const Inbox
                         avatar={msg.sender.avatar}
                         partialPath='recieved'
                         checkRecieved={checkRecieved}
+                        seen={msg.seen}
                     />
                 );
             })

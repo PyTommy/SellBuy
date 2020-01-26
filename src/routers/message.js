@@ -52,7 +52,7 @@ router.post('/:recipientId',
     }
 );
 
-// GET /messages
+// GET /messages/recieved
 // desc massages
 router.get('/recieved', auth, async (req, res, next) => {
     if (!req.query) req.query = {};
@@ -75,6 +75,25 @@ router.get('/recieved', auth, async (req, res, next) => {
         next(err);
     }
 });
+
+// GET /messages/count
+// desc count the number of unseen messages
+router.get('/count', auth, async (req, res, next) => {
+    try {
+        const userId = new mongoose.Types.ObjectId(req.user.id);
+        const count = await Message.countDocuments({
+            $and: [
+                { recipient: userId },
+                { seen: false }
+            ]
+        });
+        res.send({ count });
+    } catch (err) {
+        next(err);
+    }
+});
+
+
 
 // GET /messages/sent
 // desc massages
@@ -110,6 +129,9 @@ router.get('/:id', auth, async (req, res, next) => {
         if (message.sender._id.toString() !== req.user.id.toString() && message.recipient._id.toString() !== req.user.id.toString()) {
             throw new ErrorHandler(400, "Not allowed to see the message");
         }
+
+        await Message.updateOne({ _id: message._id }, { $set: { seen: true } });
+        message.seen = true;
 
         res.send(message);
     } catch (err) {

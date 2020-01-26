@@ -1,0 +1,44 @@
+@import '../../../styles//setting.module.scss';
+
+.Link {
+    width: 100%;
+    color: inherit;
+}
+.Notification {
+    line-height: 1.2;
+    font-size: 1.4rem;
+    height: 6.5rem;
+    width: 100%;
+    padding: .25rem;
+    border-bottom: 1px solid #efefef;
+    
+    display: flex;
+    align-items: start;
+}
+
+.Image {
+    margin: 0 1rem;
+    align-self: center;
+    width: 4.5rem;
+    clip-path: circle();
+}
+
+
+.rightContainer {
+    flex-grow: 1;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.Text {
+    color: #333;
+}
+
+.Time {
+    margin-top: .3rem;
+    color: #888;
+}

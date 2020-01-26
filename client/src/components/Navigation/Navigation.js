@@ -1,25 +1,30 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoIosSearch } from "react-icons/io";
+import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoIosSearch, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
-import NavItem from './hoc';
+import NavItem from './NavItem/NavItem';
 
 import styles from './Navigation.module.scss';
 
-const Navigation = (props) => {
+
+const Navigation = ({ auth, msgCount, notificationCount }) => {
     const HomeNav = NavItem(IoMdHome);
     const MyList = NavItem(IoIosList);
     const SellNav = NavItem(MdAttachMoney);
-    const InboxNav = NavItem(IoMdMail);
+    const NotificationNav = NavItem(IoMdNotifications, notificationCount);
+    const InboxNav = NavItem(IoMdMail, msgCount);
     const MyPageNav = NavItem(IoMdContact);
     const AuthNav = NavItem(IoMdContact);
 
+
+
     // Changing Navigations depend on isAuthentication
-    const navItems = props.auth.isAuthenticated ? (
+    const navItems = auth.isAuthenticated ? (
         <Fragment>
             <HomeNav linkTo="/products">Home</HomeNav>
             <MyList linkTo="/mylist/liked">My List</MyList>
             <SellNav linkTo="/sell">Sell</SellNav>
+            <NotificationNav linkTo="/notification">Notification</NotificationNav>
             <InboxNav linkTo="/inbox/recieved">Inbox</InboxNav>
             <MyPageNav linkTo="/mypage">My Page</MyPageNav>
         </Fragment>
@@ -45,7 +50,9 @@ const Navigation = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        auth: state.auth
+        auth: state.auth,
+        msgCount: state.message.count,
+        notificationCount: state.notification.count,
     };
 };
 

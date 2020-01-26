@@ -1,6 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import imageConverter from '../../../utils/imageConverter';
+import textAbstract from '../../../utils/textAbstract';
 
 
 import styles from './Product.module.scss';
@@ -13,19 +14,15 @@ const product = ({ history, product }) => {
 
     return (
         <div className={styles.Product} onClick={(e) => { history.push(`/products/${_id}`) }}>
-            {/* Main Picture*/}
             <div className={styles.imageWrapper}>
                 <img alt="pic" className={styles.Image} src={imageSrc} />
                 {product.sold &&
                     <div className={styles.soldOut}>SOLD-OUT</div>
                 }
             </div>
-
-
-            {/* Texts */}
             <div className={styles.TextBox}>
                 <div className={styles.Main}>¥ {price.toLocaleString()}</div>
-                <div className={styles.Sub}>{meetupAt}</div>
+                <div className={styles.Sub}>{textAbstract(meetupAt, 9)}</div>
             </div>
         </div>
     );

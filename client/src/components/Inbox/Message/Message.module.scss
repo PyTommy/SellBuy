@@ -1,8 +1,11 @@
+@import '../../../styles//setting.module.scss';
+
 .Link {
     width: 100%;
     color: inherit;
 }
 .Message {
+    position: relative;
     line-height: 1.2;
     font-size: 1.4rem;
     height: 6.5rem;
@@ -15,7 +18,6 @@
     grid-template-columns: 6rem 1fr auto;
     align-items: center;
     grid-gap: 3px;
-
 }
 
 .Image {
@@ -47,4 +49,14 @@
     grid-column: 2/-1;
     grid-row: 2/3;
     color: #888;
+}
+
+.unseen {
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    width: 1.3rem;
+    height: 1.3rem;
+    background-color: $color-primary;
+    border-radius: 100rem;
 }

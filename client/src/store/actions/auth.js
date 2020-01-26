@@ -24,7 +24,8 @@ import {
     UPDATE_EMAIL_SUCCESS,
 } from './actionType';
 import { setAlert } from './alert';
-import { clearMessages } from './message';
+import { clearMessages, countUnseenMessages } from './message';
+import { clearNotifications, countUnseenNotifications } from './notification';
 
 export const loadUser = () => async dispatch => {
     if (localStorage.token) {
@@ -48,6 +49,8 @@ export const loadUser = () => async dispatch => {
             type: LOAD_USER_SUCCESS,
             payload: res.data
         });
+        dispatch(countUnseenMessages());
+        dispatch(countUnseenNotifications());
     } catch (err) {
         // dispatch(setAlert(err.response.data.message, "danger")); Doesnt work 
         dispatch({
@@ -109,6 +112,7 @@ export const register = ({ name, email, password }) => async dispatch => {
 export const logout = () => dispatch => {
     dispatch({ type: LOGOUT });
     dispatch(clearMessages());
+    dispatch(clearNotifications());
 };
 
 export const updateAvatar = (avatar) => async dispatch => {

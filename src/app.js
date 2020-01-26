@@ -22,6 +22,7 @@ app.use('/api/products', require('./routers/products/like'));
 app.use('/api/products', require('./routers/products/comment'));
 app.use('/api/products', require('./routers/products/purchase'));
 app.use('/api/messages', require('./routers/message'));
+app.use('/api/notifications', require('./routers/notification'));
 
 app.use((err, req, res, next) => {
     if (err) handleError(err, res);

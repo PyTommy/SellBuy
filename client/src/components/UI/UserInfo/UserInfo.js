@@ -8,6 +8,7 @@ import PictureRadius from '../Pictures/PictureRadius/PictureRadius';
 
 
 const UserInfo = ({
+    title = null,
     name,
     avatar,
     userId,
@@ -41,7 +42,7 @@ const UserInfo = ({
                 fontWeight,
                 color
             }}
-        >{name}
+        >{title && <span style={{ fontWeight: "normal" }}>{`${title} `}</span>}{name}
         </div>;
 
     return (

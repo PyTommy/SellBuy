@@ -1,6 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom';
 import styles from './TopBar.module.scss';
+import { IoIosArrowBack } from 'react-icons/io';
 
 const TopBar = ({ children, history }) => {
     return (
@@ -9,7 +10,7 @@ const TopBar = ({ children, history }) => {
                 className={styles.GoBack}
                 onClick={e => history.goBack()}
             >
-                <span>{"<"}</span>
+                <IoIosArrowBack />
             </div>
             {children}
         </div>

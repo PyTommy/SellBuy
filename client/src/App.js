@@ -17,6 +17,7 @@ import SingleProduct from './components/SingleProduct/SingleProduct';
 import Sell from './components/Sell/Sell';
 import EditPage from './components/EditPage/EditPage';
 import Profile from './components/Profile/Profile';
+import NotificationPage from './components/NotificationPage/NotificationPage';
 import Inbox from './components/Inbox/Inbox';
 import MessageBox from './components/MessageBox/MessageBox';
 import MessageForm from './components/MessageForm/MessageForm';
@@ -49,6 +50,7 @@ class App extends Component {
             <PrivateRoute path="/mypage/update/profile" exact component={UpdateProfile} />
             <PrivateRoute path="/mypage/update/email" exact component={UpdateEmail} />
             <PrivateRoute path="/mypage/update/password" exact component={UpdatePassword} />
+            <PrivateRoute path="/notification" exact component={NotificationPage} />
             <PrivateRoute path="/inbox/recieved/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/sent/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/:status" component={Inbox} />

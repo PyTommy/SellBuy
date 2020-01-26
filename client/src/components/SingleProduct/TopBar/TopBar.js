@@ -46,7 +46,7 @@ const TopBar = ({
     return (
         <UITopBar>
             <div className={styles.items}>
-                {auth.isAuthenticated && auth.user._id === product.user && (
+                {auth.isAuthenticated && auth.user._id === product.user && product.sold === false && (
                     <Fragment>
                         <Button
                             btnType="color-orange size-sm"

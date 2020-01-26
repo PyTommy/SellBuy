@@ -196,7 +196,9 @@ router.get('/sellings/:userId', async (req, res, next) => {
 // @res
 router.get('/:id', async (req, res, next) => {
     try {
-        const product = await Product.findById(req.params.id).select('-productImageLow');
+        const product = await Product
+            .findById(req.params.id)
+            .select('-productImageLow');
         if (!product) {
             throw new ErrorHandler(404, "Product Not Found");
         }
