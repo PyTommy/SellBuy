@@ -47,7 +47,11 @@ router.put('/purchase/:id', auth, async (req, res, next) => {
 
         res.json({
             sold: product.sold,
-            purchaser: product.purchaser
+            purchaser: {
+                _id: user._id,
+                avatar: user.avatar,
+                name: user.name,
+            }
         });
     } catch (err) {
         next(err)
@@ -112,13 +116,6 @@ router.put('/reject/:id', auth, async (req, res, next) => {
 
         product.purchaser = null;
         product.sold = false;
-
-        const index = purchaser.purchases.findIndex((bought) => bought.product.toString() === req.params.id);
-        if (index > -1) {
-            purchaser.purchases.splice(index, 1);
-        } else {
-            throw new ErrorHandler(500, "Cannot delete bought item from user's list!!");
-        }
 
         const notification = new Notification({
             innerHTML: `<b>${product.name}</b> rejected your purchase.`,
