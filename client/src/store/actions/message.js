@@ -89,7 +89,7 @@ export const getSent = (skip = 0, limit = 20) => async dispatch => {
     }
 };
 
-export const getMessage = (messageId) => async dispatch => {
+export const getMessage = (messageId, cb) => async dispatch => {
     dispatch({
         type: GET_MESSAGE_START,
         payload: messageId
@@ -102,19 +102,19 @@ export const getMessage = (messageId) => async dispatch => {
             type: GET_MESSAGE_SUCCESS,
             payload: res.data
         });
+        cb();
     } catch (err) {
-        console.log(err);
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: GET_MESSAGE_FAIL
         });
+        cb();
     }
 }
     ;
 export const sendMessage = (recipientId, text) => async dispatch => {
     try {
         await axios.post(`/api/messages/${recipientId}`, { text });
-
         dispatch(setAlert("Message Sent", "success"));
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));

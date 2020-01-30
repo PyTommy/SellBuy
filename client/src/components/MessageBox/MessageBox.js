@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment, useState } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getMessage, sendMessage } from '../../store/actions/message'
@@ -13,12 +13,14 @@ const MessageBox = ({
     match,
     history,
     message,
-    loading,
     getMessage,
     sendMessage
 }) => {
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
-        getMessage(match.params.id);
+        setLoading(true);
+        getMessage(match.params.id, () => setLoading(false));
     }, [getMessage, match.params.id]);
 
     const onSubmitHandler = (text) => {
@@ -30,14 +32,16 @@ const MessageBox = ({
         ? true
         : false;
 
-    let counterParty = null;
+    let counterParty = {};
     if (message) {
         if (amIRecipient) {
             counterParty = message.sender;
             counterParty.name = message.senderName;
         } else {
-            counterParty = message.recipient;
-            counterParty.name = message.recipientName;
+            if (message.recipient.avatar) { // avoiding cases that recipient has not populated yet
+                counterParty = message.recipient;
+            }
+            counterParty.name = message.senderName;
         }
     }
 
@@ -73,14 +77,12 @@ const MessageBox = ({
 
 MessageBox.propTypes = {
     message: PropTypes.object,
-    loading: PropTypes.object.isRequired,
     getMessage: PropTypes.func.isRequired,
     sendMessage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
     message: state.message.message,
-    loading: state.message.loading,
 });
 
 export default connect(mapStateToProps, { getMessage, sendMessage })(MessageBox);

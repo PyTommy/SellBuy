@@ -3,4 +3,11 @@
 .MessageBoxMain {
     margin-top: $top-height;
     padding: 1rem 5%;
+
+    @media (min-width: 600px) {
+        width: 600px;
+        margin-top: 1rem;
+        margin-right: auto;
+        margin-left: auto;
+    }
 }

@@ -1,20 +1,10 @@
 import {
-    // LOAD_USER
     LOAD_USER_START,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
 
-    // REGISTER
-    REGISTER_START,
     REGISTER,
-    REGISTER_FAIL,
-
-    // LOGIN
-    LOGIN_START,
     LOGIN,
-    LOGIN_FAIL,
-
-    // LOGOUT
     LOGOUT,
 
     UPDATE_AVATAR,

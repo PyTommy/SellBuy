@@ -13,6 +13,7 @@ import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
 import TopBar from '../UI/TopBar/TopBar';
 
 const EditPage = ({ product, getProduct, editProduct, match, history, loading }) => {
+    // State
     const [formData, setFormData] = useState({
         title: "",
         price: "",
@@ -23,7 +24,7 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
     const [imgModified, setImgModified] = useState(false);
     const [productImage, setProductImage] = useState(null);
 
-
+    // Effect
     useEffect(() => {
         if ((!loading.getProduct && !product) || (product && match.params.id !== product._id.toString())) {
             getProduct(match.params.id);
@@ -42,6 +43,7 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
         );
     }, [getProduct, setFormData, loading.getProduct, match.params.id, product]);
 
+    // Variable
     const {
         title,
         price,
@@ -50,6 +52,7 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
         description
     } = formData;
 
+    // Functions
     const onChange = (e) => {
         e.preventDefault();
         e.persist()

@@ -10,13 +10,10 @@ import {
 
 const profileReducerDefaultState = {
     user: null,
-    loading: {
-        user: false,
-        products: false
-    },
     products: {
         products: [],
         hasMore: true,
+        loading: false
     },
 };
 
@@ -30,20 +27,12 @@ const profileReducer = (state = profileReducerDefaultState, { type, payload }) =
                 ...state,
                 products: {
                     ...profileReducerDefaultState.products
-                },
-                loading: {
-                    ...state.loading,
-                    user: true
                 }
             };
         case GET_PROFILE_SUCCESS:
             return {
                 ...state,
                 user: payload,
-                loading: {
-                    ...state.loading,
-                    user: false
-                }
             };
         case GET_PROFILE_FAIL:
             return profileReducerDefaultState;
@@ -53,9 +42,9 @@ const profileReducer = (state = profileReducerDefaultState, { type, payload }) =
         case GET_PROFILE_PRODUCTS_START:
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    products: true
+                products: {
+                    ...state.products,
+                    loading: true
                 }
             };
         case GET_PROFILE_PRODUCTS_SUCCESS:
@@ -64,10 +53,7 @@ const profileReducer = (state = profileReducerDefaultState, { type, payload }) =
                 products: {
                     products: [...state.products.products, ...payload.products],
                     hasMore: payload.hasMore,
-                },
-                loading: {
-                    ...state.loading,
-                    products: false
+                    loading: false
                 }
             };
         case GET_PROFILE_PRODUCTS_FAIL:
@@ -75,11 +61,8 @@ const profileReducer = (state = profileReducerDefaultState, { type, payload }) =
                 ...state,
                 products: {
                     products: [],
-                    hasMore: false
-                },
-                loading: {
-                    ...state.loading,
-                    products: false
+                    hasMore: false,
+                    loading: false
                 }
             };
         default:

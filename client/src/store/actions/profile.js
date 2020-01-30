@@ -9,7 +9,7 @@ import {
 } from './actionType';
 import { setAlert } from './alert';
 
-export const getProfile = (userId) => async dispatch => {
+export const getProfile = (userId, cb = () => { }) => async dispatch => {
     dispatch({
         type: GET_PROFILE_START
     });
@@ -21,11 +21,13 @@ export const getProfile = (userId) => async dispatch => {
             type: GET_PROFILE_SUCCESS,
             payload: res.data
         });
+        cb()
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
         dispatch({
             type: GET_PROFILE_FAIL,
         });
+        cb()
     }
 };
 

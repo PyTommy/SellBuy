@@ -1,107 +1,44 @@
 import axios from '../../axios';
 
 import {
-    SET_PRODUCT_START,
-    SET_PRODUCT_SUCCESS,
-    SET_PRODUCT_FAIL,
-
-    EDIT_PRODUCT_START,
-    EDIT_PRODUCT_SUCCESS,
-    EDIT_PRODUCT_FAIL,
-
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
-
     REFRESH_PRODUCTS,
-
     GET_PRODUCT_START,
     GET_PRODUCT_SUCCESS,
     GET_PRODUCT_FAIL,
-
-    DELETE_PRODUCT_START,
-    DELETE_PRODUCT_SUCCESS,
-    DELETE_PRODUCT_FAIL,
-
-    ADD_COMMENT_START,
-    ADD_COMMENT_SUCCESS,
-    ADD_COMMENT_FAIL,
-
-    SET_LIKE_START,
-    SET_LIKE_SUCCESS,
-    SET_LIKE_FAIL,
-
-    SET_UNLIKE_START,
-    SET_UNLIKE_SUCCESS,
-    SET_UNLIKE_FAIL,
-
-    PURCHASE_START,
-    PURCHASE_SUCCESS,
-    PURCHASE_FAIL,
-
-    CANCEL_START,
-    CANCEL_SUCCESS,
-    CANCEL_FAIL,
-
-    REJECT_START,
-    REJECT_SUCCESS,
-    REJECT_FAIL,
+    DELETE_PRODUCT,
+    ADD_COMMENT,
+    SET_LIKE,
+    SET_UNLIKE,
+    PURCHASE_PRODUCT,
+    CANCEL_PRODUCT,
+    REJECT_PRODUCT,
 } from './actionType.js';
 import { setAlert } from './alert';
 
-export const createProduct = (formData) => async dispatch => {
-    dispatch({
-        type: SET_PRODUCT_START
-    });
-
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+const config = {
+    headers: {
+        'Content-Type': 'multipart/form-data'
     }
+}
 
-
+export const createProduct = (formData) => async dispatch => {
     try {
-        const res = await axios.post('/api/products', formData, config);
-
+        await axios.post('/api/products', formData, config);
         dispatch(setAlert("Added Product", "success"));
-        dispatch({
-            type: SET_PRODUCT_SUCCESS,
-            payload: res.data
-        });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: SET_PRODUCT_FAIL
-        });
     }
 };
 
-
 export const editProduct = (productId, formData) => async dispatch => {
-    dispatch({
-        type: EDIT_PRODUCT_START
-    });
-
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    }
-
     try {
-        const res = await axios.put(`/api/products/${productId}`, formData, config);
-
+        await axios.put(`/api/products/${productId}`, formData, config);
         dispatch(setAlert("Edited Product", "success"));
-        dispatch({
-            type: EDIT_PRODUCT_SUCCESS,
-            payload: res.data
-        });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: EDIT_PRODUCT_FAIL
-        });
     }
 };
 
@@ -163,137 +100,104 @@ export const getProduct = (productId) => async dispatch => {
 };
 
 export const deleteProduct = (productId) => async dispatch => {
-    dispatch({
-        type: DELETE_PRODUCT_START
-    });
-
     try {
         await axios.delete(`/api/products/${productId}`);
 
         dispatch({
-            type: DELETE_PRODUCT_SUCCESS,
+            type: DELETE_PRODUCT,
             payload: productId
         });
         dispatch(setAlert("Product deleted", "success"));
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: DELETE_PRODUCT_FAIL
-        });
     }
 };
 
-export const addComment = (productId, text) => async dispatch => {
-    dispatch({
-        type: ADD_COMMENT_START
-    });
-
+export const addComment = (productId, text, callback = () => { }) => async dispatch => {
     try {
         const res = await axios.post(`/api/products/comment/${productId}`, { text });
 
         dispatch(setAlert("Added Comment", "success"));
         dispatch({
-            type: ADD_COMMENT_SUCCESS,
+            type: ADD_COMMENT,
             payload: res.data
         });
+        callback();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: ADD_COMMENT_FAIL
-        });
+        callback();
     }
 };
 
-export const setLike = (productId) => async dispatch => {
-    dispatch({
-        type: SET_LIKE_START
-    });
-
+export const setLike = (productId, callback) => async dispatch => {
     try {
         const res = await axios.put(`/api/products/like/${productId}`);
         dispatch({
-            type: SET_LIKE_SUCCESS,
+            type: SET_LIKE,
             payload: res.data
         });
+        callback();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: SET_LIKE_FAIL
-        });
+        callback();
     }
 };
-export const setUnlike = (productId) => async dispatch => {
-    dispatch({
-        type: SET_UNLIKE_START
-    });
 
+export const setUnlike = (productId, callback) => async dispatch => {
     try {
         const res = await axios.put(`/api/products/unlike/${productId}`);
         dispatch({
-            type: SET_UNLIKE_SUCCESS,
+            type: SET_UNLIKE,
             payload: res.data
         });
+        callback();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: SET_UNLIKE_FAIL
-        });
+        callback();
     }
 };
 
-export const purchaseProduct = (productId) => async dispatch => {
-    dispatch({
-        type: PURCHASE_START
-    });
-
+export const purchaseProduct = (productId, cb = () => { }) => async dispatch => {
     try {
         const res = await axios.put(`/api/products/purchase/${productId}`);
         dispatch({
-            type: PURCHASE_SUCCESS,
+            type: PURCHASE_PRODUCT,
             payload: res.data
         });
+        dispatch(setAlert("Purchased a product", "success"));
+        cb();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: PURCHASE_FAIL
-        });
+        cb();
     }
 };
 
-export const cancelProduct = (productId) => async dispatch => {
-    dispatch({
-        type: CANCEL_START
-    });
-
+export const cancelProduct = (productId, cb = () => { }) => async dispatch => {
     try {
         const res = await axios.put(`/api/products/cancel/${productId}`);
         dispatch({
-            type: CANCEL_SUCCESS,
+            type: CANCEL_PRODUCT,
             payload: res.data
         });
+        dispatch(setAlert("Canceled a product", "success"));
+        cb();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: CANCEL_FAIL
-        });
+        cb();
     }
 };
 
-export const rejectProduct = (productId) => async dispatch => {
-    dispatch({
-        type: REJECT_START
-    });
-
+export const rejectProduct = (productId, cb = () => { }) => async dispatch => {
     try {
         const res = await axios.put(`/api/products/reject/${productId}`);
         dispatch({
-            type: REJECT_SUCCESS,
+            type: REJECT_PRODUCT,
             payload: res.data
         });
+        dispatch(setAlert("Reject a customer's purchase", "success"));
+        cb();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: REJECT_FAIL
-        });
+        cb();
     }
 };

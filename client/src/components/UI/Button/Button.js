@@ -32,7 +32,7 @@ const Button = ({
 
     return (
         <button
-            onClick={onClick}
+            onClick={loading ? () => { } : onClick}
             style={style}
             className={appliedClasses.join(" ")}
         >

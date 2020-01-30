@@ -57,7 +57,7 @@ const UserInfo = ({
 }
 
 UserInfo.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     userId: PropTypes.string,
 
     // styles

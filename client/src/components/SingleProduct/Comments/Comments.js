@@ -8,12 +8,26 @@ import styles from './Comments.module.scss';
 import Comment from '../Comment/Comment';
 import Button from '../../UI/Button/Button';
 
-const Comments = ({ addComment, auth, comments, history, match, loading }) => {
+const Comments = ({ addComment, auth, comments, history, match }) => {
+    const [loading, setLoading] = useState(false);
     const [newComment, setNewComment] = useState("");
 
     useEffect(() => {
         setNewComment(() => "");
     }, [comments]);
+
+    const onChangeHandler = (e) => {
+        e.persist();
+        setNewComment(e.target.value);
+    };
+
+    const onSubmit = e => {
+        if (!auth.isAuthenticated) return history.push('/auth');
+        if (newComment === "") return alert("Comment needed");
+
+        setLoading(true);
+        addComment(match.params.id, newComment, () => setLoading(false));
+    }
 
     return (
         <Fragment>
@@ -25,24 +39,12 @@ const Comments = ({ addComment, auth, comments, history, match, loading }) => {
                     className={styles.Textarea}
                     placeholder="New comment here"
                     value={newComment}
-                    onChange={(e) => {
-                        e.persist();
-                        setNewComment(() => e.target.value);
-                    }}
+                    onChange={onChangeHandler}
                 ></textarea>
                 <Button
                     btnType="color-primary"
                     className={styles.button}
-                    onClick={e => {
-                        if (!auth.isAuthenticated) {
-                            history.push('/auth');
-                        }
-                        else if (newComment === "") {
-                            console.log("Comment needed") //@@@ todo
-                        } else {
-                            addComment(match.params.id, newComment);
-                        }
-                    }}
+                    onClick={onSubmit}
                     loading={loading}
                 >SEND
                 </Button>
@@ -58,7 +60,6 @@ Comments.propTypes = {
 
 const mapStateToProps = state => ({
     comments: state.product.product.comments,
-    loading: state.product.loading.comments,
     auth: state.auth,
     addComment: PropTypes.func.isRequired,
 });

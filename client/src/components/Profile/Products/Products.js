@@ -49,7 +49,7 @@ Products.propTypes = {
 const mapStateToProps = state => ({
     products: state.profile.products.products,
     hasMore: state.profile.products.hasMore,
-    loading: state.profile.loading.products,
+    loading: state.profile.products.loading
 });
 
 export default connect(mapStateToProps, { getProfileProducts })(withRouter(Products));

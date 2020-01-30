@@ -3,4 +3,8 @@
     max-width: 60rem;
     margin: 0 auto;
     margin-top: 6rem;
+    @media (min-width: 600px) {
+        width: 600px;
+        margin-top: 2rem;
+    }
 }

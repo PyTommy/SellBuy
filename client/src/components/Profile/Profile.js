@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import styles from './Profile.module.scss'
@@ -15,13 +15,15 @@ const Profile = ({
     match,
     //store
     user,
-    loading,
     // actions
     getProfile,
 }) => {
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         if (!user || user._id.toString() !== match.params.id) {
-            getProfile(match.params.id);
+            setLoading(true);
+            getProfile(match.params.id, () => { setLoading(false) });
         }
     }, [getProfile, user, match.params.id]);
 
@@ -49,12 +51,10 @@ const Profile = ({
 Profile.propTypes = {
     getProfile: PropTypes.func.isRequired,
     user: PropTypes.object,
-    loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = state => ({
     user: state.profile.user,
-    loading: state.profile.loading.user,
 });
 
 export default connect(mapStateToProps, { getProfile })(Profile);

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types'
@@ -15,12 +15,13 @@ const TopBar = ({
     // store    
     auth,
     product,
-    loadingLike,
     // actions
     deleteProduct,
     setLike,
     setUnlike,
 }) => {
+    const [loading, setLoading] = useState(false);
+
     let isLiked = false;
     if (auth.isAuthenticated && product) { // set product before didmount to remove "&& product"
         isLiked = !!product.likes.find((like) => {
@@ -28,10 +29,12 @@ const TopBar = ({
         });
     }
     const onLikeButtonClicked = () => {
-        if (!auth.isAuthenticated) {
-            return history.push('/auth');
-        }
-        isLiked ? setUnlike(match.params.id) : setLike(match.params.id);
+        if (!auth.isAuthenticated) return history.push('/auth');
+
+        setLoading(true);
+        const callback = () => setLoading(false);
+
+        isLiked ? setUnlike(match.params.id, callback) : setLike(match.params.id, callback);
     }
 
     const onEditButtonClicked = () => {
@@ -61,7 +64,7 @@ const TopBar = ({
                     </Fragment>)
                 }
                 <LikeButton
-                    loading={loadingLike}
+                    loading={loading}
                     onClick={() => onLikeButtonClicked()}
                     isLiked={isLiked}
                 />
@@ -72,7 +75,6 @@ const TopBar = ({
 
 TopBar.propTypes = {
     product: PropTypes.object,
-    loadingLike: PropTypes.bool.isRequired,
     auth: PropTypes.object,
     deleteProduct: PropTypes.func.isRequired,
     setLike: PropTypes.func.isRequired,

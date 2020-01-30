@@ -1,38 +1,19 @@
 import {
-    SET_PRODUCT_START,
-    SET_PRODUCT_SUCCESS,
-    SET_PRODUCT_FAIL,
-    EDIT_PRODUCT_START,
-    EDIT_PRODUCT_SUCCESS,
-    EDIT_PRODUCT_FAIL,
     GET_PRODUCTS_START,
     GET_PRODUCTS_SUCCESS,
     GET_PRODUCTS_FAIL,
     REFRESH_PRODUCTS,
+
     GET_PRODUCT_START,
     GET_PRODUCT_SUCCESS,
     GET_PRODUCT_FAIL,
-    DELETE_PRODUCT_START,
-    DELETE_PRODUCT_SUCCESS,
-    DELETE_PRODUCT_FAIL,
-    ADD_COMMENT_START,
-    ADD_COMMENT_SUCCESS,
-    ADD_COMMENT_FAIL,
-    SET_LIKE_START,
-    SET_LIKE_SUCCESS,
-    SET_LIKE_FAIL,
-    SET_UNLIKE_START,
-    SET_UNLIKE_SUCCESS,
-    SET_UNLIKE_FAIL,
-    PURCHASE_START,
-    PURCHASE_SUCCESS,
-    PURCHASE_FAIL,
-    CANCEL_START,
-    CANCEL_SUCCESS,
-    CANCEL_FAIL,
-    REJECT_START,
-    REJECT_SUCCESS,
-    REJECT_FAIL,
+    DELETE_PRODUCT,
+    ADD_COMMENT,
+    SET_LIKE,
+    SET_UNLIKE,
+    PURCHASE_PRODUCT,
+    CANCEL_PRODUCT,
+    REJECT_PRODUCT,
 } from '../actions/actionType.js';
 
 const initialState = {
@@ -40,13 +21,8 @@ const initialState = {
     hasMore: true,
     product: null,
     loading: {
-        setProduct: false,
         getProduct: false,
         getProducts: false,
-        deleteProduct: false,
-        comments: false,
-        likes: false,
-        purchase: false,
     },
     mylist: {
         liked: {
@@ -71,15 +47,6 @@ export default (state = initialState, action) => {
         // ====================
         // Start
         // ====================
-        case SET_PRODUCT_START:
-        case EDIT_PRODUCT_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    setProduct: true
-                }
-            };
         case GET_PRODUCTS_START:
             return {
                 ...state,
@@ -110,53 +77,9 @@ export default (state = initialState, action) => {
                 },
                 product: existingProduct
             };
-        case DELETE_PRODUCT_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    deleteProduct: true
-                }
-            };
-        case ADD_COMMENT_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    comments: true
-                }
-            };
-        case SET_LIKE_START:
-        case SET_UNLIKE_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    likes: true
-                }
-            }
-        case PURCHASE_START:
-        case CANCEL_START:
-        case REJECT_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    purchase: true
-                }
-            }
         // ====================
         // SUCCESS
         // ====================
-        case SET_PRODUCT_SUCCESS: // It could be something else
-        case EDIT_PRODUCT_SUCCESS:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    setProduct: false
-                },
-            };
         case GET_PRODUCTS_SUCCESS:
             return {
                 ...state,
@@ -176,71 +99,46 @@ export default (state = initialState, action) => {
                     getProduct: false
                 },
             };
-        case ADD_COMMENT_SUCCESS:
+        case ADD_COMMENT:
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    comments: false
-                },
                 product: {
                     ...state.product,
                     comments: payload
                 }
             };
-        case SET_LIKE_SUCCESS:
-        case SET_UNLIKE_SUCCESS:
+        case SET_LIKE:
+        case SET_UNLIKE:
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    likes: false
-                },
                 product: {
                     ...state.product,
                     likes: payload
                 }
             };
-        case PURCHASE_SUCCESS:
-        case CANCEL_SUCCESS:
-        case REJECT_SUCCESS:
+        case PURCHASE_PRODUCT:
+        case CANCEL_PRODUCT:
+        case REJECT_PRODUCT:
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    purchase: false
-                },
                 product: {
                     ...state.product,
                     ...payload
                 }
             };
-        case DELETE_PRODUCT_SUCCESS:
+        case DELETE_PRODUCT:
             let product = state.product;
             if (state.product._id.toString() === payload) {
                 product = null
             }
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    deleteProduct: false
-                },
                 product
             }
 
         // ====================
         // FAIL
         // ====================
-        case SET_PRODUCT_FAIL:
-        case EDIT_PRODUCT_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    setProduct: false
-                },
-            };
         case GET_PRODUCTS_FAIL:
             return {
                 ...state,
@@ -256,41 +154,6 @@ export default (state = initialState, action) => {
                     ...state.loading,
                     getProduct: false
                 },
-            };
-        case DELETE_PRODUCT_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    deleteProduct: false
-                },
-            };
-        case ADD_COMMENT_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    comments: false
-                },
-            };
-        case SET_LIKE_FAIL:
-        case SET_UNLIKE_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    likes: false
-                }
-            };
-        case PURCHASE_FAIL:
-        case CANCEL_FAIL:
-        case REJECT_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    purchase: false
-                }
             };
         default:
             return state;

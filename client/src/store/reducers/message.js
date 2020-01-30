@@ -26,9 +26,6 @@ const initialState = {
         loading: false
     },
     message: null,
-    loading: {
-        getMessage: false
-    },
     count: null
 };
 
@@ -113,21 +110,17 @@ export default (state = initialState, action) => {
         // Get a message
         // ===================
         case GET_MESSAGE_START:
+            // Find target message from store
             let message = state.recieved.messages.find((msg) => msg._id.toString() === payload);
-            if (!message) {
-                message = state.sent.messages.find((msg) => msg._id.toString() === payload);
-            };
+            if (!message) message = state.sent.messages.find((msg) => msg._id.toString() === payload);
             if (!message) message = null;
 
             return {
                 ...state,
-                loading: {
-                    ...state.loading,
-                    getMessage: true
-                },
                 message
             };
         case GET_MESSAGE_SUCCESS:
+            // Change message status to seen and decrease the number of unseen count
             let decrease = 0;
             const newMessages = state.recieved.messages.map((message) => {
                 if (payload._id.toString() === message._id.toString() && message.seen === false) {
@@ -140,10 +133,6 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 message: payload,
-                loading: {
-                    ...state.loading,
-                    getMessage: false
-                },
                 recieved: {
                     ...state.recieved,
                     messages: newMessages
@@ -153,17 +142,18 @@ export default (state = initialState, action) => {
         case GET_MESSAGE_FAIL:
             return {
                 ...state,
-                sent: payload,
-                loading: {
-                    ...state.loading,
-                    getMessage: false
-                }
+                message: null
             };
-
+        // ===================
+        // Init
+        // ===================
         case CLEAR_MESSAGES:
             return {
                 ...initialState
             }
+        // ===================
+        // Count unseen messages
+        // ===================
         case COUNT_UNSEEN_MESSAGES:
             return {
                 ...state,

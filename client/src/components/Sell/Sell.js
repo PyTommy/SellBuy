@@ -8,11 +8,10 @@ import ScrollToTop from '../ScrollToTop';
 //Components
 import Input from '../UI/Input/Input';
 import Button from '../UI/Button/Button';
-import Spinner from '../UI/Spinner/Spinner';
 import styles from './Sell.module.scss';
 import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
 
-const Sell = ({ createProduct, loading, history }) => {
+const Sell = ({ createProduct, history }) => {
     const [formData, setFormData] = useState({
         title: "",
         price: "",
@@ -59,7 +58,6 @@ const Sell = ({ createProduct, loading, history }) => {
         history.push('/products');
     };
 
-    if (loading.setProduct) return <Spinner style={{ margin: "2rem" }} />;
 
     return (
         <div className={styles.Sell}>
@@ -134,13 +132,8 @@ const Sell = ({ createProduct, loading, history }) => {
 }
 
 Sell.propTypes = {
-    createProduct: PropTypes.func.isRequired,
-    loading: PropTypes.object.isRequired,
+    createProduct: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-    loading: state.product.loading
-});
 
-
-export default connect(mapStateToProps, { createProduct })(Sell);
+export default connect(null, { createProduct })(Sell);
