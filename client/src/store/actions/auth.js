@@ -26,16 +26,15 @@ import {
 import { setAlert } from './alert';
 import { clearMessages, countUnseenMessages } from './message';
 import { clearNotifications, countUnseenNotifications } from './notification';
+import { clearAllMyList } from './mylist';
 
 export const loadUser = () => async dispatch => {
-    if (localStorage.token) {
-        axios.setAuthToken(localStorage.token);
-    } else {
-        dispatch({
-            type: LOAD_USER_FAIL
-        });
+    if (!localStorage.token) {
+        dispatch({ type: LOAD_USER_FAIL });
         return null;
     }
+
+    axios.setAuthToken(localStorage.token);
 
     dispatch({
         type: LOAD_USER_START
@@ -52,10 +51,8 @@ export const loadUser = () => async dispatch => {
         dispatch(countUnseenMessages());
         dispatch(countUnseenNotifications());
     } catch (err) {
-        // dispatch(setAlert(err.response.data.message, "danger")); Doesnt work 
-        dispatch({
-            type: LOAD_USER_FAIL
-        });
+        dispatch(setAlert(err.response.data.message, "danger"));
+        dispatch({ type: LOAD_USER_FAIL });
     }
 
 };
@@ -65,11 +62,8 @@ export const login = ({ email, password }) => async dispatch => {
         type: LOGIN_START
     });
 
-    const body = JSON.stringify({ email, password });
-
     try {
-        const res = await axios.post('/api/user/login', body);
-
+        const res = await axios.post('/api/user/login', { email, password });
 
         dispatch({
             type: LOGIN_SUCCESS,
@@ -78,11 +72,8 @@ export const login = ({ email, password }) => async dispatch => {
         dispatch(loadUser(localStorage.token));
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: LOGIN_FAIL,
-        });
+        dispatch({ type: LOGIN_FAIL });
     }
-
 };
 
 // REGISTER
@@ -91,10 +82,8 @@ export const register = ({ name, email, password }) => async dispatch => {
         type: REGISTER_START
     });
 
-    const body = JSON.stringify({ name, email, password });
-
     try {
-        const res = await axios.post('/api/user/signup', body);
+        const res = await axios.post('/api/user/signup', { name, email, password });
 
         dispatch({
             type: REGISTER_SUCCESS,
@@ -103,9 +92,7 @@ export const register = ({ name, email, password }) => async dispatch => {
         dispatch(loadUser(localStorage.token));
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: REGISTER_FAIL
-        });
+        dispatch({ type: REGISTER_FAIL });
     }
 };
 
@@ -113,6 +100,7 @@ export const logout = () => dispatch => {
     dispatch({ type: LOGOUT });
     dispatch(clearMessages());
     dispatch(clearNotifications());
+    dispatch(clearAllMyList());
 
 };
 
@@ -153,17 +141,18 @@ export const updateProfile = (obj) => async dispatch => {
     }
 };
 
-export const updateEmail = (obj) => async dispatch => {
+export const updateEmail = (obj, successCB = () => { }, failCB = () => { }) => async dispatch => {
     try {
         const res = await axios.put('/api/user/email', obj);
-
         dispatch(setAlert(`Updated Email`, "success"));
         dispatch({
             type: UPDATE_EMAIL_SUCCESS,
             payload: res.data
         });
+        successCB();
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
+        failCB();
     }
-};
+}
 

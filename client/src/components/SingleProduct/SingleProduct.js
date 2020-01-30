@@ -26,7 +26,7 @@ const Product = ({
         getProduct(match.params.id);
     }, [getProduct, match.params.id]);
 
-    if (loading.getProduct) return <Spinner />;
+    if (loading.getProduct) return <Spinner style={{ margin: "2rem" }} />;
 
     if (!product) return <p>Not found!</p>;
 

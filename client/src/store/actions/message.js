@@ -1,21 +1,23 @@
 import axios from '../../axios';
 import {
     CLEAR_RECIEVED_MESSAGES,
+
     CLEAR_SENT_MESSAGES,
-    // GET
+
     GET_RECIEVED_START,
     GET_RECIEVED_SUCCESS,
     GET_RECIEVED_FAIL,
+
     GET_SENT_START,
     GET_SENT_SUCCESS,
     GET_SENT_FAIL,
+
     GET_MESSAGE_START,
     GET_MESSAGE_SUCCESS,
     GET_MESSAGE_FAIL,
-    SEND_MESSAGE_START,
-    SEND_MESSAGE_SUCCESS,
-    SEND_MESSAGE_FAIL,
+
     CLEAR_MESSAGES,
+
     COUNT_UNSEEN_MESSAGES
 } from './actionType';
 import { setAlert } from './alert';
@@ -26,7 +28,7 @@ export const countUnseenMessages = () => async dispatch => {
         dispatch({
             type: COUNT_UNSEEN_MESSAGES,
             payload: res.data.count
-        })
+        });
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
     }
@@ -38,6 +40,7 @@ export const clearRecievedMessages = () => async dispatch => {
     });
     dispatch(countUnseenMessages());
 };
+
 export const clearSentMessages = () => async dispatch => {
     dispatch({
         type: CLEAR_SENT_MESSAGES
@@ -109,26 +112,15 @@ export const getMessage = (messageId) => async dispatch => {
 }
     ;
 export const sendMessage = (recipientId, text) => async dispatch => {
-    dispatch({
-        type: SEND_MESSAGE_START,
-    });
-
     try {
         await axios.post(`/api/messages/${recipientId}`, { text });
 
-        dispatch({
-            type: SEND_MESSAGE_SUCCESS,
-        });
+        dispatch(setAlert("Message Sent", "success"));
     } catch (err) {
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({
-            type: SEND_MESSAGE_FAIL
-        });
     }
 };
 
 export const clearMessages = () => dispatch => {
-    dispatch({
-        type: CLEAR_MESSAGES
-    })
+    dispatch({ type: CLEAR_MESSAGES })
 }

@@ -59,7 +59,7 @@ const Sell = ({ createProduct, loading, history }) => {
         history.push('/products');
     };
 
-    if (loading.setProduct) return <Spinner />;
+    if (loading.setProduct) return <Spinner style={{ margin: "2rem" }} />;
 
     return (
         <div className={styles.Sell}>

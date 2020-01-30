@@ -11,6 +11,7 @@ import ReplyForm from './ReplyForm/ReplyForm';
 
 const MessageBox = ({
     match,
+    history,
     message,
     loading,
     getMessage,
@@ -22,6 +23,7 @@ const MessageBox = ({
 
     const onSubmitHandler = (text) => {
         sendMessage(message.sender._id, text);
+        history.goBack();
     };
 
     const amIRecipient = match.path === "/inbox/recieved/:id"

@@ -14,7 +14,7 @@ const MyPage = ({
     auth
 }) => {
     if (auth.loading) {
-        return <Spinner size={100} />;
+        return <Spinner size={100} style={{ margin: "2rem" }} />;
     }
 
     return (

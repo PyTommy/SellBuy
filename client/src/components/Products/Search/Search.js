@@ -1,44 +1,54 @@
 import React, { Fragment, useState } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 import styles from './Search.module.scss';
 import { GoSearch } from 'react-icons/go'
-import { IoMdArrowRoundBack, IoIosClose } from 'react-icons/io'
+import { IoMdArrowRoundBack, IoIosClose } from 'react-icons/io';
+import { setSearch, setCategory } from '../../../store/actions/filters';
 
 const Search = ({ search, category, setSearch, setCategory, onSubmit }) => {
     const [show, setShow] = useState(false);
+    const [isModified, setIsModified] = useState(false);
     let searchInput = React.createRef();
 
     const onShowHandler = () => {
         setShow(true);
+        setIsModified(false);
         searchInput.current.readOnly = false;
         searchInput.current.focus();
     };
 
     const clearInput = () => {
-        setSearch(() => "");
+        setSearch("");
     };
 
     const onCloseHandler = () => {
         setShow(false);
         searchInput.current.readOnly = true;
         searchInput.current.blur();
+        if (isModified) {
+            onSubmit();
+        }
     };
 
     const onSearchChange = (e) => {
         e.persist();
-        setSearch(() => e.target.value);
+        setSearch(e.target.value);
+        !isModified && setIsModified(true);
     }
 
     const onCategoryClick = (e) => {
         const selectedCategory = e.target.getAttribute("category");
-        setCategory(() => selectedCategory);
+        setCategory(selectedCategory);
         setShow(false);
         onSubmit();
     }
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
-        onCloseHandler();
+        setShow(false);
+        searchInput.current.readOnly = true;
+        searchInput.current.blur();
         onSubmit();
     };
 
@@ -119,4 +129,14 @@ Search.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 }
 
-export default Search
+const mapStateToProps = state => ({
+    search: state.filter.search,
+    category: state.filter.category
+});
+
+const mapDispatchToProps = dispatch => ({
+    setSearch: (search) => dispatch(setSearch(search)),
+    setCategory: (category) => dispatch(setCategory(category))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

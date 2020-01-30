@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
-import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoIosSearch, IoMdNotifications } from "react-icons/io";
+import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 import NavItem from './NavItem/NavItem';
 
@@ -37,10 +37,6 @@ const Navigation = ({ auth, msgCount, notificationCount }) => {
 
     return (
         <header className={styles.Navigation} >
-            <div className={styles.search}>
-                <input placeholder="Search" className={styles.searchInput} />
-                <button><IoIosSearch className={styles.searchIcon} /></button>
-            </div>
             <ul className={styles.NavigationItems}>
                 {navItems}
             </ul>

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import Input from '../../UI/Input/Input';
 import Button from '../../UI/Button/Button';
-import Spinner from '../../UI/Spinner/Spinner';
 
 
 const ReplyForm = (props) => {
@@ -24,9 +23,8 @@ const ReplyForm = (props) => {
             />
             <Button
                 btnType="color-primary"
-            >{props.loading
-                ? <Spinner size={15} style={{ margin: 0 }} color="white" ></Spinner>
-                : "Reply"}
+                loading={props.loading}
+            >Reply
             </Button>
         </form>
     )

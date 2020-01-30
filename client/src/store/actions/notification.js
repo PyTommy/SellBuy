@@ -22,10 +22,14 @@ export const countUnseenNotifications = () => async dispatch => {
     }
 };
 
+
 export const clearNotifications = () => async dispatch => {
     dispatch({
         type: CLEAR_NOTIFICATIONS
     });
+};
+export const refreshNotifications = () => dispatch => {
+    dispatch(clearNotifications());
     dispatch(countUnseenNotifications());
 };
 

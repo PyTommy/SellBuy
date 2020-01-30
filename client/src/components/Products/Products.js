@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getProducts, refreshProducts } from '../../store/actions/product';
@@ -10,25 +10,28 @@ import Search from './Search/Search';
 import styles from './Products.module.scss';
 
 
-const Products = ({ getProducts, refreshProducts, product: { products, hasMore, loading } }) => {
-    const [search, setSearch] = useState("");
-    const [category, setCategory] = useState("");
-
-    const onSubmit = () => {
-        refresh();
-    };
-
+const Products = ({
+    getProducts,
+    refreshProducts,
+    product: { products, hasMore, loading },
+    filter: { search, category }
+}) => {
     const loadMore = () => {
         if (!loading.getProducts) {
             getProducts({
                 skip: products.length,
                 limit: 10,
-                search: search,
-                category: category
+                search,
+                category
             })
         }
     };
+
     const refresh = () => !loading.getProducts && refreshProducts();
+
+    const onSubmit = () => {
+        refresh();
+    };
 
     const productList = products.map((singleProduct) => {
         return <Product key={singleProduct._id} product={singleProduct} />;
@@ -36,20 +39,19 @@ const Products = ({ getProducts, refreshProducts, product: { products, hasMore, 
 
     return (
         <div>
-            <Search
-                search={search}
-                category={category}
-                setSearch={setSearch}
-                setCategory={setCategory}
-                onSubmit={onSubmit}
-            />
+            <Search onSubmit={onSubmit} />
             <Scroller
                 onRefreshFunc={refresh}
                 loadMoreFunc={loadMore}
                 hasMore={hasMore}
             >
                 <div className={styles.Products}>
-                    {productList}
+                    {
+                        productList.length === 0 && !hasMore ? (
+                            <p styles={{ paddingBottom: "30rem" }}>No product found</p>
+                        ) : productList
+
+                    }
                 </div>
             </Scroller>
         </div>
@@ -58,12 +60,19 @@ const Products = ({ getProducts, refreshProducts, product: { products, hasMore, 
 
 Products.propTypes = {
     product: PropTypes.object.isRequired,
+    filter: PropTypes.object.isRequired,
     getProducts: PropTypes.func.isRequired,
-    refreshProducts: PropTypes.func.isRequired
+    refreshProducts: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    product: state.product
+    product: state.product,
+    filter: state.filter
 });
 
-export default connect(mapStateToProps, { getProducts, refreshProducts })(Products);
+const mapDispatchToProps = (dispatch) => ({
+    getProducts: (obj) => dispatch(getProducts(obj)),
+    refreshProducts: () => dispatch(refreshProducts())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

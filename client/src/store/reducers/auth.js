@@ -32,6 +32,7 @@ const authReducerDefaultState = {
     loading: true,
     user: null
 };
+
 const authReducer = (state = authReducerDefaultState, { type, payload }) => {
     switch (type) {
         case REGISTER_START:

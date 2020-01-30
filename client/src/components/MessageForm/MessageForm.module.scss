@@ -1,0 +1,12 @@
+@import '../../styles/setting.module.scss';
+.MessageForm {
+    margin-top: 1rem;
+    padding: 1rem;
+    max-width: 600px;
+    margin-right: auto;
+    margin-left: auto;
+
+    @media (max-width: 600px) {
+        margin-top: $top-height;
+    }
+}

@@ -16,6 +16,7 @@ const UpdateProfile = ({ auth, updateEmail, history }) => {
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setFormData((prevState) => ({
@@ -24,7 +25,7 @@ const UpdateProfile = ({ auth, updateEmail, history }) => {
         }));
     }, [auth.user, setFormData]);
 
-    if (!auth.isAuthenticated) return <Spinner />;
+    if (!auth.isAuthenticated) return <Spinner style={{ margin: "2rem" }} />;
 
     const onChange = (e) => {
         e.preventDefault();
@@ -37,10 +38,10 @@ const UpdateProfile = ({ auth, updateEmail, history }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        updateEmail(formData);
-        history.push('/mypage');
+        if (loading) return null;
+        setLoading(true);
+        updateEmail(formData, () => history.push('/mypage'), () => setLoading(false));
     };
-
 
     return (
         <Fragment>
@@ -64,7 +65,7 @@ const UpdateProfile = ({ auth, updateEmail, history }) => {
                     onChange={e => onChange(e)}
                     required
                 />
-                <Button btnType="color-primary size-lg">
+                <Button btnType="color-primary size-lg" loading={loading}>
                     Update
                 </Button>
             </form>

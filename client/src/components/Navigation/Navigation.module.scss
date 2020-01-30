@@ -14,11 +14,6 @@
         top: 0;    
         border-top: none;
         border-bottom: .5px solid $color-light-gray;
-        display: grid;
-        grid-template-columns: 1fr auto;  
-    }
-    @media only screen and (min-width: 1200px) {
-        padding-right: 1rem;    
     }
 }
 
@@ -27,6 +22,9 @@
     height: 100%;
     display: flex;
     justify-content: center;
+    @media only screen and (min-width: 600px) {
+        justify-content: flex-end;
+    }
 }
 
 
@@ -37,59 +35,5 @@
     @media only screen and (min-width: 600px) {
         border-top: none;
         border-bottom:  1px solid $color-primary;
-    }
-}
-
-.search {
-    display: none;
-    @media only screen and (min-width: 600px) {
-        width: 90%;
-        height: 100%;
-        max-width: 45rem;
-        justify-self: start;
-        align-self: center;
-        margin-left: 1rem;
-
-        display: grid;
-        align-content: center;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: 3rem;
-
-
-        .searchInput {
-            font-size: inherit;
-            border: 1px solid $color-light-gray;
-            border-right: none;
-            height: 100%;
-            padding-left: 1rem;
-            border-radius: 0px; //どこかで、inputがborder-radius:3pxになってる。
-            border-top-left-radius: 3px;
-            border-bottom-left-radius: 3px;
-        } 
-
-        button {
-            width: 3rem;
-            height: 100%;
-            outline: none;
-            border: 1px solid $color-light-gray;
-            background-color: #eee;
-            border-top-right-radius: 3px;
-            border-bottom-right-radius: 3px;
-            
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            &:hover {
-                background-color: #ddd;
-            }
-        }
-
-        .searchIcon {
-            width: 1.5rem;
-            height: 1.5rem;
-
-            color: #666;
-        }
     }
 }

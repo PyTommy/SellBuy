@@ -2,14 +2,14 @@ import React from 'react';
 import Loader from 'react-loader-spinner'
 
 
-export default ({style = {}, type = "TailSpin", size = 60, color = "#0084FF", timeout = 0}) => (
-    <div 
+export default ({ style = {}, type = "TailSpin", size = 50, color = "#0084FF", timeout = 0 }) => (
+    <div
         style={{
             ...style,
             width: "100%",
-            textAlign: "center", 
+            textAlign: "center",
         }}
-        >
+    >
         <Loader
             type={type}
             color={color}

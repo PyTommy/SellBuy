@@ -16,14 +16,9 @@
     cursor: pointer;
     transition: all .3s;
     
-    @media only screen and (min-width: 600px) {
-        width: 5.5rem;
-        padding: 0 .5rem;
-        border-top: none;
-        border-bottom: 1px solid transparent;
-    }
-    @media only screen and (min-width: 1200px) {
-        width: 10rem;
+    @media only screen and (min-width: 700px) {
+        width: auto;
+        margin-left: 1rem;
         padding: 0 .5rem;
         border-top: none;
         border-bottom: 1px solid transparent;
@@ -33,18 +28,18 @@
 
 .Icon {
     width: 2rem;
-    height: 2rem;
+    height: 2rem ;
     color: inherit;
-    @media only screen and (min-width: 1200px) {
-        width: 2.5rem;
-        height: 2.5rem;
+    @media only screen and (min-width: 700px) {
+        width: 2.5rem ;
+        height: 2.5rem ;
     }
 }
 
 .menuTitle {
     color: inherit;
     font-size: 1rem;
-    @media only screen and (min-width: 1200px) {
+    @media only screen and (min-width: 700px) {
         margin-left: .5rem;
         font-size: 1.4rem;
     }

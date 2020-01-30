@@ -10,9 +10,6 @@ import {
     GET_MESSAGE_START,
     GET_MESSAGE_SUCCESS,
     GET_MESSAGE_FAIL,
-    SEND_MESSAGE_START,
-    SEND_MESSAGE_SUCCESS,
-    SEND_MESSAGE_FAIL,
     CLEAR_MESSAGES,
     COUNT_UNSEEN_MESSAGES
 } from '../actions/actionType';
@@ -30,8 +27,7 @@ const initialState = {
     },
     message: null,
     loading: {
-        getMessage: false,
-        sendMessage: false
+        getMessage: false
     },
     count: null
 };
@@ -161,33 +157,6 @@ export default (state = initialState, action) => {
                 loading: {
                     ...state.loading,
                     getMessage: false
-                }
-            };
-        // ===================
-        // Send a message
-        // ===================
-        case SEND_MESSAGE_START:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    sendMessage: true
-                }
-            };
-        case SEND_MESSAGE_SUCCESS:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    sendMessage: false
-                }
-            }
-        case SEND_MESSAGE_FAIL:
-            return {
-                ...state,
-                loading: {
-                    ...state.loading,
-                    sendMessage: false
                 }
             };
 

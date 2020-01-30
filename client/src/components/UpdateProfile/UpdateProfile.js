@@ -24,7 +24,7 @@ const UpdateProfile = ({ auth, updateProfile, history }) => {
         }));
     }, [auth.user, setFormData]);
 
-    if (!auth.isAuthenticated) return <Spinner />;
+    if (!auth.isAuthenticated) return <Spinner style={{ margin: "2rem" }} />;
 
     const onChange = (e) => {
         e.preventDefault();

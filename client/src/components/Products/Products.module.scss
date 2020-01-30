@@ -1,23 +1,22 @@
+@import '../../styles/setting.module.scss';
+
 .Products {
-    margin-top: 6rem;
+    margin-top: $search-height;
+    margin-bottom: $nav-height;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: .5rem; 
     align-items: center;
-    padding: .5rem;
-    @media only screen and (min-width: 500px) {
-        padding: 1rem;
-        grid-row-gap: 2.5rem;
-        grid-template-columns: 1fr 1fr;
-    }
+    padding: 1rem;
     @media only screen and (min-width: 600px) {
         grid-row-gap: 2.5rem;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: repeat(3, 1fr);
     }
     @media only screen and (min-width: 820px) {
-        margin: 0 auto;
+        margin-right: auto;
+        margin-left: auto;
         grid-row-gap: 2.5rem;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
         width: 800px;
     }
 }

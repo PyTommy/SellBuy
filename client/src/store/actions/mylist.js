@@ -88,18 +88,23 @@ export const getSellings = (skip = 0) => async dispatch => {
     }
 };
 
-export const clearLiked = () => async dispatch => {
+export const clearLiked = () => dispatch => {
     dispatch({
         type: CLEAR_LIKED,
     });
 };
-export const clearPurchased = () => async dispatch => {
+export const clearPurchased = () => dispatch => {
     dispatch({
         type: CLEAR_PURCHASED,
     });
 };
-export const clearSellings = () => async dispatch => {
+export const clearSellings = () => dispatch => {
     dispatch({
         type: CLEAR_SELLINGS,
     });
+};
+export const clearAllMyList = () => dispatch => {
+    dispatch(clearLiked());
+    dispatch(clearPurchased());
+    dispatch(clearSellings());
 };

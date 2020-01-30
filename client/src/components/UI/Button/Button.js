@@ -1,13 +1,16 @@
 import React from 'react'
 import classes from './Button.module.scss';
+import Spinner from '../Spinner/Spinner';
 
 const Button = ({
     children,
     className,
     style,
     onClick,
-    btnType = ""
+    btnType = "",
+    loading = false
 }) => {
+    let spinnerSize = 15;
     let appliedClasses = [classes.Button];
     className && appliedClasses.push(className);
 
@@ -18,16 +21,22 @@ const Button = ({
     btnType.includes("border-gray") && appliedClasses.push(classes.borderGray);
 
     // Size
-    btnType.includes("size-sm") && appliedClasses.push(classes.sizeSmall);
-    btnType.includes("size-lg") && appliedClasses.push(classes.sizeLarge);
+    if (btnType.includes("size-sm")) {
+        appliedClasses.push(classes.sizeSmall);
+        spinnerSize = 10;
+    }
+    if (btnType.includes("size-lg")) {
+        appliedClasses.push(classes.sizeLarge);
+        spinnerSize = 20;
+    }
 
     return (
         <button
             onClick={onClick}
             style={style}
             className={appliedClasses.join(" ")}
-            >
-            {children}
+        >
+            {loading ? <Spinner size={spinnerSize} /> : children}
         </button>
     )
 }

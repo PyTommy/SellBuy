@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getNotifications, clearNotifications } from '../../store/actions/notification';
+import { getNotifications, refreshNotifications } from '../../store/actions/notification';
 
 import styles from './Notification.module.scss';
 import Notification from './Notification/Notification';
@@ -9,8 +9,6 @@ import Scroller from '../UI/Scroller/Scroller';
 
 const Inbox
     = ({
-        history,
-        match,
         auth,
         notification: {
             notifications,
@@ -18,7 +16,7 @@ const Inbox
             loading
         },
         getNotifications,
-        clearNotifications
+        refreshNotifications
     }) => {
 
         let items;
@@ -37,7 +35,7 @@ const Inbox
             refresh = () => null;
         if (auth.isAuthenticated && !loading) {
             loadMore = () => getNotifications(notifications.length);
-            refresh = () => clearNotifications();
+            refresh = () => refreshNotifications();
         }
 
         return (
@@ -59,7 +57,7 @@ Inbox.propTypes = {
     notification: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     getNotifications: PropTypes.func.isRequired,
-    clearNotifications: PropTypes.func.isRequired
+    refreshNotifications: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -67,5 +65,5 @@ const mapStateToProps = state => ({
     auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getNotifications, clearNotifications })(Inbox
+export default connect(mapStateToProps, { getNotifications, refreshNotifications })(Inbox
 );

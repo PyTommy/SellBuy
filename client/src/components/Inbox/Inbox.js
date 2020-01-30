@@ -91,15 +91,17 @@ const Inbox
                 <Switcher
                     items={buttons}
                 />
-                <Scroller
-                    onRefreshFunc={refreshMessages}
-                    loadMoreFunc={getMessages}
-                    hasMore={hasMore}
-                >
-                    <ul className={styles.messages}>
-                        {!hasMore && items.length === 0 ? noMsg : items}
-                    </ul>
-                </Scroller>
+                <div className={styles.messages}>
+                    <Scroller
+                        onRefreshFunc={refreshMessages}
+                        loadMoreFunc={getMessages}
+                        hasMore={hasMore}
+                    >
+                        <ul>
+                            {!hasMore && items.length === 0 ? noMsg : items}
+                        </ul>
+                    </Scroller>
+                </div>
             </div>
         );
     };

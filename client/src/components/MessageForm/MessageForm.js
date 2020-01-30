@@ -1,13 +1,16 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
-import Input from '../UI/Input/Input';
 import { sendMessage } from '../../store/actions/message';
 import { getProfile } from '../../store/actions/profile';
+
+import styles from './MessageForm.module.scss';
+import Input from '../UI/Input/Input';
 import UserInfo from '../UI/UserInfo/UserInfo';
 import UITopBar from '../UI/TopBar/TopBar';
+import Button from '../UI/Button/Button';
 
-const MessageForm = ({ profile, match, sendMessage, getProfile }) => {
+const MessageForm = ({ profile, match, history, sendMessage, getProfile }) => {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
@@ -19,6 +22,7 @@ const MessageForm = ({ profile, match, sendMessage, getProfile }) => {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         sendMessage(match.params.id, message);
+        history.goBack();
     };
 
     return (
@@ -33,7 +37,7 @@ const MessageForm = ({ profile, match, sendMessage, getProfile }) => {
                     />
                 }
             </UITopBar>
-            <form onSubmit={onSubmitHandler} style={{ marginTop: "5.5rem" }}>
+            <form onSubmit={onSubmitHandler} className={styles.MessageForm}>
                 <Input
                     type="textarea"
                     placeholder="Message here..."
@@ -41,7 +45,7 @@ const MessageForm = ({ profile, match, sendMessage, getProfile }) => {
                     onChange={(e) => setMessage(e.target.value)}
                     required={true}
                 />
-                <button>Send</button>
+                <Button btnType="color-primary">Send</Button>
             </form>
         </Fragment>
     )

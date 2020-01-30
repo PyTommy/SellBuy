@@ -7,7 +7,6 @@ import { addComment } from '../../../store/actions/product';
 import styles from './Comments.module.scss';
 import Comment from '../Comment/Comment';
 import Button from '../../UI/Button/Button';
-import Spinner from '../../UI/Spinner/Spinner';
 
 const Comments = ({ addComment, auth, comments, history, match, loading }) => {
     const [newComment, setNewComment] = useState("");
@@ -44,9 +43,8 @@ const Comments = ({ addComment, auth, comments, history, match, loading }) => {
                             addComment(match.params.id, newComment);
                         }
                     }}
-                >{loading
-                    ? <Spinner size={15} style={{ margin: 0 }} color="white" ></Spinner>
-                    : "SEND"}
+                    loading={loading}
+                >SEND
                 </Button>
             </div>
         </Fragment>

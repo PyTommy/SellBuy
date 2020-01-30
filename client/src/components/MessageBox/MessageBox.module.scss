@@ -1,4 +1,6 @@
+@import '../../styles/setting.module.scss';
+
 .MessageBoxMain {
-    margin-top: 5.5rem;
+    margin-top: $top-height;
     padding: 1rem 5%;
 }

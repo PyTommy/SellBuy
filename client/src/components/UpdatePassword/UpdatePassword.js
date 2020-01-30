@@ -20,7 +20,7 @@ const UpdateProfile = ({ auth, setAlert, history }) => {
     });
     const { curPassword, newPassword, confirmPassword } = formData;
 
-    if (!auth.isAuthenticated) return <Spinner />;
+    if (!auth.isAuthenticated) return <Spinner style={{ margin: "2rem" }} />;
 
     const onChange = (e) => {
         e.preventDefault();

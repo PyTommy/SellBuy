@@ -8,24 +8,32 @@
     width: 100%;
     z-index: 1000;
     background-color: white;
-    height: 5.5rem;
+    height: $bottom-height;
     padding: 0 2rem;
     border-top: .5px solid $color-light-gray;
 
-    display: grid;
-    padding: 1rem;
-    grid-template-columns: auto minmax(auto, 60%);
-    grid-gap: 1rem;
+    display: flex;
+    padding: 1rem 2rem;
+    justify-content: space-around;
+
+    @media (min-width: 800px) {
+        justify-content: center;
+    }
 }
 
 .text {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: bold;
+    @media (min-width: 800px) {
+        margin-right: 20rem;
+    }
 }
 
 .button {
     font-size: inherit;
     padding: .5rem 1rem;
+    min-width: 15rem;
+    max-width: 30rem;
     border: none;
     border-radius: 3px;
     outline: none;
