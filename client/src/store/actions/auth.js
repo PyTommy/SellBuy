@@ -1,44 +1,32 @@
 import axios from '../../axios';
 import {
-    // LOAD_USER
     LOAD_USER_START,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
 
-    // REGISTER
-    REGISTER_START,
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
-
-    // LOGIN
-    LOGIN_START,
-    LOGIN_SUCCESS,
-    LOGIN_FAIL,
-
-    // LOGOUT
+    REGISTER,
+    LOGIN,
     LOGOUT,
 
-    // AVATAR
-    UPDATE_AVATAR_SUCCESS,
-    UPDATE_PROFILE_SUCCESS,
-    UPDATE_EMAIL_SUCCESS,
+    // UPDATE
+    UPDATE_AVATAR,
+    UPDATE_PROFILE,
+    UPDATE_EMAIL,
 } from './actionType';
 import { setAlert } from './alert';
 import { clearMessages, countUnseenMessages } from './message';
 import { clearNotifications, countUnseenNotifications } from './notification';
 import { clearAllMyList } from './mylist';
 
-export const loadUser = () => async dispatch => {
-    if (!localStorage.token) {
-        dispatch({ type: LOAD_USER_FAIL });
-        return null;
-    }
 
+// Load user data on store
+export const loadUser = () => async dispatch => {
+    if (!localStorage.token) return null;
+
+    // Set auth header on default http request
     axios.setAuthToken(localStorage.token);
 
-    dispatch({
-        type: LOAD_USER_START
-    });
+    dispatch({ type: LOAD_USER_START });
 
     try {
         const res = await axios.get('/api/user');
@@ -48,6 +36,8 @@ export const loadUser = () => async dispatch => {
             type: LOAD_USER_SUCCESS,
             payload: res.data
         });
+
+        // Check how many notifications and messages are.
         dispatch(countUnseenMessages());
         dispatch(countUnseenNotifications());
     } catch (err) {
@@ -57,42 +47,37 @@ export const loadUser = () => async dispatch => {
 
 };
 
-export const login = ({ email, password }) => async dispatch => {
-    dispatch({
-        type: LOGIN_START
-    });
-
+export const login = ({ email, password }, failCB = () => { }) => async dispatch => {
     try {
         const res = await axios.post('/api/user/login', { email, password });
 
         dispatch({
-            type: LOGIN_SUCCESS,
+            type: LOGIN,
             payload: res.data
         });
         dispatch(loadUser(localStorage.token));
     } catch (err) {
+        failCB();
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({ type: LOGIN_FAIL });
     }
 };
 
 // REGISTER
-export const register = ({ name, email, password }) => async dispatch => {
-    dispatch({
-        type: REGISTER_START
-    });
-
+export const register = (
+    { name, email, password },
+    failCB = () => { }
+) => async dispatch => {
     try {
         const res = await axios.post('/api/user/signup', { name, email, password });
 
         dispatch({
-            type: REGISTER_SUCCESS,
+            type: REGISTER,
             payload: res.data
         });
         dispatch(loadUser(localStorage.token));
     } catch (err) {
+        failCB();
         dispatch(setAlert(err.response.data.message, "danger"));
-        dispatch({ type: REGISTER_FAIL });
     }
 };
 
@@ -106,11 +91,10 @@ export const logout = () => dispatch => {
 
 export const updateAvatar = (avatar) => async dispatch => {
     const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
+        headers: { 'Content-Type': 'multipart/form-data' }
     }
 
+    // Create form data
     const formData = new FormData();
     formData.append('avatar', avatar);
 
@@ -119,7 +103,7 @@ export const updateAvatar = (avatar) => async dispatch => {
 
         dispatch(setAlert(`Uploaded profile image`, "success"));
         dispatch({
-            type: UPDATE_AVATAR_SUCCESS,
+            type: UPDATE_AVATAR,
             payload: res.data
         });
     } catch (err) {
@@ -133,7 +117,7 @@ export const updateProfile = (obj) => async dispatch => {
 
         dispatch(setAlert(`Updated Profile`, "success"));
         dispatch({
-            type: UPDATE_PROFILE_SUCCESS,
+            type: UPDATE_PROFILE,
             payload: res.data
         });
     } catch (err) {
@@ -146,7 +130,7 @@ export const updateEmail = (obj, successCB = () => { }, failCB = () => { }) => a
         const res = await axios.put('/api/user/email', obj);
         dispatch(setAlert(`Updated Email`, "success"));
         dispatch({
-            type: UPDATE_EMAIL_SUCCESS,
+            type: UPDATE_EMAIL,
             payload: res.data
         });
         successCB();

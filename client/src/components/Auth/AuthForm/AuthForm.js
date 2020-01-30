@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react'
-import {connect} from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './AuthForm.module.scss';
+import Spinner from '../../UI/Spinner/Spinner'
 
 // Actions
 import { setAlert } from '../../../store/actions/alert';
@@ -19,6 +20,7 @@ const AuthForm = ({
     register,
     login
 }) => {
+    const [loading, setLoading] = useState(false);
     // State
     const [formData, setFormData] = useState({
         name: "",
@@ -27,7 +29,7 @@ const AuthForm = ({
         password2: ""
     });
 
-    useEffect((prevState) => {
+    useEffect(() => {
         setFormData(() => ({
             name: "",
             email: "",
@@ -50,18 +52,21 @@ const AuthForm = ({
 
     const onSubmit = (e) => {
         e.preventDefault();
+
         const { name, email, password, password2 } = formData;
 
-        if (isSignup) { // SignUp
-            if (password !== password2) {
-                setAlert("password do not much", "danger");
-            } else {
-                register({ name, email, password });
-            }
-        } else { // Login
-            login({ email, password });
+        const failCB = () => { setLoading(false) };
+        setLoading(true);
+
+        // SignUp
+        if (isSignup) {
+            if (password !== password2) return setAlert("password do not much", "danger", failCB);
+            register({ name, email, password }, failCB);
+        } else {
+            login({ email, password }, failCB);
         }
     }
+    if (loading) return <Spinner style={{ margin: "2rem" }} />;
 
     return (
         <form onSubmit={onSubmit} className={styles.AuthForm}>
@@ -112,4 +117,4 @@ AuthForm.propTypes = {
     login: PropTypes.func.isRequired,
 }
 
-export default connect(null, {setAlert, login, register})(AuthForm);
+export default connect(null, { setAlert, login, register })(AuthForm);

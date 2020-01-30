@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './Auth.module.scss';
 
@@ -10,13 +10,14 @@ import AuthFrom from './AuthForm/AuthForm';
 import FormTypeChanger from './FormTypeChanger/FormTypeChanger';
 
 
-const Auth = ({auth: {isAuthenticated, loading}}) => {
+const Auth = ({ auth: { isAuthenticated } }) => {
     const [isSignup, setIsSignup] = useState(true);
-    
+
+
     const onChangeFormType = (boolean) => {
         boolean !== isSignup && setIsSignup(boolean)
     }
-    
+
     // Redirect authenticated user
     if (isAuthenticated) {
         return <Redirect to="/" />;
@@ -31,7 +32,7 @@ const Auth = ({auth: {isAuthenticated, loading}}) => {
 
     return (
         <div className={styles.Auth}>
-            { loading ? <Spinner style={{margin: "2rem"}} /> : form}
+            {form}
         </div>
     );
 };

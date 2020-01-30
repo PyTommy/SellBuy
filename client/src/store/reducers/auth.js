@@ -6,20 +6,20 @@ import {
 
     // REGISTER
     REGISTER_START,
-    REGISTER_SUCCESS,
+    REGISTER,
     REGISTER_FAIL,
 
     // LOGIN
     LOGIN_START,
-    LOGIN_SUCCESS,
+    LOGIN,
     LOGIN_FAIL,
 
     // LOGOUT
     LOGOUT,
 
-    UPDATE_AVATAR_SUCCESS,
-    UPDATE_PROFILE_SUCCESS,
-    UPDATE_EMAIL_SUCCESS
+    UPDATE_AVATAR,
+    UPDATE_PROFILE,
+    UPDATE_EMAIL
 } from '../actions/actionType';
 import axios from '../../axios';
 
@@ -35,8 +35,6 @@ const authReducerDefaultState = {
 
 const authReducer = (state = authReducerDefaultState, { type, payload }) => {
     switch (type) {
-        case REGISTER_START:
-        case LOGIN_START:
         case LOAD_USER_START:
             return {
                 ...state,
@@ -49,16 +47,15 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
                 loading: false,
                 user: { ...payload }
             };
-        case REGISTER_SUCCESS:
-        case LOGIN_SUCCESS:
+        case REGISTER:
+        case LOGIN:
             localStorage.setItem('token', payload.token);
             return {
                 ...state,
                 ...payload,
                 isAuthenticated: true,
-                loading: false,
             };
-        case UPDATE_AVATAR_SUCCESS:
+        case UPDATE_AVATAR:
             return {
                 ...state,
                 user: {
@@ -66,12 +63,12 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
                     avatar: payload.avatar
                 }
             };
-        case UPDATE_PROFILE_SUCCESS:
+        case UPDATE_PROFILE:
             return {
                 ...state,
                 user: payload
             };
-        case UPDATE_EMAIL_SUCCESS:
+        case UPDATE_EMAIL:
             return {
                 ...state,
                 user: {
@@ -79,8 +76,6 @@ const authReducer = (state = authReducerDefaultState, { type, payload }) => {
                     email: payload
                 }
             }
-        case REGISTER_FAIL:
-        case LOGIN_FAIL:
         case LOAD_USER_FAIL:
         case LOGOUT:
             localStorage.removeItem('token');
