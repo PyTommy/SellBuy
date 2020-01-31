@@ -70,8 +70,6 @@ const Product = ({
         buttonText = <Spinner size={15} style={{ margin: 0 }} color="white" ></Spinner>;
         onClickHandler = () => null;
     }
-
-
     return (
         <div>
             <ScrollToTop />

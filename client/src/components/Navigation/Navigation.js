@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { IoMdHome, IoIosList, IoMdMail, IoMdContact, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 import NavItem from './NavItem/NavItem';
+import Search from './Search/Search';
 
 import styles from './Navigation.module.scss';
 
 
-const Navigation = ({ auth, msgCount, notificationCount }) => {
+const Navigation = (props) => {
+    const { auth, msgCount, notificationCount, location } = props
     const HomeNav = NavItem(IoMdHome);
     const MyList = NavItem(IoIosList);
     const SellNav = NavItem(MdAttachMoney);
@@ -28,15 +31,16 @@ const Navigation = ({ auth, msgCount, notificationCount }) => {
             <InboxNav linkTo="/inbox/recieved">Inbox</InboxNav>
             <MyPageNav linkTo="/mypage">My Page</MyPageNav>
         </Fragment>
-    )
-        :
-        <Fragment>
-            <HomeNav linkTo="/products">Home</HomeNav>
-            <AuthNav linkTo="/auth">Auth</AuthNav>
-        </Fragment>
+    ) : (
+            <Fragment>
+                <HomeNav linkTo="/products">Home</HomeNav>
+                <AuthNav linkTo="/auth">Auth</AuthNav>
+            </Fragment>
+        );
 
     return (
         <header className={styles.Navigation} >
+            {location.pathname === "/products" && <Search />}
             <ul className={styles.NavigationItems}>
                 {navItems}
             </ul>
@@ -52,4 +56,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(Navigation);
+export default connect(mapStateToProps)(withRouter(Navigation));

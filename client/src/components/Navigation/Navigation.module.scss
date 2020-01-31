@@ -11,6 +11,9 @@
     border-top: 0.5px solid $color-light-gray;
     
     @media only screen and (min-width: 600px) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         top: 0;    
         border-top: none;
         border-bottom: .5px solid $color-light-gray;
@@ -24,6 +27,7 @@
     justify-content: center;
     @media only screen and (min-width: 600px) {
         justify-content: flex-end;
+        margin-right: 1rem; 
     }
 }
 

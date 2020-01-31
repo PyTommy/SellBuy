@@ -27,11 +27,8 @@ const Products = ({
         }
     };
 
-    const refresh = () => !loading.getProducts && refreshProducts();
 
-    const onSubmit = () => {
-        refresh();
-    };
+    const refresh = () => !loading.getProducts && refreshProducts();
 
     const productList = products.map((singleProduct) => {
         return <Product key={singleProduct._id} product={singleProduct} />;
@@ -39,7 +36,7 @@ const Products = ({
 
     return (
         <div>
-            <Search onSubmit={onSubmit} />
+            <Search />
             <Scroller
                 onRefreshFunc={refresh}
                 loadMoreFunc={loadMore}

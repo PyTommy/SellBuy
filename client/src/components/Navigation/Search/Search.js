@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import styles from './Search.module.scss';
 import { GoSearch } from 'react-icons/go'
-import { IoMdArrowRoundBack, IoIosClose } from 'react-icons/io';
+import { IoIosClose } from 'react-icons/io';
 import { setSearch, setCategory } from '../../../store/actions/filters';
 import { refreshProducts } from '../../../store/actions/product';
 
@@ -27,6 +27,13 @@ const Search = ({ search, category, setSearch, setCategory, loading, refreshProd
         !loading && refreshProducts();
     };
 
+    const onCloseHandler = () => {
+        setShow(false);
+        searchInput.current.readOnly = true;
+        searchInput.current.blur();
+        isModified && onSubmit();
+    };
+
 
     const onSearchChange = (e) => {
         e.persist();
@@ -40,13 +47,6 @@ const Search = ({ search, category, setSearch, setCategory, loading, refreshProd
         setShow(false);
         onSubmit();
     }
-
-    const onCloseHandler = () => {
-        setShow(false);
-        searchInput.current.readOnly = true;
-        searchInput.current.blur();
-        isModified && onSubmit();
-    };
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -88,39 +88,33 @@ const Search = ({ search, category, setSearch, setCategory, loading, refreshProd
 
 
     return (
-        <div className={styles.Search}>
-            <div className={styles.topBox} onClick={!show ? onShowHandler : () => { }}>
+        <div className={styles.topBox}>
+            <form onSubmit={onSubmitHandler} className={styles.searchInputContainer}>
+                <input
+                    onClick={!show ? onShowHandler : () => { }}
+                    className={styles.searchInput}
+                    type="text"
+                    placeholder="Search"
+                    value={show
+                        ? search
+                        : unfocusedSearchInput
+                    }
+                    onChange={onSearchChange}
+                    ref={searchInput}
+                    readOnly
+                />
+                {show && <IoIosClose className={styles.searchInputClear} onClick={clearInput} />}
                 {show &&
-                    <IoMdArrowRoundBack
-                        className={styles.backIcon}
-                        onClick={onCloseHandler} />
+                    <Fragment>
+                        <ul className={styles.categories}>
+                            {categoryList}
+                        </ul>
+                    </Fragment>
                 }
-                <form onSubmit={onSubmitHandler} className={styles.searchInputContainer}>
-                    <input
-                        className={styles.searchInput}
-                        type="text"
-                        placeholder="Search"
-                        value={show
-                            ? search
-                            : unfocusedSearchInput
-                        }
-                        onChange={onSearchChange}
-                        ref={searchInput}
-                        readOnly
-                    />
-                    {show && <IoIosClose className={styles.searchInputClear} onClick={clearInput} />}
-                </form>
-                <GoSearch className={styles.searchIcon} onClick={onSubmitHandler} />
-            </div>
-            {show &&
-                <Fragment>
-                    <ul className={styles.categories}>
-                        {categoryList}
-                    </ul>
-                    <div className={styles.backdrop} onClick={onCloseHandler}>
-                    </div>
-                </Fragment>
-            }
+            </form>
+            <GoSearch className={styles.searchIcon} onClick={!show ? onShowHandler : onSubmitHandler} />
+            {show && <div className={styles.backdrop} onClick={onCloseHandler}>
+            </div>}
         </div >
     )
 }
@@ -130,7 +124,6 @@ Search.propTypes = {
     category: PropTypes.string.isRequired,
     setSearch: PropTypes.func.isRequired,
     setCategory: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
