@@ -19,6 +19,9 @@ const uploadAvatar = require('../middleware/uploadAvatar');
 router.get('/', auth, async (req, res, next) => {
     try {
         const user = await User.findById(req.user.id).select("-password");
+        if (!user) {
+            throw new ErrorHandler(400, "Please Login again");
+        }
         res.json(user);
     } catch (err) {
         next(err);
@@ -49,6 +52,7 @@ router.post('/signup', [
             throw new ErrorHandler(400, "User already exists");
         }
 
+        // Create new User
         user = new User({
             name,
             email,
@@ -105,9 +109,7 @@ router.post('/login', [
         // Publishing Jsonwebtoken
         const token = jwt.sign(
             {
-                user: {
-                    id: user.id
-                }
+                user: { id: user.id }
             },
             process.env.JWT_SECRET,
             { expiresIn: '7d' });
@@ -130,18 +132,23 @@ router.put('/avatar',
     async (req, res, next) => {
         try {
             const user = await User.findById(req.user.id);
-            if (!req.file) {
-                throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
-            }
+
+            // Check if the file exists
+            if (!req.file) throw new ErrorHandler('400', "Please upload a png, jpeg or jpg");
+
+            // Compress the image
             const buffer = await sharp(req.file.buffer)
                 .resize({ width: 300, height: 300 })
-                .jpeg({
-                    quality: 80
-                })
+                .jpeg({ quality: 80 })
                 .toBuffer();
+
+            // Save
             user.avatar = buffer;
             await user.save();
+
+            // Get avatar from database (avatar data format that saved is different from the one above)
             const storedAvatar = await User.findById(req.user.id).select("avatar");
+
             res.send(storedAvatar);
         } catch (err) {
             next(err);
@@ -150,16 +157,14 @@ router.put('/avatar',
 );
 
 // @route     GET /api/user/:id
-// @desc      Get user info
+// @desc      Get a user info to show profile
 // @access    Private
 // @res       {avatar, sellings, name}
 router.get('/:id', async (req, res, next) => {
     try {
-        const user = await User.findById(req.params.id).select("name avatar sellings facebook");
-
-        if (!user) {
-            throw new ErrorHandler(404, 'User not found');
-        }
+        // Get user with
+        const user = await User.findById(req.params.id).select("name avatar facebook");
+        if (!user) throw new ErrorHandler(404, 'User not found');
 
         res.send(user);
     } catch (err) {
@@ -179,16 +184,16 @@ router.put('/profile', [
     try {
         // Check if the req are valid
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            throw new ErrorHandler(400, errors.array());
-        }
+        if (!errors.isEmpty()) throw new ErrorHandler(400, errors.array());
+
         const { name, facebook } = req.body;
 
+        // Get user info
         const user = await User.findById(req.user.id).select("-password");
 
+        // Update and save
         user.name = name;
         if (facebook) user.facebook = facebook;
-
         await user.save();
 
         res.send(user);
@@ -209,24 +214,18 @@ router.put('/email', [
     try {
         // Check if the req are valid
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            throw new ErrorHandler(400, errors.array());
-        }
+        if (!errors.isEmpty()) throw new ErrorHandler(400, errors.array());
 
         const { email, password } = req.body;
 
         // Check if the User exists
         const user = await User.findById(req.user.id);
-        if (!user) {
-            throw new ErrorHandler(500, 'Something wrong with server');
-        }
 
         //Check if the password correct
         const isMatch = bcrypt.compareSync(password, user.password);
-        if (!isMatch) {
-            throw new ErrorHandler(400, 'Password is invalid');
-        }
+        if (!isMatch) throw new ErrorHandler(400, 'Password is invalid');
 
+        // Update and save
         user.email = email;
         await user.save();
 
@@ -248,17 +247,12 @@ router.put('/password', [
     try {
         // Check if the req are valid
         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            throw new ErrorHandler(400, errors.array());
-        }
+        if (!errors.isEmpty()) throw new ErrorHandler(400, errors.array());
 
         const { curPassword, newPassword } = req.body;
 
-        // Check if the User exists
+        // Get user
         const user = await User.findById(req.user.id);
-        if (!user) {
-            throw new ErrorHandler(500, 'Something wrong with server');
-        }
 
         //Check if the password correct
         const isMatch = bcrypt.compareSync(curPassword, user.password);

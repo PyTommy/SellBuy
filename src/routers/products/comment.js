@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
 const { ErrorHandler } = require('../../middleware/error');
 const Notification = require('../../models/notification');
@@ -98,9 +97,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res, next) => {
         const comment = product.comments.find(comment => comment.id === req.params.comment_id);
 
         // Check if the comment exists
-        if (!comment) {
-            throw new ErrorHandler(404, "Comment does not exist");
-        }
+        if (!comment) throw new ErrorHandler(404, "Comment does not exist");
 
         // The user is the owner of the comment
         if (comment.user.toString() !== req.user.id) {

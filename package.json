@@ -8,10 +8,13 @@
     "server": "env-cmd -f ./config/dev.env nodemon src/index.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "env-cmd -f ./config/dev.env jest --watch --runInBand"
+    "test": "env-cmd -f ./config/dev.env jest --watch --runInBand",
+    "test-user": "env-cmd -f ./config/dev.env jest src/testing/user.test.js --watch --runInBand",
+    "test-product": "env-cmd -f ./config/dev.env jest src/testing/product.test.js --watch --runInBand"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "testTimeout": 10000
   },
   "author": "",
   "license": "ISC",
