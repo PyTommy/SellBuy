@@ -14,7 +14,6 @@ import MyList from './components/MyList/MyList';
 import Auth from './components/Auth/Auth';
 import Products from './components/Products/Products';
 import SingleProduct from './components/SingleProduct/SingleProduct';
-import Sell from './components/Sell/Sell';
 import EditPage from './components/EditPage/EditPage';
 import Profile from './components/Profile/Profile';
 import NotificationPage from './components/NotificationPage/NotificationPage';
@@ -43,7 +42,7 @@ class App extends Component {
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
             <PrivateRoute path="/mylist/:status" component={MyList} />
-            <PrivateRoute path="/sell" exact component={Sell} />
+            <PrivateRoute path="/sell" exact component={EditPage} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
             <PrivateRoute path="/mypage" exact component={MyPage} />
             <PrivateRoute path="/mypage/update/avatar" exact component={UpdateAvatar} />

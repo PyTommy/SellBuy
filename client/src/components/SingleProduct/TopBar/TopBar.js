@@ -23,11 +23,10 @@ const TopBar = ({
     const [loading, setLoading] = useState(false);
 
     let isLiked = false;
-    if (auth.isAuthenticated && product) { // set product before didmount to remove "&& product"
-        isLiked = !!product.likes.find((like) => {
-            return like === auth.user._id;
-        });
+    if (auth.isAuthenticated && product) {
+        isLiked = product.likes.includes(auth.user._id);
     }
+
     const onLikeButtonClicked = () => {
         if (!auth.isAuthenticated) return history.push('/auth');
 

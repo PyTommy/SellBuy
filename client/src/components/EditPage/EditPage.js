@@ -1,7 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { getProduct, editProduct } from '../../store/actions/product';
+import React, { useState, useEffect, useReducer, Fragment } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { getProduct, editProduct, createProduct } from '../../store/actions/product';
 import imageConverter from '../../utils/imageConverter';
 
 //Components
@@ -12,59 +11,116 @@ import Spinner from '../UI/Spinner/Spinner';
 import ImageDropAndCrop from '../UI/ImageDropAndCrop/ImageDropAndCrop';
 import TopBar from '../UI/TopBar/TopBar';
 
-const EditPage = ({ product, getProduct, editProduct, match, history, loading }) => {
-    // State
-    const [formData, setFormData] = useState({
+
+// Local action types
+const UPDATE_FORM_INPUT = 'UPDATE_FORM_INPUT';
+const UPDATE_FORM_IMAGE = 'UPDATE_FORM_IMAGE';
+const INIT_STATE = 'INIT_STATE';
+
+// initial form state
+const initFormState = {
+    inputValues: {
         title: "",
         price: "",
-        category: "",
+        category: "Home",
         meetupAt: "",
-        description: ""
-    });
-    const [imgModified, setImgModified] = useState(false);
-    const [productImage, setProductImage] = useState(null);
+        description: "",
+        productImage: "",
+    },
+    imgModified: true,
+};
 
-    // Effect
+// Reducer
+const formReducer = (state, action) => {
+    switch (action.type) {
+        case UPDATE_FORM_INPUT:
+            return {
+                ...state,
+                inputValues: {
+                    ...state.inputValues,
+                    [action.inputIdentifier]: action.value
+                }
+            }
+        case UPDATE_FORM_IMAGE:
+            return {
+                ...state,
+                inputValues: {
+                    ...state.inputValues,
+                    productImage: action.imageFile
+                },
+                imgModified: true,
+            }
+        case INIT_STATE:
+            return action.initState
+        default:
+            throw new Error('No action type matched!!');
+    }
+};
+
+const EditPage = ({ match, history }) => {
+    const [loading, setLoading] = useState(true);
+    const product = useSelector(state => state.product.product);
+    const dispatch = useDispatch();
+    const [formState, formDispatch] = useReducer(formReducer, initFormState);
+
+    // Get Product data and set them to edit. 
+    const productId = match.params.id;
     useEffect(() => {
-        if ((!loading.getProduct && !product) || (product && match.params.id !== product._id.toString())) {
-            getProduct(match.params.id);
+        const initForm = async () => {
+            try {
+                if (productId && (!product || (product && productId !== product._id.toString()))) {
+                    await dispatch(getProduct(productId));
+                }
+                setLoading(false);
+                if (!product || !productId) return;
+                formDispatch({
+                    type: INIT_STATE,
+                    initState: {
+                        inputValues: {
+                            title: product.title,
+                            price: product.price,
+                            category: product.category,
+                            meetupAt: product.meetupAt,
+                            description: product.description,
+                            productImage: imageConverter(product.productImage.data)
+                        },
+                        imgModified: false
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
-        setFormData(() => ({
-            title: loading.getProduct || !product ? "" : product.title,
-            price: loading.getProduct || !product ? "" : product.price,
-            category: loading.getProduct || !product ? "" : product.category,
-            meetupAt: loading.getProduct || !product ? "" : product.meetupAt,
-            description: loading.getProduct || !product ? "" : product.description
-        }));
-        setProductImage(
-            loading.getProduct || !product
-                ? ""
-                : imageConverter(product.productImage.data)
-        );
-    }, [getProduct, setFormData, loading.getProduct, match.params.id, product]);
+        initForm();
+    }, [formDispatch, productId, product]);
 
     // Variable
     const {
-        title,
-        price,
-        category,
-        meetupAt,
-        description
-    } = formData;
+        inputValues: {
+            title,
+            price,
+            category,
+            meetupAt,
+            description,
+            productImage
+        },
+        imgModified
+    } = formState;
 
     // Functions
-    const onChange = (e) => {
-        e.preventDefault();
-        e.persist()
-        setFormData(() => ({
-            ...formData,
-            [e.target.name]: e.target.value
-        }));
+    const onTextChange = (e) => {
+        formDispatch({
+            type: UPDATE_FORM_INPUT,
+            value: e.target.value,
+            inputIdentifier: e.target.name
+        });
     };
 
     const setImage = (uploadableFile) => {
-        setProductImage(uploadableFile);
-        setImgModified(true);
+        formDispatch({
+            type: UPDATE_FORM_IMAGE,
+            imageFile: uploadableFile
+        });
     };
 
     const onSubmit = (e) => {
@@ -77,100 +133,97 @@ const EditPage = ({ product, getProduct, editProduct, match, history, loading })
         newFormData.append('description', description);
 
         if (!productImage) return alert("Please set Image");
+
+        // do not submit image if the image is not edited in edit mode
         imgModified && newFormData.append('productImage', productImage);
 
-        editProduct(match.params.id, newFormData);
+        if (productId) {
+            dispatch(editProduct(match.params.id, newFormData));
+        } else {
+            dispatch(createProduct(newFormData));
+        }
         history.push('/products');
     };
-
-    if (loading.getProduct) return <Spinner />;
 
     return (
         <Fragment>
             <TopBar />
-            <div className={styles.Sell}>
-                <div className={styles.ImageDropAndCrop}>
-                    {(productImage || imgModified) &&
-                        <ImageDropAndCrop
-                            maxSize={10000000}
-                            setImage={(uploadableFile) => setImage(uploadableFile)}
-                            defaultImage={productImage}
-                        />
-                    }
-                </div>
-                <form className={styles.sellForm} onSubmit={e => onSubmit(e)}>
-                    <label>Product</label>
-                    <Input
-                        type="text"
-                        placeholder="Product Name (20 words or less)"
-                        name="title"
-                        value={title}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+            {loading ? (
+                <Spinner center={true} />
+            ) : (
 
-                    <label>Price</label>
-                    <Input
-                        type="number"
-                        placeholder="Price in Yen"
-                        name="price"
-                        value={price}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+                    <div className={styles.Sell}>
+                        <div className={styles.ImageDropAndCrop}>
+                            <ImageDropAndCrop
+                                maxSize={10000000}
+                                setImage={(uploadableFile) => setImage(uploadableFile)}
+                                defaultImage={!imgModified ? productImage : null}
+                            />
+                        </div>
+                        <form className={styles.sellForm} onSubmit={e => onSubmit(e)}>
+                            <label>Product</label>
+                            <Input
+                                type="text"
+                                placeholder="Product Name (20 words or less)"
+                                name="title"
+                                value={title}
+                                onChange={e => onTextChange(e)}
+                                required
+                            />
 
-                    <label>Category</label>
-                    <Input
-                        type="select"
-                        name="category"
-                        value={category}
-                        onChange={e => { onChange(e) }}>
-                        <option value="Home">Home</option>
-                        <option value="Academic">Academic</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Ticket">Ticket</option>
-                        <option value="Women">Women</option>
-                        <option value="Men">Men</option>
-                        <option value="Other">Other</option>
-                    </Input>
+                            <label>Price</label>
+                            <Input
+                                type="number"
+                                placeholder="Price in Yen"
+                                name="price"
+                                value={price}
+                                onChange={e => onTextChange(e)}
+                                required
+                            />
 
-                    <label>Meetup Place</label>
-                    <Input
-                        type="text"
-                        placeholder="Meetup Place"
-                        name="meetupAt"
-                        value={meetupAt}
-                        onChange={e => onChange(e)}
-                        required
-                    />
+                            <label>Category</label>
+                            <Input
+                                type="select"
+                                name="category"
+                                value={category}
+                                onChange={e => onTextChange(e)}>
+                                <option value="Home">Home</option>
+                                <option value="Academic">Academic</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Ticket">Ticket</option>
+                                <option value="Women">Women</option>
+                                <option value="Men">Men</option>
+                                <option value="Other">Other</option>
+                            </Input>
 
-                    <label>Description</label>
-                    <Input
-                        type="textarea"
-                        placeholder="Description here"
-                        name="description"
-                        value={description}
-                        onChange={e => onChange(e)}
-                        required
-                    />
-                    <Button className={styles.btn} btnType="color-primary size-lg">
-                        Start Selling
-                    </Button>
-                </form>
-            </div>
+                            <label>Meetup Place</label>
+                            <Input
+                                type="text"
+                                placeholder="Meetup Place"
+                                name="meetupAt"
+                                value={meetupAt}
+                                onChange={e => onTextChange(e)}
+                                required
+                            />
+
+                            <label>Description</label>
+                            <Input
+                                type="textarea"
+                                placeholder="Description here"
+                                name="description"
+                                value={description}
+                                onChange={e => onTextChange(e)}
+                                required
+                            />
+                            <Button className={styles.btn} btnType="color-primary size-lg">
+                                Submit
+                        </Button>
+                        </form>
+                    </div>
+                )
+            }
         </Fragment>
     );
 }
 
-EditPage.propTypes = {
-    getProduct: PropTypes.func.isRequired,
-    editProduct: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-    loading: state.product.loading,
-    product: state.product.product
-});
-
-
-export default connect(mapStateToProps, { getProduct, editProduct })(EditPage);
+export default EditPage;

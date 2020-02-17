@@ -4,10 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import imageConverter from '../../../utils/imageConverter';
 import styles from './Main.module.scss';
-import { IoIosArrowForward } from 'react-icons/io';
 
 import Comments from '../Comments/Comments';
-import UserInfo from '../../UI/UserInfo/UserInfo';
+import UserInfoCard from '../../UI/UserInfoCard/UserInfoCard';
 
 const Main = ({
     history,
@@ -33,36 +32,30 @@ const Main = ({
             <div className={styles.Container}>
                 <h2 >{title}</h2>
                 <div className={styles.subContainer} >{description}</div>
+
                 <h3>Meetup Place</h3>
                 <div className={styles.subContainer}>
                     <p>{meetupAt}</p>
                 </div>
+
                 <h3>Seller</h3>
-                <div className={styles.card} onClick={() => history.push(`/profile/${user}`)} >
-                    <UserInfo
-                        name={name}
-                        avatar={avatar}
-                        imageLeft={false}
-                        fontSize="1.6rem"
-                        imageSize="4rem"
-                    />
-                    <IoIosArrowForward />
-                </div>
+                <UserInfoCard
+                    name={name}
+                    avatar={avatar}
+                    onClick={() => history.push(`/profile/${user}`)}
+                />
+
                 {purchaser && purchaser.name &&
                     <Fragment>
                         <h3> Purchaser</h3>
-                        <div className={styles.card} onClick={() => history.push(`/profile/${purchaser._id}`)}>
-                            <UserInfo
-                                name={purchaser.name}
-                                avatar={purchaser.avatar}
-                                imageLeft={false}
-                                fontSize="1.6rem"
-                                imageSize="4rem"
-                            />
-                            <IoIosArrowForward />
-                        </div>
+                        <UserInfoCard
+                            name={purchaser.name}
+                            avatar={purchaser.avatar}
+                            onClick={() => history.push(`/profile/${purchaser._id}`)}
+                        />
                     </Fragment>
                 }
+
                 <Comments />
             </div>
         </div >

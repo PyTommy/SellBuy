@@ -23,16 +23,16 @@ const Search = ({ search, category, setSearch, setCategory, loading, refreshProd
         setSearch("");
     };
 
-    const onSubmit = () => {
-        !loading && refreshProducts();
-    };
-
 
     const onSearchChange = (e) => {
         e.persist();
         setSearch(e.target.value);
         !isModified && setIsModified(true);
     }
+
+    const onSubmit = () => {
+        !loading && refreshProducts();
+    };
 
     const onCategoryClick = (e) => {
         const selectedCategory = e.target.getAttribute("category");
@@ -81,6 +81,7 @@ const Search = ({ search, category, setSearch, setCategory, loading, refreshProd
         </li>
     ));
 
+    // Current filter "<<Category>>・<<SearchTerm>>"
     let unfocusedSearchInput = "";
     if (category && search) unfocusedSearchInput = [category, search].join(" ・ ")
     else if (category) unfocusedSearchInput = category
@@ -130,7 +131,6 @@ Search.propTypes = {
     category: PropTypes.string.isRequired,
     setSearch: PropTypes.func.isRequired,
     setCategory: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({

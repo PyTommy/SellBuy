@@ -7,34 +7,24 @@ import verifyFile from './utils/verify';
 import styles from './ImageDropAndCrop.module.scss';
 import { IoMdImage } from 'react-icons/io';
 
-// @@@@ Props @@@@
+// Props
 // [Func] setImage( uploadableFile ) 
 // (option) [Num] maxSize @default = 10000000 (10MB)
+// (option) [String(base64)] defaultImage (default Image shown if it is provided)
 
-// @@@@@ Additional props for Edit mode @@@@@@@
-// [String(base64)] defaultImage
 
 class ImgDropAndCrop extends PureComponent {
     state = {
         cropping: false,
-        src: null,
+        src: this.props.defaultImage ? true : null,
         crop: {
             unit: '%',
             width: 70,
             aspect: 4 / 3
         },
-        croppedImageBase64: null,
-        isModified: true
+        croppedImageBase64: this.props.defaultImage || null,
+        isModified: this.props.defaultImage ? false : true,
     };
-
-    // This is for editPage (Don't have to be in DidMount)
-    componentDidMount() {
-        this.setState(() => ({
-            croppedImageBase64: this.props.defaultImage || null,
-            isModified: this.props.defaultImage ? false : true,
-            src: this.props.defaultImage ? true : null
-        }));
-    }
 
     onSelectFile = (files, rejectedFiles) => {
         if (rejectedFiles && rejectedFiles.length > 0) {

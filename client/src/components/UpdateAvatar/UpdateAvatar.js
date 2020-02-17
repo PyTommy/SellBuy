@@ -6,7 +6,6 @@ import styles from './UpdateAvatar.module.scss';
 
 import TopBar from '../UI/TopBar/TopBar';
 import Button from '../UI/Button/Button';
-import Input from '../UI/Input/Input';
 
 
 const Avatar = ({ updateAvatar, history }) => {

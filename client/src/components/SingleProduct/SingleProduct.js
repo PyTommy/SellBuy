@@ -33,18 +33,22 @@ const Product = ({
 
 
     const callback = () => { setPurchaseLoading(false) };
+
     const onPurchaseHandler = () => {
         setPurchaseLoading(true);
         purchaseProduct(match.params.id, callback)
     };
+
     const onCancelHandler = () => {
         setPurchaseLoading(true);
         cancelProduct(match.params.id, callback);
     };
+
     const onRejectHandler = () => {
         setPurchaseLoading(true);
         rejectProduct(match.params.id, callback);
     };
+
     const onUnauthorizedHandler = () => history.push('/auth');
 
     const { purchaser } = product;
