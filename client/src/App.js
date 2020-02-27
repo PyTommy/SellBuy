@@ -41,6 +41,7 @@ class App extends Component {
           <Switch>
             <Route path="/products/:id" component={SingleProduct} />
             <Route path="/products" exact component={Products} />
+            <Redirect from="/mylist" exact to="/mylist/liked" />
             <PrivateRoute path="/mylist/:status" component={MyList} />
             <PrivateRoute path="/sell" exact component={EditPage} />
             <PrivateRoute path="/edit/:id" exact component={EditPage} />
@@ -50,6 +51,7 @@ class App extends Component {
             <PrivateRoute path="/mypage/update/email" exact component={UpdateEmail} />
             <PrivateRoute path="/mypage/update/password" exact component={UpdatePassword} />
             <PrivateRoute path="/notification" exact component={NotificationPage} />
+            <Redirect from="/inbox" exact to="/inbox/recieved" />
             <PrivateRoute path="/inbox/recieved/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/sent/:id" component={MessageBox} />
             <PrivateRoute path="/inbox/:status" component={Inbox} />

@@ -7,6 +7,7 @@ import styles from './Main.module.scss';
 
 import Comments from '../Comments/Comments';
 import UserInfoCard from '../../UI/UserInfoCard/UserInfoCard';
+import TextToJSX from '../../UI/TextToJSX/TextToJSX';
 
 const Main = ({
     history,
@@ -31,7 +32,7 @@ const Main = ({
             <img alt="pic" className={styles.Image} src={imageSrc} />
             <div className={styles.Container}>
                 <h2 >{title}</h2>
-                <div className={styles.subContainer} >{description}</div>
+                <div className={styles.subContainer} ><TextToJSX>{description}</TextToJSX>{description}</div>
 
                 <h3>Meetup Place</h3>
                 <div className={styles.subContainer}>

@@ -25,10 +25,10 @@ const Navigation = (props) => {
     const navItems = auth.isAuthenticated ? (
         <Fragment>
             <HomeNav linkTo="/products">Home</HomeNav>
-            <MyList linkTo="/mylist/liked">My List</MyList>
+            <MyList linkTo="/mylist">My List</MyList>
             <SellNav linkTo="/sell">Sell</SellNav>
             <NotificationNav linkTo="/notification">Notification</NotificationNav>
-            <InboxNav linkTo="/inbox/recieved">Inbox</InboxNav>
+            <InboxNav linkTo="/inbox">Inbox</InboxNav>
             <MyPageNav linkTo="/mypage">My Page</MyPageNav>
         </Fragment>
     ) : (

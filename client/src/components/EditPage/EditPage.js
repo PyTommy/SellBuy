@@ -147,7 +147,7 @@ const EditPage = ({ match, history }) => {
 
     return (
         <Fragment>
-            <TopBar />
+            {productId && <TopBar />}
             {loading ? (
                 <Spinner center={true} />
             ) : (
