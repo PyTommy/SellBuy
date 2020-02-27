@@ -6,6 +6,7 @@ import { getNotifications, refreshNotifications } from '../../store/actions/noti
 import styles from './Notification.module.scss';
 import Notification from './Notification/Notification';
 import Scroller from '../UI/Scroller/Scroller';
+import Center from '../UI/Center/Center';
 
 const Inbox
     = ({
@@ -29,7 +30,7 @@ const Inbox
             );
         })
 
-        const noMsg = <p style={{ height: "75vh" }}>No notification yet</p>;
+        const noMsg = <Center>No notification yet</Center>;
 
         let loadMore = () => null,
             refresh = () => null;

@@ -7,6 +7,7 @@ import Switcher from '../UI/Switcher/Switcher';
 import styles from './Inbox.module.scss';
 import Message from './Message/Message';
 import Scroller from '../UI/Scroller/Scroller';
+import Center from '../UI/Center/Center';
 
 const Inbox
     = ({
@@ -71,7 +72,7 @@ const Inbox
             })
         }
 
-        const noMsg = <p style={{ height: "75vh" }}>No recieved message yet</p>;
+        const noMsg = <Center>No recieved message yet</Center>;
 
         let getMessages = () => null,
             refreshMessages = () => null;

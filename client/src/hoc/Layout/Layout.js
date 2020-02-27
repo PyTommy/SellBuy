@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from '../../components/Navigation/Navigation';
 import styles from './Layout.module.scss';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ const layout = (props) => {
     // if (props.alerts.length > 0) {
     //     alerts = <Alerts />;
     // }
+
 
     return (
         <React.Fragment>

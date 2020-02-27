@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { getProducts, refreshProducts } from '../../store/actions/product';
 
 
+import Center from '../UI/Center/Center';
 import Product from '../UI/Product/Product';
 import Scroller from '../UI/Scroller/Scroller';
 import Search from './Search/Search';
@@ -45,7 +46,7 @@ const Products = ({
                 <div className={styles.Products}>
                     {
                         productList.length === 0 && !hasMore ? (
-                            <p styles={{ paddingBottom: "30rem" }}>No product found</p>
+                            <Center>No product found</Center>
                         ) : productList
 
                     }

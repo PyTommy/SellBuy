@@ -8,6 +8,7 @@ import styles from './MyList.module.scss';
 import Switcher from '../UI/Switcher/Switcher';
 import Scroller from '../UI/Scroller/Scroller';
 import Product from '../UI/Product/Product';
+import Center from '../UI/Center/Center';
 
 const MyList = ({
     match,
@@ -97,7 +98,7 @@ const MyList = ({
                     {
                         !hasMore && productList.length === 0
                             ?
-                            <p style={{ height: "80vh" }}>No product found</p>
+                            <Center>No product found</Center>
                             :
                             <div className={styles.items}>
                                 {productList}
