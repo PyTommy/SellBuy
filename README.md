@@ -1,6 +1,11 @@
 # SellBuy
 
-SellBuy is a web application with which users can sell and buy products.
+SellBuy is a MERN stack web application with which users can sell and buy products.
+
+<img src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sellbuyBig.JPG"  />
+<p align="center">
+<img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/%E3%82%AD%E3%83%A3%E3%83%97%E3%83%81%E3%83%A3.JPG"  />
+</p>
 
 ## Features
 - Responsive design.
