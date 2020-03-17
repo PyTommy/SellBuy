@@ -24,18 +24,25 @@ const AuthForm = ({
     // State
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
-        password: "",
+        email: isSignup ? "" : "test@test.com",
+        password: isSignup ? "" : "testtest",
         password2: ""
     });
 
     useEffect(() => {
-        setFormData(() => ({
-            name: "",
-            email: "",
-            password: "",
-            password2: "",
-        }));
+        if (isSignup) {
+            setFormData(() => ({
+                name: "",
+                email: "",
+                password: "",
+                password2: "",
+            }));
+        } else {
+            setFormData(() => ({
+                email: "test@test.com",
+                password: "testtest"
+            }));
+        }
     }, [isSignup]);
 
 

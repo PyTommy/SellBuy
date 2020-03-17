@@ -11,7 +11,7 @@ import FormTypeChanger from './FormTypeChanger/FormTypeChanger';
 
 
 const Auth = ({ auth: { isAuthenticated } }) => {
-    const [isSignup, setIsSignup] = useState(true);
+    const [isSignup, setIsSignup] = useState(false);
 
 
     const onChangeFormType = (boolean) => {
