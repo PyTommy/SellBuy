@@ -3,7 +3,11 @@
 ## アプリ概要
 ユーザー同士がモノの売買を行うためのアプリケーションです。フロントエンドにはReactを用い、バックエンドにはExpress.jsやMongoDBを用いました。
 
-[Link to Heroku]("https://sellbuy.herokuapp.com/products")
+[Link to Heroku](https://sellbuy.herokuapp.com/products)
+<br>
+
+<img width="100%" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/homeBig.JPG"  />
+
 
 ## 作成の動機
 私は国際生比率が約50%の別府にある大学に通っていました。その大学では、学生同士のモノの売買が盛んであり、そのためのツールはフェイスブックの売買グループでした。<br>
@@ -19,38 +23,54 @@
 
 ## 機能紹介
 
-
-## 課題点
-
-<img src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sellbuyBig.JPG"  />
-
-## Images
+### 認証ページ
 <p align="center">
-<img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sellbuyMobile.JPG"  />
-  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sellbuySell.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/signup.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/login.JPG"  />
+</p>
+
+### 商品検索ページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/home.JPG"  />
+   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/search.JPG"  />
+</p>
+
+### 商品詳細ページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/detailAuth.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/comment.JPG"  />
+</p>
+
+### プロフィールページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/userProgile.JPG"  />
+</p>
+
+### 商品販売フォーム
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell.JPG"  />
+</p>
+
+### マイプロダクトページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/mylist.JPG"  />
 </p>
 
 
-## Features
-- Responsive design.
-- **Login / Signup**.
-- Automatically logged in as long as **web token** is still valid.
-- Updating user profile(username, email, password, avatar).
-- **Image upload** (Saved as binary data on mongoDB)
-- **CRUD** operations for products.
-- Filtering products by text or category.
-- Comment.
-- Like.
-- Messaging (HTTP).
-- Nortification (HTTP)
-  + Commenting on a product triggers sending notification to product  owner and the others who commented on the same product.
-  + Purchasing or cancelling a product triggers sending notification to  product owner.
-  + Rejecting a purchase triggers sending notification to the purchaser.
+### 通知ページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/nortification.JPG"  />
+</p>
 
-## Technologies
-- Sass
-- React & Hooks
-- Redux
-- Express.js
-- MongoDB
-- Jest (some routes of REST API)
+
+### Inboxページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/inbox.JPG"  />
+    <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/reply.JPG"  />
+</p>
+
+### マイページ
+<p align="center">
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/maypage.JPG"  />
+</p>
