@@ -49,7 +49,7 @@
 ### 商品販売フォーム
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell.JPG"  />
-  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell2.JPG"  />
 </p>
 
 ### マイプロダクトページ
@@ -60,7 +60,7 @@
 
 ### 通知ページ
 <p align="center">
-  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/nortification.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/notification.JPG"  />
 </p>
 
 
@@ -72,5 +72,5 @@
 
 ### マイページ
 <p align="center">
-  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/maypage.JPG"  />
+  <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/mypage.JPG"  />
 </p>
