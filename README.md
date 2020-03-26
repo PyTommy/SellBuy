@@ -33,6 +33,8 @@
 
 <br>
 
+<br>
+
 ### 商品検索ページ
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/home.JPG"  />
@@ -42,7 +44,10 @@
 <br>
 
 カテゴリーや検索ワードを指定し、商品を閲覧することができます。
-また、[react-infinite-scroller]("https://www.npmjs.com/package/react-infinite-scroller")を用いて無限スクロールを導入したり、[rmc-pull-to-refresh]("https://www.npmjs.com/package/rmc-pull-to-refresh")を導入してPull to Refreshできるようにしました。
+また、[react-infinite-scroller](https://www.npmjs.com/package/react-infinite-scroller)を用いて無限スクロール、[rmc-pull-to-refresh](https://www.npmjs.com/package/rmc-pull-to-refresh)を用いてPull to Refreshを導入しています。
+
+
+<br>
 
 ### 商品詳細ページ
 <p align="center">
@@ -65,6 +70,9 @@
 
 が出来ます。
 
+
+<br>
+
 ### プロフィールページ
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/userProgile.JPG"  />
@@ -80,6 +88,8 @@
 
 が可能です。
 
+<br>
+
 ### 商品販売フォーム
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/sell.JPG"  />
@@ -89,7 +99,10 @@
 <br>
 
 このページから、商品を出品することができます。
-[react-dropzone]("https://www.npmjs.com/package/react-dropzone")を使い、パソコンのファイルをドロップできるようにしました。また、クロッピングのために、[react-image-crop]('https://www.npmjs.com/package/react-image-crop')というライブラリを使用しました。
+[react-dropzone](https://www.npmjs.com/package/react-dropzone)を使い、パソコンのファイルをドロップできるようにしました。また、クロッピングのために、[react-image-crop](https://www.npmjs.com/package/react-image-crop)というライブラリを使用しました。
+
+<br>
+
 
 ### マイプロダクトページ
 <p align="center">
@@ -102,6 +115,9 @@
 
 を閲覧することができます。
 
+
+<br>
+
 ### 通知ページ
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/notification.JPG"  />
@@ -113,6 +129,10 @@
   + 商品の購入またはキャンセル => 「出品者」
   + 購入の拒否 => 「購入者」
 
+<br>
+
+<br>
+
 ### Inboxページ
 <p align="center">
   <img width="300px" src="https://github.com/PyTommy/SellBuy/blob/readmeImages/readmeImages/inbox.JPG"  />
@@ -122,6 +142,8 @@
 <br>
 
 受信または送信したメッセージを閲覧することができます。また、送信者へ返信することも出来ます。
+
+<br>
 
 ### マイページ
 <p align="center">
