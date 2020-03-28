@@ -164,3 +164,59 @@
 </p>
 
 ユーザーネーム、プロファイル画像、メールアドレス、パスワードの変更やログアウトすることができます。
+
+## API Routers
+### api/user
+```
+GET    Private  /  (Tokenでのユーザー認証時に使用)
+GET    Public   /:id
+POST   Public   /signup
+POST   Public   /login
+POST   Private  /avatar
+PUT    Private  /profile
+PUT    Private  /email
+PUT    Private  /password
+```
+### api/products
+```
+POST   Private  /
+GET    Public   /
+GET    Public   /sellings/:userId
+GET    Public   /:id
+PUT    Private  /:id
+DELETE Private  /:id
+PUT    Private  /purchase/:id
+PUT    Private  /cancel/:id
+PUT    Private  /reject/:id
+PUT    Private  /like/:id
+PUT    Private  /unlike/:id
+POST   Private  /comment/:id
+DELETE Private  /comment/:id/:comment_id
+```
+
+### api/notification
+```
+GET     Private  /
+GET     Private  /notifications/count
+```
+
+### api/messages
+```
+POST    Private  /:recipientId
+GET     Private  /recieved
+GET     Private  /sent
+GET     Private  /count
+GET     Private  /:id
+DELETE  Private  /:id
+```
+
+### api/notification
+```
+GET     Private  /notifications
+GET     Private  /notifications/count
+```
+
+### その他
+```
+GET      *  (React Applicationのレンダリング用)
+```
