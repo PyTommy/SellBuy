@@ -194,12 +194,6 @@ POST   Private  /comment/:id
 DELETE Private  /comment/:id/:comment_id
 ```
 
-### api/notification
-```
-GET     Private  /
-GET     Private  /notifications/count
-```
-
 ### api/messages
 ```
 POST    Private  /:recipientId
@@ -212,8 +206,8 @@ DELETE  Private  /:id
 
 ### api/notification
 ```
-GET     Private  /notifications
-GET     Private  /notifications/count
+GET     Private  /
+GET     Private  /count
 ```
 
 ### その他
