@@ -5,8 +5,6 @@
 ユーザー同士がモノの売買を行うためのレスポンシブなWebアプリケーションです。<br>
 フロントエンドにはReactを用い、バックエンドにはExpress.jsやMongoDBを用いました。
 
-[Link to Heroku](https://sellbuy.herokuapp.com/products)
-
 <br>
 
 
